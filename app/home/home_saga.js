@@ -1,0 +1,10 @@
+import { delay } from 'redux-saga';
+import { put } from 'redux-saga/effects';
+import ACTION from '../action_constants.js';
+function* home(action) {
+    yield delay(1000);
+    yield put({type:ACTION.HOME.LOADHOME});
+}
+export {
+    home
+};
