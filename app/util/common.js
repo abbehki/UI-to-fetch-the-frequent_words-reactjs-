@@ -44,12 +44,12 @@ const getUserLanguage = ()=> {
 const getSessionToken = ()=> {
   let sessionData;
   try{
-    sessionData = JSON.parse(cookie.get('_sd'));
+    sessionData = cookie.get('token');
   }
   catch(e){
     sessionData = {sessionToken : null};
   }
-  return sessionData.token;
+  return sessionData;
 };
 const numberWithCommas = (x)=> {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");

@@ -15,13 +15,18 @@ module.exports = {
     alias: {
       // images: path.resolve("./assets/images"),
       // fonts: path.resolve("./assets/fonts"),
+       style: path.resolve("./assets/style"),
       // constants: path.resolve("./assets/constants/constants.js"),
       common_constant: path.resolve("./app/action_constant"),
       // reducers: path.resolve("./src/reducers"),
       // sagas: path.resolve("./src/sagas"),
        about: path.resolve("./app/about"),
        auth: path.resolve("./app/auth"),
+       dashboard: path.resolve("./app/dashboard"),
        util: path.resolve("./app/util"),
+       header: path.resolve("./app/components/header"),
+       menu_bar: path.resolve("./app/components/menu_bar"),
+       side_nav_bar: path.resolve("./app/components/side_nav_bar"),
     },
   },
   output: {

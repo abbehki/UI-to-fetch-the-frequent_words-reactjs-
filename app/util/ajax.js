@@ -1,4 +1,6 @@
 import $ from 'jquery';
+import cookie from './cookie';
+import common from './common';
 function getDataWithToken(url) {
   return new Promise((resolve, reject)=>{
     $.ajax({
@@ -6,9 +8,8 @@ function getDataWithToken(url) {
       success: (data)=> {
         resolve(data);
       },
-      headers: {
-        brandId: 2,
-        token: cookie.get('token')
+      headers: {       
+         token:common.getSessionToken()
       },
       error: (error)=> {
         reject(error);
@@ -26,7 +27,7 @@ function postDataWithToken(url, data) {
         resolve(data);
       },
       headers: {
-        brandId: 2
+       token:common.getSessionToken()
       },
       error: (error)=> {
         reject(error);

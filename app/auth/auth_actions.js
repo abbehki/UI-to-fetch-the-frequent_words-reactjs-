@@ -11,15 +11,13 @@ import history from '../history';
 
 
 function* signin(action) {
-  try {
-    //yield put({type: "show_loader"})
+  try {   
     const signInData = yield call(PostDataWithOutToken, API.signIn , action.data.paramObj);
     yield put({type : "STORE_SIGNIN_DETAILS", data : signInData });
-      history.push('/about');     
+      history.push('/dashboard');     
    
-    //yield put({type: "hide_loader"})
   } catch (e) {
-    //yield put({type: "hide_loader"})
+    yield put({type : "AUTH_ERROR", error : e.error});
   }
 }
 

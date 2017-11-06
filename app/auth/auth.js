@@ -5,18 +5,12 @@ import { Link } from 'react-router-dom';
 import injectSheet from 'react-jss';
 import CONSTANT from '../common_constants';
 import { GoogleLogin } from 'react-google-login-component';
+import ErrorMsg from '../components/error_message/error_message';
 import './auth.less';
 
 
-const styles = {
-  heading: {
-    fontWeight: 'bold',
-    color: 'red'
-  }
-};
 
 
-@injectSheet(styles) // do this, else the styles won't come... very important
 class Auth extends React.Component {
   constructor(props) {
     super(props);
@@ -40,7 +34,6 @@ class Auth extends React.Component {
  }
 
   render() {
-
     return (
       <div className="auth-container">       
         <div className="logo">Asset Managment</div>       
@@ -50,7 +43,9 @@ class Auth extends React.Component {
                              className="google-btn"
                              responseHandler={this.responseGoogle}
                              buttonText="Google Login"/>
-            </div>           
+            
+            </div>   
+           {this.props.auth.authError && <ErrorMsg errorMsg={this.props.auth.authError}></ErrorMsg>}        
       </div>
     );
   }

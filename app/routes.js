@@ -8,6 +8,7 @@ import rootSaga from './root_saga';
 import reducers from './root_reducer';
 import About from './about/About';
 import Auth from './auth/auth';
+import Dashboard from './dashboard/dashboard';
 import history from './history';
 
 //import Loadable from 'components/Loadable';
@@ -35,7 +36,8 @@ const routes = (
     <Router history={history}>
       <Switch>
         <Route exact path='/' component={Auth} />
-        <Route exact path='/about' component={About} />      
+        <Route exact path='/about' component={About} />
+        <Route exact path='/dashboard' component={Dashboard} />      
       </Switch>
     </Router>
 );

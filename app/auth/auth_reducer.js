@@ -10,6 +10,10 @@ function auth(state = getSessionData() , action) {
           console.log( tempState.userData);
           return tempState;
 
+    case  'AUTH_ERROR':
+          tempState.authError = action.error;         
+          return tempState;
+
     default:
       return state;
   }
