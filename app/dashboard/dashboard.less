@@ -1,80 +1,68 @@
 
-.dashboard-container{
-    position: relative;
-
     .content-cont{
-        margin-left:200px;
+        margin-left:200px;   
+    }
+    .folder-path{  position: absolute;         
+        white-space:nowrap;  
+        cursor: pointer;
+        background: lightgrey;
+        padding: 10px;
+        
+    }
 
-        .folder-path{           
-            white-space:nowrap;           
+    .folder-wrapper{
+        display:inline-block;
+        margin-top: 60px;
+    }
+
+    .project-list{            
+        margin: 20px 50px;
+
+        .folder-cont{
             cursor: pointer;
-            background: lightgrey;
-            padding: 10px;
-
-            .path-cont{
-                display: inline-block;
-
-                .path-name:hover{
-                    color: blue;
-                }
-            }
         }
-
-        .folder-wrapper{
-            display:inline-block;
-        }
-
-        .project-list{            
-            margin: 20px 50px;
-
-            .folder-cont{
-                cursor: pointer;
-            }
-            .folder-number{
-                margin: 10px;               
-            }
-        }
-        .create-folder-btn{
-            display:inline-block;
-            font-size: 14px;
-            font-weight: 500;
-            letter-spacing: 2px;
-            text-align: center;
-            width: 170px;
-            height: 50px;
-            border-radius: 4px;
-            background-color: #9ea1a2;
-            float: right;
-            margin-top: 20px;
-            line-height: 50px;
-            color: #fff;
-            cursor: pointer;
-            margin-right: 30px;
-        }
-
-        .folder-image{
-            display: inline-block;
-            vertical-align: middle;
-            margin: 10px;
-            height: 25px;
-            width: 25px;
-            background-color: deepskyblue;
-        }
-        .folder-number,.folder-name{
-            display: inline-block;
-            vertical-align: middle;
-        }
-        .folder-input{
-            display: inline-block;
-            margin: 0 10px;
-            vertical-align:middle;
-
-            input{
-                height:25px;
-            }
-        }
-        .add-folder-cont{
-            margin: 50px 40px 0px 40px;
+        .folder-number{
+            margin: 10px;               
         }
     }
-}
+    .create-folder-btn{
+        display:inline-block;
+        font-size: 14px;
+        font-weight: 500;
+        letter-spacing: 2px;
+        text-align: center;
+        width: 170px;
+        height: 50px;
+        border-radius: 4px;
+        background-color: #9ea1a2;
+        float: right;
+        margin-top: 20px;
+        line-height: 50px;
+        color: #fff;
+        cursor: pointer;
+        margin-right: 30px;
+    }
+
+    .folder-image{
+        display: inline-block;
+        vertical-align: middle;
+        margin: 10px;
+        width: 21px;
+        height: 16px;
+    }
+    .folder-number,.folder-name{
+        display: inline-block;
+        vertical-align: middle;
+    }
+    .folder-input{
+        display: inline-block;
+        margin: 0 10px;
+        vertical-align:middle;
+
+        input{
+            height:25px;
+        }
+    }
+    .add-folder-cont{
+        margin: 50px 40px 0px 40px;
+    }

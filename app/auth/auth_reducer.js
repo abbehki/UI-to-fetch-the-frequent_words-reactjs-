@@ -7,11 +7,11 @@ function auth(state = getSessionData() , action) {
     case 'STORE_SIGNIN_DETAILS' :
           tempState.userData = action.data;
           storeSessionOnCookie(action.data);
-          console.log( tempState.userData);
+          console.log(action.data);
           return tempState;
 
     case  'AUTH_ERROR':
-          tempState.authError = action.error;         
+          tempState.authError = action.data;         
           return tempState;
 
     default:

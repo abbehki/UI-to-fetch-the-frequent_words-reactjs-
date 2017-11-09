@@ -9,6 +9,7 @@ import Header from '../components/header/header';
 import ErrorMsg from '../components/error_message/error_message';
 import SideNavBar from '../components/side_nav_bar/side_nav_bar';
 import './dashboard.less';
+import FolderImage from '../../assets/images/group-17.png';
 
 
 
@@ -96,16 +97,15 @@ class DashBoard extends React.Component {
 
   render() {
     return (
-      <div className="dashboard-container">                
-        <Header></Header>
-        <SideNavBar></SideNavBar>
+      <div>
+      <Header></Header>
+      <SideNavBar></SideNavBar>
         <div className="content-cont">
           <div className="folder-path">
             {this.state.path.map((item,index) =>  {  
                   return(
                         <div className="path-cont" onClick={()=> this.folderPath(item,index)}>                        
                           <div className="path-name">{item.folderName}/</div>
-
                         </div>
                   )}
                 )}
@@ -113,7 +113,7 @@ class DashBoard extends React.Component {
           <div className="folder-wrapper">
               {this.state.folderCreate  &&             
                       <div className="add-folder-cont">
-                        <div className="folder-image"></div>
+                        <img src={FolderImage} className="folder-image"/>
                         <div className="folder-input"><input type="text" value={this.state.folderName} onChange={this.inputChange.bind(self, 'folderName')} onKeyPress={(event)=> {this.addFolder(event)}}/></div>
                       </div>              
               }
@@ -121,9 +121,8 @@ class DashBoard extends React.Component {
                 {this.state.folderArr.map((item,index) =>  {  
                   return(
                         <div className="folder-cont" onClick={()=> this.folderDetail(item)}>
-                          <div className="folder-number">{index+1}.</div>
-                          <div className="folder-image"></div>
-                          <div className="folder-name">{item.directoryName}</div>
+                        <img src={FolderImage} className="folder-image"/>
+                        <div className="folder-name">{item.directoryName}</div>
                         </div>
                   )}
                 )}
@@ -131,7 +130,6 @@ class DashBoard extends React.Component {
           </div>
           <div className="create-folder-btn" onClick={()=> this.showCreateFolder()}>Create Folder</div>
         </div>
-
       </div>
     );
   }

@@ -41,4 +41,8 @@ function* getFolderDetail(action) {
 }
 
 
-export {createFolder,getFolderList,getFolderDetail};
+export {
+  createFolder,
+  getFolderList,
+  getFolderDetail
+};
