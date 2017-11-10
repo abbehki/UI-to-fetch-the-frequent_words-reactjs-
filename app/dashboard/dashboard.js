@@ -10,6 +10,8 @@ import ErrorMsg from '../components/error_message/error_message';
 import SideNavBar from '../components/side_nav_bar/side_nav_bar';
 import './dashboard.less';
 import FolderImage from '../../assets/images/group-17.png';
+import MoreImage from '../../assets/images/more.png';
+
 
 
 
@@ -95,27 +97,45 @@ class DashBoard extends React.Component {
                   
    }
 
+   onClickmoremenu=(e)=>{
+     e.preventDefault();
+     //write something here
+     alert('menu');
+     e.stopPropagation();
+     
+   }
+   onClickshare=(e)=>{
+    e.preventDefault();
+    //write something here
+    alert('share');
+    e.stopPropagation();
+    
+   }
+
   render() {
     return (
       <div>
       <Header></Header>
       <SideNavBar></SideNavBar>
+      {/* <div className="divider-top"></div> */}
         <div className="content-cont">
+        <div className="divider-vertical"></div>
+        <div style={{marginTop:'18px',marginLeft:'12px',padding:'20px'}}>Asset Box</div>
           <div className="folder-path">
             {this.state.path.map((item,index) =>  {  
                   return(
                         <div className="path-cont" onClick={()=> this.folderPath(item,index)}>                        
-                          <div className="path-name">{item.folderName}/</div>
+                          <div className="path-name">{item.folderName} > </div>
                         </div>
                   )}
                 )}
           </div>
           <div className="folder-wrapper">
-              {this.state.folderCreate  &&             
+              {this.state.folderCreate  &&   
                       <div className="add-folder-cont">
                         <img src={FolderImage} className="folder-image"/>
                         <div className="folder-input"><input type="text" value={this.state.folderName} onChange={this.inputChange.bind(self, 'folderName')} onKeyPress={(event)=> {this.addFolder(event)}}/></div>
-                      </div>              
+                      </div>  
               }
               <div className="project-list">
                 {this.state.folderArr.map((item,index) =>  {  
@@ -123,12 +143,18 @@ class DashBoard extends React.Component {
                         <div className="folder-cont" onClick={()=> this.folderDetail(item)}>
                         <img src={FolderImage} className="folder-image"/>
                         <div className="folder-name">{item.directoryName}</div>
+                        <img src={MoreImage} onClick={this.onClickmoremenu.bind(this)} className="more"/>
+                        <input type="button" onClick={this.onClickshare.bind(this)} className="Rectangle-share" value="Share"/>
+                        <span className="project-size">123mb</span>
                         </div>
                   )}
-                )}
+                )                
+                }
           </div>
           </div>
-          <div className="create-folder-btn" onClick={()=> this.showCreateFolder()}>Create Folder</div>
+          {/* <div className="divider-top"></div> */}
+          {/* <div className="create-folder-btn" onClick={()=> this.showCreateFolder()}>Create Folder</div> */}
+          <div className="create-folder-btn" onClick={()=> this.showCreateFolder()}>Create Project</div>
         </div>
       </div>
     );
