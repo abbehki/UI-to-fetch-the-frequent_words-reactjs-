@@ -59,7 +59,7 @@ class Fileupload extends React.Component {
             {this.state.filecontent.length!=0  && this.state.filecontent.map((nameset,index)=>
                { return  <div key={index}>{nameset.name}</div>
                     })
-                    }
+              }
         </div>
     </div>
     );

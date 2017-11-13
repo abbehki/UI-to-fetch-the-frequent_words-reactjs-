@@ -1,10 +1,41 @@
-
-    .content-cont{
+   .content-cont{
         margin-left:200px;   
-        margin-top: -18px;
+        width: 60%;
+    }
+    .top-div{
+        border-bottom:solid 1px #e8e8e8;
+        margin-top: 6%;
+        padding-left: 25px;
+        padding-top:15px;
+        .list_deselected {
+            float: right;
+            margin-top: 30px;
+            margin-right: 17px;
+            margin-bottom: 10px;
+            width: 14px;
+            height: 14px;
+            object-fit: contain;
+          }
+          .Grid_deselected {
+            float: right;
+            margin-top: 30px;
+            margin-right: 32px;
+            margin-bottom: 10px;
+            width: 14px;
+            height: 14px;
+            object-fit: contain;
+          }
+    }
+    .side-nav-right{
+        position :fixed;
+        border-left:solid 1px #e8e8e8;
+        margin-left: 72%;
+        top: 0;
+        height: 100%;
+        z-index: -2;
     }
     .folder-path{ 
-        display:flex;        
+        display:none; 
         white-space:nowrap;  
         cursor: pointer;
         margin: 20px;
@@ -19,6 +50,7 @@
 
     .folder-wrapper{
         display:inline-block;
+        // width: 113.6%;
     }
     .divider-horizontal{
         position: absolute;        
@@ -33,14 +65,11 @@
         border: solid 1px #e8e8e8;
         margin-left: 1223px;
     }
-
-    .project-list{         
         .folder-cont{
             cursor: pointer;
-            width:1224px;
+            width:auto;
             padding: 10px;
-            border: 1px solid #e4e4e4;
-            box-sizing: border-box;
+            border-bottom: 1px solid #e4e4e4;
         }
         .folder-number{
             margin: 10px;               
@@ -74,11 +103,12 @@
             margin-right: 7px;
             margin-top: 15px;
         }
-    }
+    
     .create-folder-btn{
-    //   position: fixed;
+       position: fixed;
        width: 547px;
        height: 30px;
+       bottom:12px;
        border-radius: 2px;
        background-color: #77c87f;
        font-family: SFUIText;
@@ -86,7 +116,7 @@
        font-weight: 600;
        text-align: center;
        color: #ffffff;
-       margin-left: 22%;
+       margin-left: 30%;
        line-height: 30px;
     }
 
@@ -112,4 +142,59 @@
     }
     .add-folder-cont{
         margin: 50px 40px 0px 40px;
+
+    }
+    .container-boundary{
+        display: flex;
+        flex-direction: column;
+        width: 120%;
+    }
+    @media (max-width:760px) and (min-width:500px) {
+        .top-div{
+            margin-top:20%;
+        }
+        .side-nav-right{
+            margin-left:50%;
+        }
+        .container-boundary{
+            width:83%;
+        }
+        .create-folder-btn{
+          width: 300px;
+          height: 30px;
+          margin-left: 33.4%
+        }
+      }
+      @media (max-width:1024px) and (min-width:761px) {
+        .top-div{
+            margin-top:20%;
+        }
+        .side-nav-right{
+            margin-left:50%;
+        }
+        .container-boundary{
+            width:83%;
+        }
+        .create-folder-btn{
+          width: 300px;
+          height: 30px;
+          margin-left: 33.4%
+        }
+    }
+    @media (max-width:1424px) and (min-width:1024px) {
+        .top-div{
+            margin-top:10%;
+        }
+        .side-nav-right{
+            margin-left:60%;
+        }
+        .container-boundary{
+            width:100%;
+            position: initia
+        }
+        .create-folder-btn{
+          width: 300px;
+          height: 30px;
+          margin-left: 33.4%
+        }
     }

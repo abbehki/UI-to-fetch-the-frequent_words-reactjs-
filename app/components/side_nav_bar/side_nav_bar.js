@@ -10,8 +10,9 @@ class SideNavBar extends React.Component{
     render(){
         return(
              <div className="side-nav-cont">
-                          <input type="text" placeholder="search" className="search" />                                   
-                </div>          
+                   <input type="text" placeholder="search" className="search" />  
+                  
+             </div>     
         );
     }
 }
