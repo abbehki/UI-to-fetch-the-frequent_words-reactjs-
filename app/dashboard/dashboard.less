@@ -35,22 +35,24 @@
         z-index: -2;
     }
     .folder-path{ 
-        display:none; 
-        white-space:nowrap;  
+        display:flex; 
         cursor: pointer;
-        margin: 20px;
-        width: 205px;
-        height: 18px;
         font-family: SFUIText;
         font-size: 15px;
         text-align: left;
         color: #3d3d3d;
-        padding: 15px 0 0 0;       
     }
 
     .folder-wrapper{
         display:inline-block;
         // width: 113.6%;
+    }
+    .folder-wrapper-grid{
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        z-index: -3;
+        // justify-content: space-evenly;
     }
     .divider-horizontal{
         position: absolute;        
@@ -118,7 +120,135 @@
        color: #ffffff;
        margin-left: 30%;
        line-height: 30px;
+       z-index: 2;
     }
+    .folder-cont-grid{  
+        margin-left:80px;
+        position:relative;
+        margin-right: 32px;
+        margin-top: 30px;
+        width: 146px;
+        height: 182px;
+        border-radius: 2px;
+        border: solid 1px #e4e4e4;
+        .folder-bottom{
+            position:absolute;
+            bottom: 0;
+            width: 100%;
+            height: 28px;
+            border-radius: 3px;
+            background-color: #f9f9f9;
+            padding:5px 10px;
+            .folder-name{
+                width: 86px;
+                height: 15px;
+                font-family: SFUIText;
+                font-size: 13px;
+                font-weight: 300;
+                text-align: center;
+                margin-top:auto;
+                color: #0c0c0c;           
+             }
+             .folder-more{
+                 margin-top:3px; 
+                 float: right;
+             }
+        }
+        .folder-grid-image{
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 40%;
+        }
+    }
+ 
+    .popup {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);;
+        .popup_inner {
+            position: absolute;
+            z-index: 30;            
+            width: 567px;
+            height: 565px;
+            left: 25%;
+            right: 25%;
+            top: 25%;
+            bottom: 25%;
+            margin: auto;
+            background: white;
+            border-radius: 4px;
+            box-shadow: 21px 21px 40px 0 rgba(0, 0, 0, 0.21);
+            .button-popup-close{
+                width: 1.3px;
+                height: 13px;
+                transform: rotate(-90deg);
+                background-color: #656565;
+                cursor: pointer;
+                float: right;
+            }
+            .popup-header{
+                display: block;
+                margin-bottom: auto;
+                padding: 22px 22px 22px 22px;
+                border-bottom: solid 1px #b3b3b3;
+                font-family: SFUIText;
+                font-size: 15px;
+                text-align: left;
+                color: #2b2b2b;
+            }
+            .Group-15 {
+                width: 13px;
+                height: 13px;
+                object-fit: contain;
+                float: right;
+                cursor: pointer;
+              }
+              .upload-button{
+                display: block;
+                margin: 0 auto;
+                margin-top: 270px;
+                width: 200px;
+                height: 40px;
+                border-radius: 2px;
+                background-color: #77c87f;
+                color: white; 
+                cursor: pointer; 
+                &:hover {
+                    /* some rules */
+                    box-shadow: 1px 2px 3px #888888;
+                  }
+              }
+          }
+      }
+      .form-folder{
+          padding: 22px 20% 8px 35%;
+          .input-folder{
+            border: 0;
+            outline: 0;
+            background: transparent;
+            border-bottom:solid 1px #dcdcdc;
+            font-family: SFUIText;
+            font-size: 17px;
+            text-align: left;
+            color: #4a4a4a;
+            margin-bottom: 60px;
+            
+           }
+           .text-clear{
+               cursor: pointer;
+               height: 10px;
+               width: 7px;
+           }
+           .select-platform{
+            font-family: SFUIText;
+            font-size: 18px;
+            text-align: left;
+            color: #4a4a4a;
+           }
+      }
+   
 
     .folder-image{
         display: inline-block;
@@ -149,6 +279,83 @@
         flex-direction: column;
         width: 120%;
     }
+
+     /*check box flex container*/
+     .contain{
+        display:flex;
+        justify-content:space-between;
+    }
+    /* The container */
+    .container {
+        display: block;
+        position: relative;
+        padding-left: 35px;
+        margin-bottom: 12px;
+        cursor: pointer;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        font-family: SFUIText;
+        font-size: 17px;
+        color: #717171;
+        
+    }
+    
+    /* Hide the browser's default checkbox */
+    .container input {
+        position: absolute;
+        opacity: 0;
+    }
+    
+    /* Create a custom checkbox */
+    .checkmark {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 20px;
+        width: 20px;
+        background-color: transparent;
+        border-radius: 2px;
+        border: solid 1px #77c87f;
+        }
+    
+    /* On mouse-over, add a grey background color */
+    .container:hover input ~ .checkmark {
+        background-color: #ccc;
+    }
+    
+    /* When the checkbox is checked, add a blue background */
+    .container input:checked ~ .checkmark {
+        background-color: #77c87f;
+    }
+    
+    /* Create the checkmark/indicator (hidden when not checked) */
+    .checkmark:after {
+        content: "";
+        position: absolute;
+        display: none;
+    }
+    
+    /* Show the checkmark when checked */
+    .container input:checked ~ .checkmark:after {
+        display: block;
+    }
+    
+    /* Style the checkmark/indicator */
+    .container .checkmark:after {
+        left: 6px;
+        top: 2px;
+        width: 6px;
+        height: 12px;
+        border: solid white;
+        border-width: 0 2px 3px 0;
+        -webkit-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+        transform: rotate(45deg);
+    }
+    
+
     @media (max-width:760px) and (min-width:500px) {
         .top-div{
             margin-top:20%;
@@ -160,6 +367,7 @@
             width:83%;
         }
         .create-folder-btn{
+          cursor: pointer;
           width: 300px;
           height: 30px;
           margin-left: 33.4%
