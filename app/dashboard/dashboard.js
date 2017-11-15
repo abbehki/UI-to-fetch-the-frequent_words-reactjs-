@@ -6,6 +6,7 @@ import injectSheet from 'react-jss';
 import CONSTANT from '../common_constants';
 import { GoogleLogin } from 'react-google-login-component';
 import Header from '../components/header/header';
+import PopUp from '../components/popup/popup';
 import ErrorMsg from '../components/error_message/error_message';
 import SideNavBar from '../components/side_nav_bar/side_nav_bar';
 import './dashboard.less';
@@ -17,6 +18,8 @@ import Deselected_ListView from '../../assets/images/list-deselected.svg';
 import Selected_GridView from '../../assets/images/grid-selected.svg';
 import Foldergrid from  '../../assets/images/folder-grid.svg';
 import Closebutton from  '../../assets/images/group-15.svg';
+import UploadImage from  '../../assets/images/upload-file.svg';
+
 
 
 
@@ -30,9 +33,11 @@ class DashBoard extends React.Component {
        parentFolder:"",
        folderCreate:false,
        path:[],
-       showPopup:false,
+       showCreatefolderPopup:false,
        showgridicon:false,
-       foldername:''
+       foldername:'',
+       showUploadfilesPopup:false,
+       showIndividual:true
     }
   }
  inputChange = (name, event)=>{
@@ -92,8 +97,15 @@ class DashBoard extends React.Component {
   } 
 
   componentWillReceiveProps(newProps) {
-
+    console.log(newProps.dashboard.changebool_cancel);
       this.setState({folderArr:newProps.dashboard.folderArray.folderList});
+
+      if(!newProps.dashboard.changebool_cancel){
+        this.setState({
+          showCreatefolderPopup:newProps.dashboard.changebool_cancel,
+          showUploadfilesPopup:newProps.dashboard.changebool_cancel
+        });
+      }  
 
       if(newProps.dashboard.folderDetail){
         this.setState({folderArr:newProps.dashboard.folderDetail.folderList,});
@@ -166,16 +178,18 @@ class DashBoard extends React.Component {
      );
    }
 
-   clearinput=(e)=>{
-        this.setState({
-          foldername:''
-        })
-   }
-
-   togglePopup() {
-    this.setState({
-      showPopup: !this.state.showPopup,
+   togglePopup(tags) {
+     console.log(tags);
+     if(tags=="create_folder")
+   { this.setState({
+      showCreatefolderPopup: !this.state.showCreatefolderPopup,
     });
+  }
+  else if(tags=="upload_file"){
+    this.setState({
+      showUploadfilesPopup: !this.state.showUploadfilesPopup,
+    });
+  }
   }
 
    showgridview=()=>{
@@ -189,64 +203,60 @@ class DashBoard extends React.Component {
     })
    }
 
+
   render() {
     return (
       <div>
       <Header></Header>
       <SideNavBar></SideNavBar>
-      { this.state.showPopup ? 
-            <div className='popup'>
-              <div className='popup_inner'>
-                  <div className="popup-header">
-                      <span>Create Folder</span>
-                      <img onClick={this.togglePopup.bind(this)}  src={Closebutton} className="Group-15"/>
-                  </div>  
-                  <div className="form-folder"><input type="text" value={this.state.foldername} onChange={this.onchangecomment} className="input-folder" placeholder="Foldername" ></input>
-                  <img onClick={this.clearinput.bind(this)} src={Closebutton} className="text-clear"/>
-                  <div className="select-platform">Select Platform</div>
-                  <div class="contain">
-                      <label class="container">ios
-                        <input type="checkbox"/>
-                        <span class="checkmark"></span>
-                      </label>
-                      <label class="container">Andoird 
-                        <input  type="checkbox"/>
-                        <span class="checkmark"></span>
-                      </label>
-                      <label class="container">Web
-                        <input type="checkbox"/>
-                        <span class="checkmark"></span>
-                      </label>
-                  </div>
-                  </div>
-                  <button className="upload-button">Upload</button>
-              </div>
-            </div>
+       {/**
+        * Popups
+        */}
+           { this.state.showCreatefolderPopup ? 
+              <PopUp typepopup={"Create Folder"}/>                                                   
               : null
             }
-      <div className="create-folder-btn" onClick={this.togglePopup.bind(this)}>Create Project</div>
+            { this.state.showUploadfilesPopup ? 
+               <PopUp typepopup={"Upload File"}/>                      
+              : null
+            }
+        {/**
+        * Button for input
+        */}
+      <div className="create-folder-btn" onClick={this.togglePopup.bind(this,"create_folder")}>Create Project</div>
+
+       
         <div className="content-cont">
           <div className="container-boundary">
-          <div className="top-div" >
-            <div className="folder-path">
-            {this.state.path.map((item,index) =>  {  
-                  return(
-                        <div className="path-cont" onClick={()=> this.folderPath(item,index)}>                        
-                          <div className="path-name">{item.folderName} > </div>
-                        </div>
+            <div className="top-div" >
+            {/**
+            * folderpath
+            */}
+              <div className="folder-path">
+              {this.state.path.map((item,index) =>  {  
+                    return(
+                          <div className="path-cont" onClick={()=> this.folderPath(item,index)}>                        
+                            <div className="path-name">{item.folderName} > </div>
+                          </div>
+                    )}
                   )}
-                )}
+              </div>
+              {this.state.showgridicon && <span><img onClick={this.showgridview.bind()} src={Selected_GridView} className="Grid_deselected"/> 
+              <img onClick={this.showlistview.bind()} src={Deselected_ListView} className="list_deselected"/></span>}
+              {!this.state.showgridicon && <span><img onClick={this.showgridview.bind()} src={Deselected_GridView} className="Grid_deselected"/> 
+              <img onClick={this.showlistview.bind()} src={Selected_ListView} className="list_deselected"/></span>}
             </div>
-            {this.state.showgridicon && <span><img onClick={this.showgridview.bind()} src={Selected_GridView} className="Grid_deselected"/> 
-            <img onClick={this.showlistview.bind()} src={Deselected_ListView} className="list_deselected"/></span>}
-            {!this.state.showgridicon && <span><img onClick={this.showgridview.bind()} src={Deselected_GridView} className="Grid_deselected"/> 
-            <img onClick={this.showlistview.bind()} src={Selected_ListView} className="list_deselected"/></span>}
-          </div>
-         
-            <div className="side-nav-right"></div>
+              {/**
+              * Left navigation bar
+              */}
+            <div className="side-nav-right">
+             <div onClick={this.togglePopup.bind(this,"upload_file")}> <img src={UploadImage} className="Upload_file"/> <span className="Upload_File">Upload File</span></div>
+            </div>
+              {/**
+              * LIST OT GRID VIEW
+              */}
            {!this.state.showgridicon && this.listview()}
            {this.state.showgridicon && this.gridview()}
-
             </div>
         </div>
       </div>

@@ -40,9 +40,19 @@ function* getFolderDetail(action) {
   // }
 }
 
+function* changebool(action) {
+  try {
+    yield put({type : "CHANGEBOOL_CANCEL", data : false })
+  
+  } catch (e) {
+    console.error("error",e.message);
+   // yield put({type : "ERROR", error : e.error});
+  }
+}
 
 export {
   createFolder,
   getFolderList,
-  getFolderDetail
+  getFolderDetail,
+  changebool
 };

@@ -1,0 +1,204 @@
+.popup {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);;
+    .popup_inner {
+        position: absolute;
+        z-index: 30;            
+        width: 567px;
+        left: 25%;
+        right: 25%;
+        top: 25%;
+        bottom: 25%;
+        margin: auto;
+        background: white;
+        border-radius: 4px;
+        box-shadow: 21px 21px 40px 0 rgba(0, 0, 0, 0.21);
+        .button-popup-close{
+            width: 1.3px;
+            height: 13px;
+            transform: rotate(-90deg);
+            background-color: #656565;
+            cursor: pointer;
+            float: right;
+        }
+        .popup-header{
+            display: block;
+            margin-bottom: auto;
+            padding: 22px 22px 22px 22px;
+            border-bottom: solid 1px #b3b3b3;
+            font-family: SFUIText;
+            font-size: 15px;
+            text-align: left;
+            color: #2b2b2b;
+        }
+        .Group-15 {
+            width: 13px;
+            height: 13px;
+            object-fit: contain;
+            float: right;
+            cursor: pointer;
+          }
+          .upload-button{
+            display: block;
+            margin: 0 auto;
+            margin-top: 270px;
+            width: 200px;
+            height: 40px;
+            border-radius: 2px;
+            background-color: #77c87f;
+            color: white; 
+            cursor: pointer; 
+            &:hover {
+                /* some rules */
+                box-shadow: 1px 2px 3px #888888;
+              }
+          }
+      }
+  }
+  .content-popup{
+    display: flex;
+    flex-direction: column;
+    .fileContainergroup [type=file] {
+        display: none;  
+     }
+     
+     /* Example stylistic flourishes */
+     
+     .fileContainergroup {
+        margin-bottom: 30px;            
+         width: 116.5px;
+         background: #77c87f;
+         border-radius: 2px;        
+         float: left;
+         padding: .5em;
+         color: white;
+         margin-left: 28px;
+     }
+     
+     .fileContainergroup [type=file] {
+         cursor: pointer;
+     }
+  }
+
+  .form-folder{
+    padding: 31px 99px 5px 99px;
+     .input-folder{
+      border: 0;
+      outline: 0;
+      background: transparent;
+      border-bottom:solid 1px #dcdcdc;
+      font-family: SFUIText;
+      font-size: 15px;
+      text-align: left;
+      color: #4a4a4a;
+      margin-bottom: 60px;
+     }
+     .text-clear{
+         cursor: pointer;
+         height: 10px;
+         width: 7px;
+     }
+     .create-folder-button{
+         cursor: pointer;
+         padding-top: 5px;
+        width: 81px;
+        height: 24px;
+        opacity: 0.4;
+        border-radius: 2px;
+        border: solid 1px #77c87f;
+        float: right;
+        font-size: 10px;
+        font-weight: 500;
+        text-align: center;
+        font-family: SFUIText;
+        &:hover {
+            background-color: #77c87f;
+            color: white;
+         }     
+         span{
+             margin-top:13px; 
+         }          
+    }
+     .select-platform{
+      font-family: SFUIText;
+      font-size: 18px;
+      text-align: left;
+      color: #4a4a4a;
+     }
+}
+      /*check box flex container*/
+    .contain{
+        display:flex;
+        justify-content:space-between;
+    }
+    /* The container */
+    .container {
+        display: block;
+        position: relative;
+        padding-left: 35px;
+        margin-bottom: 12px;
+        cursor: pointer;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        font-family: SFUIText;
+        font-size: 17px;
+        color: #717171;
+        
+    }
+    
+    /* Hide the browser's default checkbox */
+    .container input {
+        position: absolute;
+        opacity: 0;
+    }
+    
+    /* Create a custom checkbox */
+    .checkmark {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 20px;
+        width: 20px;
+        background-color: transparent;
+        border-radius: 2px;
+        border: solid 1px #77c87f;
+        }
+    
+    /* On mouse-over, add a grey background color */
+    .container:hover input ~ .checkmark {
+        background-color: #ccc;
+    }
+    
+    /* When the checkbox is checked, add a blue background */
+    .container input:checked ~ .checkmark {
+        background-color: #77c87f;
+    }
+    
+    /* Create the checkmark/indicator (hidden when not checked) */
+    .checkmark:after {
+        content: "";
+        position: absolute;
+        display: none;
+    }
+    
+    /* Show the checkmark when checked */
+    .container input:checked ~ .checkmark:after {
+        display: block;
+    }
+    
+    /* Style the checkmark/indicator */
+    .container .checkmark:after {
+        left: 6px;
+        top: 2px;
+        width: 6px;
+        height: 12px;
+        border: solid white;
+        border-width: 0 2px 3px 0;
+        -webkit-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+        transform: rotate(45deg);
+    }

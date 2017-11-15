@@ -13,7 +13,9 @@ const actions = {
     },
     FILEUPLOAD:{
         'UPLOAD':'UPLOAD'
+    },
+    POPUP:{
+       'CHANGEBOOL':'CHANGEBOOL'
     }
-
 };
 export default actions;

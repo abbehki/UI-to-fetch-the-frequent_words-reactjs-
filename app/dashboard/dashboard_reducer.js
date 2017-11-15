@@ -17,8 +17,13 @@ function dashboard(state = getSessionData() , action) {
     case 'STORE_FOLDER_DETAIL' :
           tempState.folderDetail = action.data.data;        
           console.log( tempState.folderDetail);
-          return tempState;           
+          return tempState;     
 
+    case 'CHANGEBOOL_CANCEL' :
+          tempState.changebool_cancel = action.data;        
+          console.log(tempState.changebool_cancel);
+          return tempState;  
+           
     case  'ERROR':
           tempState.folderError = action.error;         
           return tempState;
