@@ -12,15 +12,40 @@ class Popup extends React.Component {
     super(props);
     this.state = {
         showCreatefolderPopup:false,
-        showgridicon:false,
         showUploadfilesPopup:false,
-        showIndividual:true
+        showIndividual:true,
+
      }
+  }
+
+  addFolder=(event)=>{
+      if(this.state.foldername!=''){
+        let paramObj = {
+          directoryName:this.state.foldername,
+          parentDirectoryId:this.state.parentFolder || ""
+      }
+      const { dispatch } = this.props;
+    dispatch({type : ACTION.DASHBOARD.CREATEFOLDER , data : {paramObj}}); 
+      }   else{
+        alert("Enetr the foldername");
+      } 
+      
+      
+  }
+
+  _handlekeypress=(e)=>{
+    e.preventDefault();
+    if(e.key == "Enter"){
+      alert("enetr is types"+e.target.value);
+      
+    }
+    
   }
 
   clearinput=(e)=>{
     this.setState({
-      foldername:''
+      foldername:'',
+      tags:'',
     })
   } 
 
@@ -29,7 +54,7 @@ class Popup extends React.Component {
           <div>
          <div className="upload-file"><div className="upload-file-button" onClick={this.showcontentpopup.bind(this,"individual")}><span>Individual</span></div><div onClick={this.showcontentpopup.bind(this,"group")} className="upload-file-button"><span>Group</span></div></div>
          <div className="form-folder">
-          {this.state.showIndividual && this.individualcontents()}
+          {this.state.showIndividual && this.individualcontents("single")}
           {!this.state.showIndividual && this.groupcontents()}
          </div> 
          </div>
@@ -40,7 +65,7 @@ class Popup extends React.Component {
         <div>
           <div className="form-folder"><input type="text" value={this.state.foldername} onChange={this.onchangecomment} className="input-folder" placeholder="Foldername" ></input>
                 <img onClick={this.clearinput.bind(this)} src={Closebutton} className="text-clear"/>
-                <div className="create-folder-button"><span>Create Folder</span></div>
+                <div className="create-folder-button" onClick={this.addFolder.bind(this)}><span>Create Folder</span></div>
           </div>
        </div>
     );
@@ -61,24 +86,30 @@ class Popup extends React.Component {
       filecontent:f2
     })
 }
-  individualcontents=()=>{
+  individualcontents=(tags)=>{
+    console.log(tags);
     return(
      <div className="content-popup">
          <label className="fileContainergroup">
-         Select Files 
-         <input id="myfiles"  onChange={this.pullfiles.bind(this)} type="file"></input>
-       </label>
+         <span>Select Files </span>
+            {         
+              tags=="single" && <input id="myfiles"  onChange={this.pullfiles.bind(this)} type="file"></input>
+            }
+            {
+              tags=="multiple" && <input id="myfiles" multiple  onChange={this.pullfiles.bind(this)} type="file"></input>
+            }
+         </label>
        <div className="select-platform">Select Platform</div>
                  <div className="contain">
-                     <label className="container">ios
+                     <label className="container"><span>iOS</span>
                        <input type="checkbox"/>
                        <span className="checkmark"></span>
                      </label>
-                     <label className="container">Andoird 
+                     <label className="container"><span>Andoird </span>
                        <input  type="checkbox"/>
                        <span className="checkmark"></span>
                      </label>
-                     <label className="container">Web
+                     <label className="container"><span>Web</span>
                        <input type="checkbox"/>
                        <span className="checkmark"></span>
                      </label>
@@ -90,10 +121,11 @@ class Popup extends React.Component {
   groupcontents=()=>{
     return(<div>
         {
-            this.individualcontents()
+            this.individualcontents("multiple")
         }
-       <div>Add tags</div>
-      </div>
+       <div className="select-platform" style={{marginBottom:'0px'}}>Add Tags<span>(Minimum 3 Tags)</span></div>
+       <input type="text" value={this.state.tags} onChange={this.onchangecomment} onKeyUp={this._handlekeypress} className="input-tags" placeholder="Type and Enter to Commit Tag" ></input>
+       </div>
     );
   }
   showcontentpopup=(tags)=>{
@@ -110,30 +142,33 @@ class Popup extends React.Component {
  }
 
   togglePopup(tags) {
-    console.log(tags);
-    if(tags=="Create Folder"){ 
-   const{dispatch}=this.props;
-   dispatch({type : ACTION.POPUP.CHANGEBOOL});
-   }
- else if(tags=="Upload File"){
+     console.log(tags);
+      if(tags=="Create Folder"){ 
     const{dispatch}=this.props;
     dispatch({type : ACTION.POPUP.CHANGEBOOL});
- }
- }
+    }
+  else if(tags=="Upload File"){
+      const{dispatch}=this.props;
+      dispatch({type : ACTION.POPUP.CHANGEBOOL});
+     }
+  }
+
   render() {
-    const {typepopup} = this.props;
-    const {showUploadfilesPopup} = this.props;
-    console.log("type of popup",typepopup);
+    const {title} = this.props;
+    const{width_resize}=this.props;
+    const{height_resize}=this.props;
+    const{content}=this.props;
+    console.log("type of popup",title+"->"+content);
     return (
       <div>      
         <div className='popup'>
-            <div className='popup_inner'>
+            <div className='popup_inner' style={{width:width_resize,height:height_resize}}>
                 <div className="popup-header">
-                    <span>{typepopup}</span>
-                    <img onClick={this.togglePopup.bind(this,typepopup)}  src={Closebutton} className="Group-15"/>
+                    <span>{title}</span>
+                    <img onClick={this.togglePopup.bind(this,title)}  src={Closebutton} className="Group-15"/>
                 </div> 
-                {typepopup=="Upload File" && this.Upload_File()} 
-                {typepopup=="Create Folder" && this.Create_Folder()} 
+                {title=="Upload File" && this.Upload_File()} 
+                {title=="Create Folder" && this.Create_Folder(content)} 
             </div>
             </div>        
       </div>

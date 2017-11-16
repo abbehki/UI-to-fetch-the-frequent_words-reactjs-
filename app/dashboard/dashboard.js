@@ -19,6 +19,10 @@ import Selected_GridView from '../../assets/images/grid-selected.svg';
 import Foldergrid from  '../../assets/images/folder-grid.svg';
 import Closebutton from  '../../assets/images/group-15.svg';
 import UploadImage from  '../../assets/images/upload-file.svg';
+import Rename from  '../../assets/images/group-2.svg';
+import Delete from  '../../assets/images/group-7.svg';
+import Download from '../../assets/images/group-8.svg'
+
 
 
 
@@ -26,7 +30,7 @@ import UploadImage from  '../../assets/images/upload-file.svg';
 class DashBoard extends React.Component {
   constructor(props) {
     super(props);
-    this.addFolder = this.addFolder.bind(this);  
+    // this.addFolder = this.addFolder.bind(this);  
     this.state = {
        folderArr :[],
        folderName:"",
@@ -37,7 +41,9 @@ class DashBoard extends React.Component {
        showgridicon:false,
        foldername:'',
        showUploadfilesPopup:false,
-       showIndividual:true
+       showIndividual:true,
+       showsmallpopup:false,
+       index:0
     }
   }
  inputChange = (name, event)=>{
@@ -55,18 +61,17 @@ class DashBoard extends React.Component {
     })
   }
  
-  addFolder(event){
-    console.log(event.keyCode);
-    if(event.which === 13){
-      let paramObj = {
-          directoryName:this.state.folderName,
-          parentDirectoryId:this.state.parentFolder || ""
-      }
-
-      const { dispatch } = this.props;
-    dispatch({type : ACTION.DASHBOARD.CREATEFOLDER , data : {paramObj}}); 
-    }  
-  }
+  // addFolder(event){
+  //   console.log(event.keyCode);
+  //   if(event.which === 13){
+  //     let paramObj = {
+  //         directoryName:this.state.folderName,
+  //         parentDirectoryId:this.state.parentFolder || ""
+  //     }
+  //     const { dispatch } = this.props;
+  //   dispatch({type : ACTION.DASHBOARD.CREATEFOLDER , data : {paramObj}}); 
+  //   }  
+  // }
 
   folderDetail(folderObj){
      this.state.path.push({folderName:folderObj.directoryName,_id:folderObj._id});  
@@ -122,17 +127,29 @@ class DashBoard extends React.Component {
    }
 
    onClickmoremenu=(e)=>{
-     e.preventDefault();
-     //write something here
-     alert('menu');
-     e.stopPropagation();
-     
+     this.setState({
+      showsmallpopup: !this.state.showsmallpopup,
+      index:e,
+    });
    }
    onClickshare=(e)=>{
     e.preventDefault();
-    //write something here
     alert('share');
     e.stopPropagation(); 
+   }
+
+   show_smallpopup=(index)=>{
+     if(index==this.state.index){
+      return(
+        <div  id={index} className="smallpopup">
+          <div className="smallpopup_inner">
+          <div><img src={Rename} className="folder-image"/>Rename</div>
+          <div><img src={Delete} className="folder-image"/>Delete</div>
+          <div><img src={Download} className="folder-image"/>Download</div>
+          </div>
+        </div>
+       );
+     }
    }
 
    listview=()=>{
@@ -146,12 +163,16 @@ class DashBoard extends React.Component {
         }
           {this.state.folderArr.map((item,index) =>  {  
             return(
-                  <div key={index}  className="folder-cont">
+                  <div id={index} key={index}  className="folder-cont">
+                   {this.state.showsmallpopup && 
+                    this.show_smallpopup(index)
+                    }
                     <img onClick={()=> this.folderDetail(item)} src={FolderImage} className="folder-image"/>
                     <div className="folder-name">{item.directoryName}</div>
-                    <img src={MoreImage} onClick={this.onClickmoremenu.bind(this)} className="more"/>
+                    <img src={MoreImage} onClick={this.onClickmoremenu.bind(this,index)} className="more"/>
                     <input type="button" onClick={this.onClickshare.bind(this)} className="Rectangle-share" value="Share"/>
                     <span className="project-size">123mb</span>
+                   
                   </div>
             )}
           )                
@@ -212,12 +233,13 @@ class DashBoard extends React.Component {
        {/**
         * Popups
         */}
+         
            { this.state.showCreatefolderPopup ? 
-              <PopUp typepopup={"Create Folder"}/>                                                   
+              <PopUp title={"Create Folder"} content={this.state.parentFolder} width_resize={'567px'} height_resize={'200px'}/>                                                   
               : null
             }
             { this.state.showUploadfilesPopup ? 
-               <PopUp typepopup={"Upload File"}/>                      
+               <PopUp title={"Upload File"}/>                      
               : null
             }
         {/**
