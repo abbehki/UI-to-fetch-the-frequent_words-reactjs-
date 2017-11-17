@@ -4,6 +4,7 @@ import ACTION from '../../action_constants';
 import { Link } from 'react-router-dom';
 import injectSheet from 'react-jss';
 import Closebutton from  '../../../assets/images/group-15.svg';
+import Confirm from  '../../../assets/images/confirmation.svg';
 import './popup.less';
 
 
@@ -14,32 +15,48 @@ class Popup extends React.Component {
         showCreatefolderPopup:false,
         showUploadfilesPopup:false,
         showIndividual:true,
-
+        filelength:0,
+        tagname:'',
+        tags:[],
+        foldername:'',
+        parentFolder:''
      }
   }
 
-  addFolder=(event)=>{
-      if(this.state.foldername!=''){
+  addFolder=(parentId,event)=>{
+      if(this.state.foldername!="" || event.key=="Enter"){
         let paramObj = {
           directoryName:this.state.foldername,
-          parentDirectoryId:this.state.parentFolder || ""
-      }
-      const { dispatch } = this.props;
-    dispatch({type : ACTION.DASHBOARD.CREATEFOLDER , data : {paramObj}}); 
+          parentDirectoryId:parentId|| ""
+        }
+        const { dispatch } = this.props;
+        dispatch({type : ACTION.DASHBOARD.CREATEFOLDER , data : {paramObj}}); 
       }   else{
-        alert("Enetr the foldername");
-      } 
-      
-      
+        alert("No empty !");
+      }  
   }
 
-  _handlekeypress=(e)=>{
-    e.preventDefault();
-    if(e.key == "Enter"){
-      alert("enetr is types"+e.target.value);
-      
-    }
-    
+      onChangekey=(e,name)=>{
+          if(e=="foldername"){
+            this.setState({
+              foldername:name.target.value
+            })
+          }
+          else if(e=="tagname"){
+                  this.setState({
+                tagname:name.target.value
+                })
+            }
+       }
+
+  _handlekeypress=(event)=>{
+      if(event.key=="Enter"){
+        console.log(event.target.value);
+        this.state.tags.push(event.target.value);
+        this.setState({
+          tagname:''
+        })
+      }          
   }
 
   clearinput=(e)=>{
@@ -60,12 +77,12 @@ class Popup extends React.Component {
          </div>
       );
   }
- Create_Folder=()=>{
+ Create_Folder=(parentId)=>{
     return(
         <div>
-          <div className="form-folder"><input type="text" value={this.state.foldername} onChange={this.onchangecomment} className="input-folder" placeholder="Foldername" ></input>
+          <div className="form-folder"><input type="text" value={this.state.foldername} onChange={this.onChangekey.bind(this,"foldername")} className="input-folder" placeholder="Foldername" ></input>
                 <img onClick={this.clearinput.bind(this)} src={Closebutton} className="text-clear"/>
-                <div className="create-folder-button" onClick={this.addFolder.bind(this)}><span>Create Folder</span></div>
+                <div className="create-folder-button" onKeyPress={this._handlekeypress} onClick={this.addFolder.bind(this,parentId)}><span>Create Folder</span></div>
           </div>
        </div>
     );
@@ -82,21 +99,23 @@ class Popup extends React.Component {
       //upload in s3
       
     }
-    this.setState({
-      filecontent:f2
-    })
-}
+        this.setState({
+          filecontent:f2,
+          filelength:fl
+        })
+    }
+
   individualcontents=(tags)=>{
-    console.log(tags);
     return(
      <div className="content-popup">
          <label className="fileContainergroup">
-         <span>Select Files </span>
+        <span>Select Files </span>
+
             {         
               tags=="single" && <input id="myfiles"  onChange={this.pullfiles.bind(this)} type="file"></input>
             }
             {
-              tags=="multiple" && <input id="myfiles" multiple  onChange={this.pullfiles.bind(this)} type="file"></input>
+              tags=="multiple" && <div> <div className="filelength">{this.state.filelength} files are selected</div> <input id="myfiles" multiple  onChange={this.pullfiles.bind(this)} type="file"></input></div>
             }
          </label>
        <div className="select-platform">Select Platform</div>
@@ -124,10 +143,20 @@ class Popup extends React.Component {
             this.individualcontents("multiple")
         }
        <div className="select-platform" style={{marginBottom:'0px'}}>Add Tags<span>(Minimum 3 Tags)</span></div>
-       <input type="text" value={this.state.tags} onChange={this.onchangecomment} onKeyUp={this._handlekeypress} className="input-tags" placeholder="Type and Enter to Commit Tag" ></input>
+       <input type="text" value={this.state.tagname}  onChange={this.onChangekey.bind(this,"tagname")} onKeyUp={this._handlekeypress.bind(this)} className="input-tags" placeholder="Type and Enter to Commit Tag" ></input>
+       <div className="tags">
+       { 
+          this.state.tags.map((tag,index)=>(
+            <div key={index} className="tags-names">
+              <span>{tag}</span>
+              
+            </div>
+    ))}
+          </div>
        </div>
     );
   }
+
   showcontentpopup=(tags)=>{
     if(tags=="individual"){
       this.setState({
@@ -158,26 +187,43 @@ class Popup extends React.Component {
     const{width_resize}=this.props;
     const{height_resize}=this.props;
     const{content}=this.props;
-    console.log("type of popup",title+"->"+content);
+    console.log("type of popup",title+"--->"+content);
     return (
-      <div>      
-        <div className='popup'>
-            <div className='popup_inner' style={{width:width_resize,height:height_resize}}>
-                <div className="popup-header">
-                    <span>{title}</span>
-                    <img onClick={this.togglePopup.bind(this,title)}  src={Closebutton} className="Group-15"/>
-                </div> 
-                {title=="Upload File" && this.Upload_File()} 
-                {title=="Create Folder" && this.Create_Folder(content)} 
-            </div>
-            </div>        
+      
+      <div>  
+        { title!="Success" &&
+           <div className='popup'>
+           <div className='popup_inner' style={{width:width_resize,height:height_resize}}>
+               <div className="popup-header">
+                   <span>{title}</span>
+                   <img onClick={this.togglePopup.bind(this,title)}  src={Closebutton} className="Group-15"/>
+               </div> 
+               {title=="Upload File" && this.Upload_File()} 
+               {title=="Create Folder" && this.Create_Folder(content)} 
+           </div>
+           </div>
+        }   
+        {
+          title=="Success" &&
+          <div className="successmessage">
+             <img src={Confirm} className="successimage"/>
+             <div className="Message-success">Your file Shared Successfully.</div>
+          </div>
+        }        
       </div>
     );
   }
+  componentDidMount(){
+   
+  }
 }
+
+
 const mapStateToProps = (state) => {
   return {
-    about: state.about
+    about: state.about,
+    dashboard: state.dashboard
+    
   };
 };
 export default connect(mapStateToProps)(Popup);

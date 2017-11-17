@@ -24,7 +24,7 @@ class Header extends React.Component{
             <Link className="link-header-animation"   to="/" >Animation</Link>
             <Link className="link-header-video"   to="/" >Video</Link>
             <Link className="link-header-unactive"   to="/" >Fonts</Link>
-            <Link className="link-header-active"     to="/" >Assets File</Link>           
+            <Link className="link-header-active"     to="/dashboard" >Assets File</Link>           
             </div>
             </div> 
         );

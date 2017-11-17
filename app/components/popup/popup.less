@@ -61,10 +61,21 @@
   .content-popup{
     display: flex;
     flex-direction: column;
+    .filelength{
+        margin-top: -12px;
+        margin-left: 90px;
+        width: 100px;
+        height: 10px;
+        font-family: SFUIText;
+        font-size: 8px;
+        font-weight: 50;
+        font-style: italic;
+        text-align: left;
+        color: #4a4a4a;    
+     }
     .fileContainergroup [type=file] {
         display: none;  
-        cursor: pointer;
-        
+        cursor: pointer;     
      }    
      .fileContainergroup {
         margin-bottom: 30px;            
@@ -85,8 +96,9 @@
             color: white;
          } 
      }
-     
+         
   }
+ 
 
   .form-folder{
     padding: 31px 99px 5px 99px;
@@ -102,9 +114,9 @@
       margin-bottom: 60px;
      }
      .input-tags{
-         border:0;
-         width: 100%;
-        outline: 0;
+        margin-bottom: 8px;
+        border:0;
+        width: 100%;
         background: transparent;
         font-family: SFUIText;
         text-align: left;
@@ -161,6 +173,29 @@
         color: #949494;
       }
      }
+     .tags{
+         display: flex;
+         justify-content: flex-start;
+         flex-wrap: wrap;
+        .tags-names{
+            min-width: 75px;
+            height: 20px;
+            border-radius: 16px;
+            background-color: #77c87f;
+            span{
+                margin-right: 32px;
+                width: 31px;    
+                height: 11px;
+                font-family: SFUIText;
+                font-size: 10px;
+                text-align: left;
+                margin-left: 12px;
+                color: #ffffff;
+              
+            }
+         }
+     }
+     
 }
       /*check box flex container*/
     .contain{
@@ -239,4 +274,30 @@
         -webkit-transform: rotate(45deg);
         -ms-transform: rotate(45deg);
         transform: rotate(45deg);
+    }
+
+    .successmessage{
+        position: fixed;
+        top:72px;
+        left: 40%;
+        margin: 0 auto;
+        width: 355px;
+        height: 76px;
+        border-radius: 2px;
+        background-color: #ffffff;
+        box-shadow: 8px 8px 14px 0 rgba(0, 0, 0, 0.12);
+        .successimage{
+            margin-top:10px ;
+            margin-left: 18px;
+        }
+        .Message-success{
+            height: 18px;
+            margin-left: 40px;
+            font-family: SFUIText;
+            font-size: 15px;
+            font-weight: 600;
+            text-align: center;
+            color: #717171;
+            margin-top: -40px;
+        }
     }

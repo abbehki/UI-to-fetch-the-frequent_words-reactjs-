@@ -21,10 +21,8 @@ import Closebutton from  '../../assets/images/group-15.svg';
 import UploadImage from  '../../assets/images/upload-file.svg';
 import Rename from  '../../assets/images/group-2.svg';
 import Delete from  '../../assets/images/group-7.svg';
-import Download from '../../assets/images/group-8.svg'
-
-
-
+import Download from '../../assets/images/group-8.svg';
+import '../common.less'
 
 
 class DashBoard extends React.Component {
@@ -43,14 +41,12 @@ class DashBoard extends React.Component {
        showUploadfilesPopup:false,
        showIndividual:true,
        showsmallpopup:false,
-       index:0
+       index:0,
+       folderOnFocus:null,
+       successMessage:false
     }
   }
- inputChange = (name, event)=>{
-        this.setState({
-            [name]:event.target.value
-        })
-    }
+
   showCreateFolder(){
     this.setState({folderCreate:true}); 
   }
@@ -61,18 +57,6 @@ class DashBoard extends React.Component {
     })
   }
  
-  // addFolder(event){
-  //   console.log(event.keyCode);
-  //   if(event.which === 13){
-  //     let paramObj = {
-  //         directoryName:this.state.folderName,
-  //         parentDirectoryId:this.state.parentFolder || ""
-  //     }
-  //     const { dispatch } = this.props;
-  //   dispatch({type : ACTION.DASHBOARD.CREATEFOLDER , data : {paramObj}}); 
-  //   }  
-  // }
-
   folderDetail(folderObj){
      this.state.path.push({folderName:folderObj.directoryName,_id:folderObj._id});  
      this.setState({parentFolder:folderObj._id}); 
@@ -102,16 +86,27 @@ class DashBoard extends React.Component {
   } 
 
   componentWillReceiveProps(newProps) {
-    console.log(newProps.dashboard.changebool_cancel);
+    // console.log(newProps.dashboard.changebool_cancel);
       this.setState({folderArr:newProps.dashboard.folderArray.folderList});
 
-      if(!newProps.dashboard.changebool_cancel){
+      if(!newProps.dashboard.changebool_cancel || !newProps.dashboard.changestate_smallpopup){
         this.setState({
           showCreatefolderPopup:newProps.dashboard.changebool_cancel,
-          showUploadfilesPopup:newProps.dashboard.changebool_cancel
+          showUploadfilesPopup:newProps.dashboard.changebool_cancel,
+          showsmallpopup:newProps.dashboard.changestate_smallpopup,
         });
       }  
-
+      if(newProps.dashboard.changestate_success){
+        this.setState({
+          successMessage:newProps.dashboard.changestate_success
+        })
+        let self = this;
+        setTimeout(function(){
+          self.setState({
+            successMessage:!newProps.dashboard.changestate_success
+          })
+        },3000)
+      }
       if(newProps.dashboard.folderDetail){
         this.setState({folderArr:newProps.dashboard.folderDetail.folderList,});
       }  
@@ -126,10 +121,12 @@ class DashBoard extends React.Component {
                   
    }
 
-   onClickmoremenu=(e)=>{
+   onClickmoremenu=(e,id)=>{
+     console.log(id)
      this.setState({
       showsmallpopup: !this.state.showsmallpopup,
       index:e,
+      folderOnFocus:id
     });
    }
    onClickshare=(e)=>{
@@ -138,14 +135,19 @@ class DashBoard extends React.Component {
     e.stopPropagation(); 
    }
 
+   onDelete=()=>{
+     const{dispatch}=this.props;
+     dispatch({type : ACTION.DASHBOARD.DELETEFOLDER, data : this.state.folderOnFocus });
+    }
+
    show_smallpopup=(index)=>{
      if(index==this.state.index){
       return(
         <div  id={index} className="smallpopup">
           <div className="smallpopup_inner">
           <div><img src={Rename} className="folder-image"/>Rename</div>
-          <div><img src={Delete} className="folder-image"/>Delete</div>
-          <div><img src={Download} className="folder-image"/>Download</div>
+          <div><img src={Delete} onClick={this.onDelete} className="folder-image"/>Delete</div>
+          {/* <div><div className="icon-group-8 folder-image"></div>Download</div> */}
           </div>
         </div>
        );
@@ -155,12 +157,6 @@ class DashBoard extends React.Component {
    listview=()=>{
     return(
         <div className="folder-wrapper">
-        {this.state.folderCreate  &&   
-                <div className="add-folder-cont">
-                  <img src={FolderImage} className="folder-image"/>
-                  <div className="folder-input"><input type="text" value={this.state.folderName} onChange={this.inputChange.bind(self, 'folderName')} onKeyPress={(event)=> {this.addFolder(event)}}/></div>
-                </div>  
-        }
           {this.state.folderArr.map((item,index) =>  {  
             return(
                   <div id={index} key={index}  className="folder-cont">
@@ -169,10 +165,9 @@ class DashBoard extends React.Component {
                     }
                     <img onClick={()=> this.folderDetail(item)} src={FolderImage} className="folder-image"/>
                     <div className="folder-name">{item.directoryName}</div>
-                    <img src={MoreImage} onClick={this.onClickmoremenu.bind(this,index)} className="more"/>
+                    <img src={MoreImage} onClick={this.onClickmoremenu.bind(this,index,item._id)} className="more"/>
                     <input type="button" onClick={this.onClickshare.bind(this)} className="Rectangle-share" value="Share"/>
                     <span className="project-size">123mb</span>
-                   
                   </div>
             )}
           )                
@@ -240,6 +235,10 @@ class DashBoard extends React.Component {
             }
             { this.state.showUploadfilesPopup ? 
                <PopUp title={"Upload File"}/>                      
+              : null
+            }
+             { this.state.successMessage ? 
+               <PopUp title={"Success"}/>                      
               : null
             }
         {/**

@@ -23,6 +23,20 @@ function dashboard(state = getSessionData() , action) {
           tempState.changebool_cancel = action.data;        
           console.log(tempState.changebool_cancel);
           return tempState;  
+
+    case 'DELETE_SHOW' :
+          tempState.delete_folder = action.data;
+          tempState.changestate_smallpopup=false;             
+          tempState.changestate_success=true;  
+          console.log(tempState.delete_folder);
+          return tempState;  
+           
+
+    case 'DELETE_NOSHOW' :
+          tempState.delete_folder = action.data;
+          tempState.changestate_smallpopup=false;   
+          tempState.changestate_success=false;  
+          return tempState;  
            
     case  'ERROR':
           tempState.folderError = action.error;         

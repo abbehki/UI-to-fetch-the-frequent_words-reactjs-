@@ -1,6 +1,6 @@
 import { delay } from 'redux-saga';
 import { call,put, takeEvery,select} from 'redux-saga/effects';
-import {PostDataWithOutToken,postDataWithToken,getDataWithToken} from '../util/ajax';
+import {PostDataWithOutToken,postDataWithToken,getDataWithToken,PatchDataWithToken} from '../util/ajax';
 import API from '../api_config';
 import { browserHistory } from 'react-router';
 import ACTION from '../action_constants';
@@ -21,14 +21,16 @@ function* createFolder(action) {
 }
 
 function* getFolderList(action) {
-  try {   
+  try { 
     const folderListData = yield call(getDataWithToken, API.getfolderList , action.data.params);
-    yield put({type : "STORE_FOLDER_LIST", data : folderListData });     
+    yield put({type : "STORE_FOLDER_LIST", data : folderListData });  
+       
    
   } catch (e) {
     yield put({type : "ERROR", error : e.error});
   }
-}
+}        
+
 
 function* getFolderDetail(action) {
   // try {   
@@ -49,10 +51,23 @@ function* changebool(action) {
    // yield put({type : "ERROR", error : e.error});
   }
 }
+function* deletefolder(action) {
+  try {
+    console.log(action.data);
+    const deletefolder = yield call(PatchDataWithToken, API.deletefolder,action.data);
+     yield put({type : "DELETE_SHOW", data : deletefolders });
+  } catch (e) {
+    console.error("error",e.message);
+   // yield put({type : "ERROR", error : e.error});
+  }finally{
+   
+  }
+}
 
 export {
   createFolder,
   getFolderList,
   getFolderDetail,
-  changebool
+  changebool,
+  deletefolder
 };

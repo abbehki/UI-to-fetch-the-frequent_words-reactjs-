@@ -9,7 +9,8 @@ const actions = {
     DASHBOARD: {
         'CREATEFOLDER':  'CREATEFOLDER'  ,
         'FOLDERLIST':    'FOLDERLIST',
-        'FOLDERDETAIL':  'FOLDERDETAIL'
+        'FOLDERDETAIL':  'FOLDERDETAIL',
+        'DELETEFOLDER':'DELETEFOLDER'
     },
     FILEUPLOAD:{
         'UPLOAD':'UPLOAD'
