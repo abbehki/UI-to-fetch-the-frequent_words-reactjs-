@@ -53,11 +53,12 @@ function* changebool(action) {
 }
 function* deletefolder(action) {
   try {
-    console.log(action.data);
-    const deletefolder = yield call(PatchDataWithToken, API.deletefolder,action.data);
-     yield put({type : "DELETE_SHOW", data : deletefolders });
+    const deletefolder = yield call(PatchDataWithToken, API.deletefolders,action.data);
+     yield put({type : "DELETE_SHOW", data : deletefolder });
+     yield put({type : ACTION.DASHBOARD.FOLDERDETAIL });
+     
   } catch (e) {
-    console.error("error",e.message);
+    console.error("error delete:-",e.message);
    // yield put({type : "ERROR", error : e.error});
   }finally{
    

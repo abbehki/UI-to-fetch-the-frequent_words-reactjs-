@@ -58,7 +58,8 @@ function PatchDataWithToken(url, data) {
     $.ajax({
       url: url,
       type: 'PATCH',
-      data: data,
+      data: JSON.stringify(data),
+      contentType: 'application/json',
       success: (data)=> {
         resolve(data);
       },

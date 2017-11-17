@@ -137,7 +137,7 @@ class DashBoard extends React.Component {
 
    onDelete=()=>{
      const{dispatch}=this.props;
-     dispatch({type : ACTION.DASHBOARD.DELETEFOLDER, data : this.state.folderOnFocus });
+     dispatch({type : ACTION.DASHBOARD.DELETEFOLDER, data :{directoryID :this.state.folderOnFocus} });
     }
 
    show_smallpopup=(index)=>{
