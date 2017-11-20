@@ -7,7 +7,7 @@ import CONSTANT from '../common_constants';
 import { GoogleLogin } from 'react-google-login-component';
 import ErrorMsg from '../components/error_message/error_message';
 import './auth.less';
-
+import Logo from '../../assets/images/logo@2x.png';
 
 
 
@@ -15,6 +15,7 @@ class Auth extends React.Component {
   constructor(props) {
     super(props);
    // this.clientID = CONSTANT.CLIENT_ID;
+
   }
 
   
@@ -23,7 +24,6 @@ class Auth extends React.Component {
    const emailId = googleUser.getBasicProfile().getEmail();
    const name = googleUser.getBasicProfile().getGivenName();
    console.log(id_token);
-
    const paramObj = {
                       googleToken : id_token,
                       email : emailId                  
@@ -34,15 +34,26 @@ class Auth extends React.Component {
  }
 
   render() {
+    const style={
+      backgroundImage:'black',
+      height:'105px',
+      width:'105px',
+      display:'block',
+      marginLeft: 'auto',
+      marginRight:'auto',
+      marginTop:'382px',
+      marginBottom:'27px'
+    }
     return (
-      <div className="auth-container">       
-        <div className="logo">Asset Managment</div>       
-            <div className = "google-login-btn">
+      <div className="auth-container"> 
+        <img src="" style={style}/>      
+        <img src={Logo} className="logo"/> 
+        <div className = "google-login-btn">
                 <GoogleLogin socialId={this.clientID}
-                             scope="profile"
+                             scope="email"
                              className="google-btn"
                              responseHandler={this.responseGoogle}
-                             buttonText="Google Login"/>
+                             />
             
             </div>   
            {this.props.auth.authError && <ErrorMsg errorMsg={this.props.auth.authError}></ErrorMsg>}        

@@ -9,8 +9,14 @@ const actions = {
     DASHBOARD: {
         'CREATEFOLDER':  'CREATEFOLDER'  ,
         'FOLDERLIST':    'FOLDERLIST',
-        'FOLDERDETAIL':  'FOLDERDETAIL'
+        'FOLDERDETAIL':  'FOLDERDETAIL',
+        'DELETEFOLDER':'DELETEFOLDER'
+    },
+    FILEUPLOAD:{
+        'UPLOAD':'UPLOAD'
+    },
+    POPUP:{
+       'CHANGEBOOL':'CHANGEBOOL'
     }
-
 };
 export default actions;

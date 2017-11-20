@@ -53,8 +53,28 @@ function PostDataWithOutToken(url, data) {
     });
   }); 
 }
+function PatchDataWithToken(url, data) {
+  return new Promise((resolve, reject)=>{
+    $.ajax({
+      url: url,
+      type: 'PATCH',
+      data: JSON.stringify(data),
+      contentType: 'application/json',
+      success: (data)=> {
+        resolve(data);
+      },
+      headers: {       
+        token:common.getSessionToken()
+     },
+      error: (error)=> {
+        reject(error);
+      }
+    });
+  }); 
+}
 export {
   getDataWithToken,
   postDataWithToken,
-  PostDataWithOutToken
+  PostDataWithOutToken,
+  PatchDataWithToken
 };
