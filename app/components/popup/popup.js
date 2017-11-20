@@ -207,7 +207,7 @@ class Popup extends React.Component {
           title=="Success" &&
           <div className="successmessage">
              <img src={Confirm} className="successimage"/>
-             <div className="Message-success">Your file Shared Successfully.</div>
+             <div className="Message-success">{content}</div>
           </div>
         }        
       </div>

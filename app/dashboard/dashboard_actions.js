@@ -13,6 +13,7 @@ import history from '../history';
 function* createFolder(action) {
   try {   
     const folderData = yield call(postDataWithToken, API.folderCreate , action.data.paramObj);
+    console.log(folderData);
     yield put({type : "STORE_FOLDER_DETAILS", data : folderData });     
    
   } catch (e) {
@@ -23,6 +24,7 @@ function* createFolder(action) {
 function* getFolderList(action) {
   try { 
     const folderListData = yield call(getDataWithToken, API.getfolderList , action.data.params);
+    console.log("folderlist we have:-",folderListData)
     yield put({type : "STORE_FOLDER_LIST", data : folderListData });  
        
    
@@ -33,19 +35,19 @@ function* getFolderList(action) {
 
 
 function* getFolderDetail(action) {
-  // try {   
+  try {   
     const folderDetailData = yield call(getDataWithToken, API.getfolderList +"?parentId="+action.data);
     yield put({type : "STORE_FOLDER_DETAIL", data : folderDetailData });     
    
-  // } catch (e) {
-  //   yield put({type : "ERROR", error : e.error});
-  // }
+  } catch (e) {
+    yield put({type : "ERROR", error : e.error});
+  }
 }
 
 function* changebool(action) {
   try {
     yield put({type : "CHANGEBOOL_CANCEL", data : false })
-  
+    
   } catch (e) {
     console.error("error",e.message);
    // yield put({type : "ERROR", error : e.error});
@@ -55,7 +57,9 @@ function* deletefolder(action) {
   try {
     const deletefolder = yield call(PatchDataWithToken, API.deletefolders,action.data);
      yield put({type : "DELETE_SHOW", data : deletefolder });
-     yield put({type : ACTION.DASHBOARD.FOLDERDETAIL });
+     yield put({type : ACTION.DASHBOARD.FOLDERLIST,data : {}});
+     
+     
      
   } catch (e) {
     console.error("error delete:-",e.message);

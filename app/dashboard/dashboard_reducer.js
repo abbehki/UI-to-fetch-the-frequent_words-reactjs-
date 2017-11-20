@@ -6,17 +6,17 @@ function dashboard(state = getSessionData() , action) {
   switch (action.type) {
     case 'STORE_FOLDER_DETAILS' :
           tempState.folderData = action.data.data;        
-          console.log( tempState.folderData);
+          console.log( "Folderdetails:-",tempState.folderData);
           return tempState;
           
     case 'STORE_FOLDER_LIST' :
           tempState.folderArray = action.data.data;        
-          console.log( tempState.folderArray);
+          console.log( "Folderarray:-",tempState.folderArray);
           return tempState; 
 
     case 'STORE_FOLDER_DETAIL' :
           tempState.folderDetail = action.data.data;        
-          console.log( tempState.folderDetail);
+          console.log( "Folderdetail:-",tempState.folderDetail);
           return tempState;     
 
     case 'CHANGEBOOL_CANCEL' :
@@ -31,6 +31,9 @@ function dashboard(state = getSessionData() , action) {
           console.log(tempState.delete_folder);
           return tempState;  
            
+    case 'CLOSE_CREATEFOLDER' :
+          tempState.folderData=false;             
+          return tempState; 
 
     case 'DELETE_NOSHOW' :
           tempState.delete_folder = action.data;

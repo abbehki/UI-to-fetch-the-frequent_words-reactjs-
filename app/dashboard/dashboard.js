@@ -34,7 +34,7 @@ class DashBoard extends React.Component {
        folderName:"",
        parentFolder:"",
        folderCreate:false,
-       path:[],
+       path:[{folderName:"Dashboard",_id:""}],
        showCreatefolderPopup:false,
        showgridicon:false,
        foldername:'',
@@ -74,19 +74,19 @@ class DashBoard extends React.Component {
     }else{
       this.state.path.push({folderName:pathObj.directoryName,_id:pathObj._id});
     }
-
+ 
     const { dispatch } = this.props;
      dispatch({type : ACTION.DASHBOARD.FOLDERDETAIL, data : pathObj._id });
   }
 
   componentDidMount() {
         let params ={};       
-        const { dispatch } = this.props;
+        const { dispatch } = this.props;  
         dispatch({type : ACTION.DASHBOARD.FOLDERLIST, data : params });
   } 
 
   componentWillReceiveProps(newProps) {
-    // console.log(newProps.dashboard.changebool_cancel);
+     
       this.setState({folderArr:newProps.dashboard.folderArray.folderList});
 
       if(!newProps.dashboard.changebool_cancel || !newProps.dashboard.changestate_smallpopup){
@@ -105,18 +105,23 @@ class DashBoard extends React.Component {
           self.setState({
             successMessage:!newProps.dashboard.changestate_success
           })
-        },3000)
+        },3000);
+        const{dispatch}=this.props;
+        dispatch({type :'DELETE_NOSHOW'});
+        
       }
       if(newProps.dashboard.folderDetail){
-        this.setState({folderArr:newProps.dashboard.folderDetail.folderList,});
+        this.setState({folderArr:newProps.dashboard.folderDetail.folderList});    
       }  
-
-      if(newProps.dashboard.folderData){ 
-        let folderArray =[]; 
+ 
+      if(newProps.dashboard.folderData){
+        let folderArray =[];
         let eachFolderData =newProps.dashboard.folderData;
-              this.state.folderArr.push(eachFolderData);
-              this.state.path.push({folderName:eachFolderData.directoryName,_id:eachFolderData._id})
-              this.setState({folderCreate:false,folderName:""});            
+              this.state.folderArr.push(eachFolderData);            
+              this.setState({folderCreate:false,folderName:""});      
+              const{dispatch}=this.props;
+              dispatch({type :'CLOSE_CREATEFOLDER'});
+              
       }
                   
    }
@@ -179,14 +184,17 @@ class DashBoard extends React.Component {
      return (
       <div className="folder-wrapper-grid">
           {this.state.folderArr.map((item,index) =>  {  
-            return(
-                  <div key={index}  className="folder-cont-grid">
-                    <img src={Foldergrid} className="folder-grid-image"/>
-                    <div className="folder-bottom">
-                      <div className="folder-name">{item.directoryName}</div>                   
-                      <img src={MoreImage} className="folder-more"/>
-                    </div>
-                  </div>
+            return(             
+             <div key={index}  className="folder-cont-grid">
+                {this.state.showsmallpopup && 
+              this.show_smallpopup(index)
+              }
+              <img src={Foldergrid} className="folder-grid-image"/>
+              <div className="folder-bottom">
+                <div className="folder-name" >{item.directoryName}</div>                   
+                <img src={MoreImage} className="folder-more" onClick={this.onClickmoremenu.bind(this,index,item._id)}/>
+              </div>
+            </div>
             )}
           )                
           }
@@ -238,7 +246,7 @@ class DashBoard extends React.Component {
               : null
             }
              { this.state.successMessage ? 
-               <PopUp title={"Success"}/>                      
+               <PopUp title={"Success"} content={"Your file deleted Successfully."}/>                      
               : null
             }
         {/**
