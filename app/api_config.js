@@ -1,11 +1,15 @@
 const config = require('../config/config');
 const baseUrl = config.baseUrl;
+const baseUrl2=config.baseUrl2;
 
 const API = {
-  signIn : baseUrl + 'write/signIn',
-  folderCreate : baseUrl + 'write/createDirectory',
-  getfolderList : baseUrl + 'read/getDirectoryContent',
+  signIn : baseUrl2 + 'write/signIn',
+  folderCreate : baseUrl2 + 'write/createDirectory',
+  getfolderList : baseUrl2 + 'read/getDirectoryContent',/* ASter*/ 
+  getfolderList2 : baseUrl2 + 'read/getDirectoryContent',  /*Shaziya*/
+  deletefolders:baseUrl2+'write/archiveDirectory',
   uploadImg : baseUrl + 'write/saveFile',
+
 };
 
 module.exports = API;

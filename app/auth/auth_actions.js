@@ -17,7 +17,8 @@ function* signin(action) {
       history.push('/dashboard');     
    
   } catch (e) {
-    yield put({type : "AUTH_ERROR", error : e.error});
+    console.log("error--->",e.responseJSON.errorMessage)
+    yield put({type : "AUTH_ERROR", data :e.responseJSON.errorMessage});
   }
 }
 
