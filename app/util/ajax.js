@@ -36,6 +36,29 @@ function postDataWithToken(url, data) {
   }) ;
 }
 
+function postMulitipartDataWithToken(url, data) {
+  return new Promise((resolve, reject)=>{
+    $.ajax({
+      url: url,
+      type: 'POST',
+      enctype: "multipart/form-data",
+      contentType: false,
+      data: data,
+      processData: false,
+      data: data,
+      success: (data)=> {
+        resolve(data);
+      },
+      headers: {
+       token:common.getSessionToken()
+      },
+      error: (error)=> {
+        reject(error);
+      }
+    });
+  }) ;
+}
+
 function PostDataWithOutToken(url, data) {
   return new Promise((resolve, reject)=>{
     $.ajax({
@@ -56,5 +79,6 @@ function PostDataWithOutToken(url, data) {
 export {
   getDataWithToken,
   postDataWithToken,
-  PostDataWithOutToken
+  PostDataWithOutToken,
+  postMulitipartDataWithToken
 };

@@ -1,6 +1,6 @@
 import { delay } from 'redux-saga';
 import { call,put, takeEvery,select} from 'redux-saga/effects';
-import {PostDataWithOutToken,postDataWithToken,getDataWithToken} from '../util/ajax';
+import {PostDataWithOutToken,postDataWithToken,getDataWithToken,postMulitipartDataWithToken} from '../util/ajax';
 import API from '../api_config';
 import { browserHistory } from 'react-router';
 import ACTION from '../action_constants';
@@ -30,6 +30,17 @@ function* getFolderList(action) {
   }
 }
 
+function* uploadImg(action) {
+  // try {   
+    const uploadImdData = yield call(postMulitipartDataWithToken, API.uploadImg , action.data);
+    yield put({type : "IMG_DATA", data : uploadImdData });     
+   
+  // } catch (e) {
+  //   yield put({type : "ERROR", error : e.error});
+  // }
+}
+
+
 function* getFolderDetail(action) {
   // try {   
     const folderDetailData = yield call(getDataWithToken, API.getfolderList +"?parentId="+action.data);
@@ -41,4 +52,4 @@ function* getFolderDetail(action) {
 }
 
 
-export {createFolder,getFolderList,getFolderDetail};
+export {createFolder,getFolderList,getFolderDetail,uploadImg};

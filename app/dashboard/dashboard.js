@@ -8,6 +8,8 @@ import { GoogleLogin } from 'react-google-login-component';
 import Header from '../components/header/header';
 import ErrorMsg from '../components/error_message/error_message';
 import SideNavBar from '../components/side_nav_bar/side_nav_bar';
+import Dropzone from 'react-dropzone';
+import axios from 'axios';
 import './dashboard.less';
 
 
@@ -21,7 +23,7 @@ class DashBoard extends React.Component {
        folderName:"",
        parentFolder:"",
        folderCreate:false,
-       path:[]
+       path:[{folderName:"Dashboard",_id:""}]
     }
   }
  inputChange = (name, event)=>{
@@ -75,20 +77,37 @@ class DashBoard extends React.Component {
         const { dispatch } = this.props;
         dispatch({type : ACTION.DASHBOARD.FOLDERLIST, data : params });
   } 
+  getAllFiles(event){
+    let data =[]
+    data = event.target.files[0];
+    var formData = new FormData();
+    
 
+        formData.append("file", data);
+        formData.append("width","45");
+        formData.append("height","55");
+        formData.append("platform","IOS");
+        formData.append("parentDirectoryId","5a0010a497f48387547ff0ef");
+        formData.append("tags",JSON.stringify(["watani","home"]));
+
+        const { dispatch } = this.props;
+        dispatch({type : ACTION.DASHBOARD.UPLOADIMAGE, data : formData });
+        
+
+
+  }
   componentWillReceiveProps(newProps) {
 
       this.setState({folderArr:newProps.dashboard.folderArray.folderList});
 
       if(newProps.dashboard.folderDetail){
-        this.setState({folderArr:newProps.dashboard.folderDetail.folderList,});
+        this.setState({folderArr:newProps.dashboard.folderDetail.folderList});     
       }  
 
       if(newProps.dashboard.folderData){ 
         let folderArray =[]; 
         let eachFolderData =newProps.dashboard.folderData;
-              this.state.folderArr.push(eachFolderData);
-              this.state.path.push({folderName:eachFolderData.directoryName,_id:eachFolderData._id})
+              this.state.folderArr.push(eachFolderData);            
               this.setState({folderCreate:false,folderName:""});            
       }
                   
@@ -128,6 +147,7 @@ class DashBoard extends React.Component {
                   )}
                 )}
           </div>
+                <div><input type="file" multiple onChange={(event)=> this.getAllFiles(event)}/></div> 
           </div>
           <div className="create-folder-btn" onClick={()=> this.showCreateFolder()}>Create Folder</div>
         </div>
