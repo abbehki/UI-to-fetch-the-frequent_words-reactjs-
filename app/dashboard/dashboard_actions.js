@@ -13,7 +13,6 @@ import history from '../history';
 function* createFolder(action) {
   try {   
     const folderData = yield call(postDataWithToken, API.folderCreate , action.data.paramObj);
-    console.log(folderData);
     yield put({type : "STORE_FOLDER_DETAILS", data : folderData });     
    
   } catch (e) {
@@ -50,20 +49,25 @@ function* changebool(action) {
     
   } catch (e) {
     console.error("error",e.message);
-   // yield put({type : "ERROR", error : e.error});
+  }
+}
+function* renamefolder(action) {
+  try {
+    const renamefolder = yield call(PatchDataWithToken, API.renamefolder,action.data);
+    yield put({type : "RENAME", data : renamefolder });    
+    yield put({type : ACTION.DASHBOARD.FOLDERLIST,data : false});        
+  
+   } catch (e) {
+    console.error("error",e.message);
   }
 }
 function* deletefolder(action) {
   try {
     const deletefolder = yield call(PatchDataWithToken, API.deletefolders,action.data);
      yield put({type : "DELETE_SHOW", data : deletefolder });
-     yield put({type : ACTION.DASHBOARD.FOLDERLIST,data : {}});
-     
-     
-     
+     yield put({type : ACTION.DASHBOARD.FOLDERLIST,data : {}});     
   } catch (e) {
     console.error("error delete:-",e.message);
-   // yield put({type : "ERROR", error : e.error});
   }finally{
    
   }
@@ -74,5 +78,6 @@ export {
   getFolderList,
   getFolderDetail,
   changebool,
-  deletefolder
+  deletefolder,
+  renamefolder
 };

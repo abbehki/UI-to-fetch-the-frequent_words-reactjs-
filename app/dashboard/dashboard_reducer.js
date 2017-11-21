@@ -25,10 +25,9 @@ function dashboard(state = getSessionData() , action) {
           return tempState;  
 
     case 'DELETE_SHOW' :
-          tempState.delete_folder = action.data;
+          tempState.response = action.data.data;
           tempState.changestate_smallpopup=false;             
           tempState.changestate_success=true;  
-          console.log(tempState.delete_folder);
           return tempState;  
            
     case 'CLOSE_CREATEFOLDER' :
@@ -41,6 +40,13 @@ function dashboard(state = getSessionData() , action) {
           tempState.changestate_success=false;  
           return tempState;  
            
+    case 'RENAME' :
+          tempState.response = action.data.data;
+          tempState.changestate_success=true;  
+          tempState.rename=false;
+          return tempState;  
+           
+
     case  'ERROR':
           tempState.folderError = action.error;         
           return tempState;

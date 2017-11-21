@@ -7,7 +7,8 @@ const API = {
   folderCreate : baseUrl2 + 'write/createDirectory',
   getfolderList : baseUrl2 + 'read/getDirectoryContent',/* ASter*/ 
   getfolderList2 : baseUrl2 + 'read/getDirectoryContent',  /*Shaziya*/
-  deletefolders:baseUrl2+'write/archiveDirectory'
+  deletefolders:baseUrl2+'write/archiveDirectory',
+  renamefolder:baseUrl2+'write/updateDirectoryName',
 };
 
 module.exports = API;

@@ -36,18 +36,18 @@ class Popup extends React.Component {
       }  
   }
 
-      onChangekey=(e,name)=>{
-          if(e=="foldername"){
-            this.setState({
-              foldername:name.target.value
+  onChangekey=(e,name)=>{
+      if(e=="foldername"){
+        this.setState({
+          foldername:name.target.value
+        })
+      }
+      else if(e=="tagname"){
+              this.setState({
+            tagname:name.target.value
             })
-          }
-          else if(e=="tagname"){
-                  this.setState({
-                tagname:name.target.value
-                })
-            }
-       }
+        }
+    }
 
   _handlekeypress=(event)=>{
       if(event.key=="Enter"){
@@ -74,6 +74,7 @@ class Popup extends React.Component {
           {this.state.showIndividual && this.individualcontents("single")}
           {!this.state.showIndividual && this.groupcontents()}
          </div> 
+         <div className="Uploadfiles"><span>Upload</span></div>
          </div>
       );
   }
@@ -105,6 +106,14 @@ class Popup extends React.Component {
         })
     }
 
+    onClickuploadfile=(tags)=>{
+      if(tags=="single"){
+          console.log(tags);
+      }else{
+        console.log(tags);        
+      }
+    }
+
   individualcontents=(tags)=>{
     return(
      <div className="content-popup">
@@ -133,6 +142,7 @@ class Popup extends React.Component {
                        <span className="checkmark"></span>
                      </label>
                  </div>
+              
       </div>
     );
   }
@@ -148,8 +158,7 @@ class Popup extends React.Component {
        { 
           this.state.tags.map((tag,index)=>(
             <div key={index} className="tags-names">
-              <span>{tag}</span>
-              
+              <span>{tag}</span>  
             </div>
     ))}
           </div>

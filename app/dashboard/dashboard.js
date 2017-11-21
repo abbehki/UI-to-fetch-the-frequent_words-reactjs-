@@ -43,7 +43,10 @@ class DashBoard extends React.Component {
        showsmallpopup:false,
        index:0,
        folderOnFocus:null,
-       successMessage:false
+       successMessage:false,
+       hidetext:"hide",
+       showtext:"folder-name",
+       renameproject:'',
     }
   }
 
@@ -98,7 +101,8 @@ class DashBoard extends React.Component {
       }  
       if(newProps.dashboard.changestate_success){
         this.setState({
-          successMessage:newProps.dashboard.changestate_success
+          successMessage:newProps.dashboard.changestate_success,
+          showsmallpopup:!newProps.dashboard.changestate_success
         })
         let self = this;
         setTimeout(function(){
@@ -108,8 +112,8 @@ class DashBoard extends React.Component {
         },3000);
         const{dispatch}=this.props;
         dispatch({type :'DELETE_NOSHOW'});
-        
       }
+      
       if(newProps.dashboard.folderDetail){
         this.setState({folderArr:newProps.dashboard.folderDetail.folderList});    
       }  
@@ -120,60 +124,85 @@ class DashBoard extends React.Component {
               this.state.folderArr.push(eachFolderData);            
               this.setState({folderCreate:false,folderName:""});      
               const{dispatch}=this.props;
-              dispatch({type :'CLOSE_CREATEFOLDER'});
-              
-      }
-                  
+              dispatch({type :'CLOSE_CREATEFOLDER'});       
+      }  
+         
    }
 
-   onClickmoremenu=(e,id)=>{
-     console.log(id)
-     this.setState({
-      showsmallpopup: !this.state.showsmallpopup,
-      index:e,
-      folderOnFocus:id
-    });
-   }
+
+
    onClickshare=(e)=>{
     e.preventDefault();
     alert('share');
     e.stopPropagation(); 
    }
 
-   onDelete=()=>{
+   onDelete=(e)=>{
      const{dispatch}=this.props;
-     dispatch({type : ACTION.DASHBOARD.DELETEFOLDER, data :{directoryID :this.state.folderOnFocus} });
+     dispatch({type : ACTION.DASHBOARD.DELETEFOLDER, data :{directoryID :e} });
     }
 
-   show_smallpopup=(index)=>{
-     if(index==this.state.index){
-      return(
-        <div  id={index} className="smallpopup">
-          <div className="smallpopup_inner">
-          <div><img src={Rename} className="folder-image"/>Rename</div>
-          <div><img src={Delete} onClick={this.onDelete} className="folder-image"/>Delete</div>
-          {/* <div><div className="icon-group-8 folder-image"></div>Download</div> */}
-          </div>
-        </div>
-       );
-     }
+    togglepopup=(index, e)=>{
+     if(e){e.stopPropagation()}
+      const newState = Object.assign(this.state);
+      newState.folderArr.forEach((item, folderIndex)=> {
+        item.showPopup = false;
+        item.editable  = false;
+        if(index === folderIndex) {
+          item.editable = true;
+        }
+      });
+      this.setState(newState);
+    }
+    onenter=(id,index_value,e)=>{
+          if(e.key=="Enter")
+          { 
+            const{dispatch}=this.props;
+            dispatch({type :ACTION.DASHBOARD.RENAME, data : {newDirectoryName:e.target.value,directoryID:id} });  
+            const newState = Object.assign(this.state);
+            newState.folderArr.forEach((item, folderIndex)=> {
+              item.showPopup = false;
+              item.editable  = false;
+              if(index_value === folderIndex) {
+               item.directoryName=e.target.value;
+              }
+            });
+            this.setState(newState); 
+          }
+  }
+   showActionPopup = (index)=> {
+     const newState = Object.assign(this.state);
+     newState.showsmallpopup=!this.state.showsmallpopup;
+     newState.folderArr.forEach((item, folderIndex)=> {
+       item.showPopup = false;
+       if(index === folderIndex) {
+         item.showPopup = true;   
+       }
+     });
+     this.setState(newState);
    }
-
    listview=()=>{
     return(
         <div className="folder-wrapper">
-          {this.state.folderArr.map((item,index) =>  {  
+          {this.state.folderArr.map((item,index) =>  {
             return(
-                  <div id={index} key={index}  className="folder-cont">
-                   {this.state.showsmallpopup && 
-                    this.show_smallpopup(index)
-                    }
-                    <img onClick={()=> this.folderDetail(item)} src={FolderImage} className="folder-image"/>
-                    <div className="folder-name">{item.directoryName}</div>
-                    <img src={MoreImage} onClick={this.onClickmoremenu.bind(this,index,item._id)} className="more"/>
-                    <input type="button" onClick={this.onClickshare.bind(this)} className="Rectangle-share" value="Share"/>
-                    <span className="project-size">123mb</span>
+              <div key={index}  className="folder-cont">
+                <img onClick={()=> this.folderDetail(item)} src={FolderImage} className="folder-image"/>
+                {!item.editable && <div className={this.state.showtext}>{item.directoryName}</div>}
+                {item.editable && <input defaultValue={item.directoryName} onKeyUp={this.onenter.bind(this,item._id,index)}  type="text" /> }
+                <div className="icon-group-8 more" onClick={this.showActionPopup.bind(this, index)}>
+                {this.state.showsmallpopup && item.showPopup && 
+                <div  id={index} className="smallpopup">
+                  <div className="smallpopup_inner">
+                    <div><img src={Rename} onClick={this.togglepopup.bind(this,index)} className="folder-image"/>Rename</div>
+                    <div><img src={Delete} onClick={this.onDelete.bind(this,item._id)} className="folder-image"/>Delete</div>
                   </div>
+                </div>
+                }
+                </div>
+                <input type="button" onClick={this.onClickshare.bind(this)} className="Rectangle-share" value="Share"/>
+                <span className="project-size">123mb</span>
+              </div>
             )}
           )                
           }
@@ -183,18 +212,25 @@ class DashBoard extends React.Component {
    gridview=()=>{
      return (
       <div className="folder-wrapper-grid">
-          {this.state.folderArr.map((item,index) =>  {  
-            return(             
-             <div key={index}  className="folder-cont-grid">
-                {this.state.showsmallpopup && 
-              this.show_smallpopup(index)
-              }
-              <img src={Foldergrid} className="folder-grid-image"/>
-              <div className="folder-bottom">
-                <div className="folder-name" >{item.directoryName}</div>                   
-                <img src={MoreImage} className="folder-more" onClick={this.onClickmoremenu.bind(this,index,item._id)}/>
+        {this.state.folderArr.map((item,index) =>  {  
+          return(             
+            <div id={index} key={index}  className="folder-cont-grid">
+            <img onClick={()=> this.folderDetail(item)} src={Foldergrid} className="folder-grid-image"/>
+            <div className="folder-bottom">
+             {!item.editable && <div className={this.state.showtext}>{item.directoryName}</div>}
+             {item.editable && <input className="input-grid" defaultValue={item.directoryName} onKeyUp={this.onenter.bind(this,item._id,index)}  type="text" /> }           
+             <div className="icon-group-8 folder-more" onClick={this.showActionPopup.bind(this,index)}>
+             {this.state.showsmallpopup && item.showPopup && 
+             <div  id={index} className="smallpopup">
+              <div className="smallpopup_inner">
+                <div><img src={Rename} onClick={this.togglepopup.bind(this,index)} className="folder-image"/>Rename</div>
+                <div><img src={Delete} onClick={this.onDelete.bind(this,item._id)} className="folder-image"/>Delete</div>
               </div>
-            </div>
+             </div>
+                }
+              </div>
+          </div>
+        </div>
             )}
           )                
           }
@@ -246,15 +282,13 @@ class DashBoard extends React.Component {
               : null
             }
              { this.state.successMessage ? 
-               <PopUp title={"Success"} content={"Your file deleted Successfully."}/>                      
+               <PopUp title={"Success"} content={this.props.dashboard.response}/>                      
               : null
             }
         {/**
         * Button for input
         */}
-      <div className="create-folder-btn" onClick={this.togglePopup.bind(this,"create_folder")}>Create Project</div>
-
-       
+      <div className="create-folder-btn" onClick={this.togglePopup.bind(this,"create_folder")}>Create Project</div>   
         <div className="content-cont">
           <div className="container-boundary">
             <div className="top-div" >
