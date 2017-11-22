@@ -11,6 +11,7 @@ import ErrorMsg from '../components/error_message/error_message';
 import SideNavBar from '../components/side_nav_bar/side_nav_bar';
 import './dashboard.less';
 import FolderImage from '../../assets/images/group-17.png';
+import FileImage from '../../assets/images/group-2-file.svg';
 import MoreImage from '../../assets/images/more.png';
 import Selected_ListView from '../../assets/images/list-selected.svg';
 import Deselected_GridView from '../../assets/images/grid-deselected.svg';
@@ -47,8 +48,10 @@ class DashBoard extends React.Component {
        hidetext:"hide",
        showtext:"folder-name",
        renameproject:'',
+       filesArr:[]
     }
   }
+
 
   showCreateFolder(){
     this.setState({folderCreate:true}); 
@@ -65,6 +68,9 @@ class DashBoard extends React.Component {
      this.setState({parentFolder:folderObj._id}); 
      const { dispatch } = this.props;
      dispatch({type : ACTION.DASHBOARD.FOLDERDETAIL, data : folderObj._id });
+  }
+  fileDetail(fileObj){
+        alert("popup where file detail shows");
   }
 
   folderPath(pathObj,index){
@@ -89,9 +95,12 @@ class DashBoard extends React.Component {
   } 
 
   componentWillReceiveProps(newProps) {
-     
+      
       this.setState({folderArr:newProps.dashboard.folderArray.folderList});
-
+      if(newProps.dashboard.folderDetail){
+        console.log("Files of folder",newProps.dashboard.folderDetail.filesList)
+        this.setState({filesArr:newProps.dashboard.folderDetail.filesList});        
+      }
       if(!newProps.dashboard.changebool_cancel || !newProps.dashboard.changestate_smallpopup){
         this.setState({
           showCreatefolderPopup:newProps.dashboard.changebool_cancel,
@@ -129,17 +138,15 @@ class DashBoard extends React.Component {
          
    }
 
-
-
    onClickshare=(e)=>{
     e.preventDefault();
     alert('share');
     e.stopPropagation(); 
    }
 
-   onDelete=(e)=>{
+   onDelete=(_id,_parentDirectoryId)=>{
      const{dispatch}=this.props;
-     dispatch({type : ACTION.DASHBOARD.DELETEFOLDER, data :{directoryID :e} });
+     dispatch({type : ACTION.DASHBOARD.DELETEFOLDER, data :{data:{directoryID :_id},parentDirectoryId:_parentDirectoryId} });
     }
 
     togglepopup=(index, e)=>{
@@ -181,6 +188,9 @@ class DashBoard extends React.Component {
      });
      this.setState(newState);
    }
+   onDownload=(index)=>{
+     alert("download api");
+   }
    listview=()=>{
     return(
         <div className="folder-wrapper">
@@ -195,14 +205,30 @@ class DashBoard extends React.Component {
                 <div  id={index} className="smallpopup">
                   <div className="smallpopup_inner">
                     <div><img src={Rename} onClick={this.togglepopup.bind(this,index)} className="folder-image"/>Rename</div>
-                    <div><img src={Delete} onClick={this.onDelete.bind(this,item._id)} className="folder-image"/>Delete</div>
+                    <div><img src={Delete} onClick={this.onDelete.bind(this,item._id,item.parentDirectoryId)} className="folder-image"/>Delete</div>
                   </div>
                 </div>
                 }
                 </div>
                 <input type="button" onClick={this.onClickshare.bind(this)} className="Rectangle-share" value="Share"/>
-                <span className="project-size">123mb</span>
               </div>
+            )}
+          )                
+          }
+           {
+             this.state.filesArr.map((item,index) =>  {
+               console.log("file items",item)
+                return(
+                 <div>
+                    <div key={index}  className="folder-cont">
+                      <img onClick={()=> this.fileDetail(item)} src={FileImage} className="folder-image"/>
+                      <div className={this.state.showtext}>{item.fileName}</div>
+                      <div className="icon-group-8 more" onClick={this.onDownload.bind(this, index)}>
+                      </div>
+                      <input type="button" onClick={this.onClickshare.bind(this)} className="Rectangle-share" value="Share"/>
+                      <span className="project-size">{Math.round((item.fileSize/(1024*1024))* 100)/100 }mb</span>
+                    </div>
+                  </div>
             )}
           )                
           }
@@ -230,6 +256,19 @@ class DashBoard extends React.Component {
                 }
               </div>
           </div>
+        </div>
+            )}
+          )                
+          }
+          {this.state.filesArr.map((item,index) =>  {  
+          return(             
+          <div id={index} key={index}  className="file-cont-grid">
+            <div className="icon-group-8 file-share" onClick={this.onClickshare.bind(this)}></div>
+            <div className="file-outer-image" ><img onClick={()=> this.fileDetail(item)} src={item.fileUrl} className="file-grid-image" /></div>
+            <div className="file-bottom">
+              <div className="file-name">{item.fileName}</div>
+              <div className="icon-group-8 file-more" onClick={this.onDownload.bind(this,index)}></div>
+            </div>
         </div>
             )}
           )                

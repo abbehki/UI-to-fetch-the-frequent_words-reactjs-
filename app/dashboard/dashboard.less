@@ -141,6 +141,59 @@
        line-height: 30px;
        z-index: 2;
     }
+    .file-cont-grid{  
+        margin-left:80px;
+        position:relative;
+        margin-right: 32px;
+        margin-top: 30px;
+        width: 146px;
+        height: 182px;
+        border-radius: 2px;
+        border: solid 1px #e4e4e4;
+        .file-share{
+            float: right;
+        }
+        .file-bottom{
+            position:absolute;
+            bottom: 0;
+            width: 100%;
+            height: 28px;
+            border-radius: 3px;
+            background-color: #f9f9f9;
+            .file-name{
+                font-family: SFUIText;
+                width: 80%;
+                font-size: 13px;
+                margin-top:7px;
+                margin-left: 10px;
+                color: #0c0c0c; 
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;          
+             }
+            
+        }
+        .file-more{
+            cursor: pointer;
+            float: right;
+            margin-top: -17px;
+            margin-right: 4px;
+         }
+        .file-outer-image{
+            padding: 12px; 
+            width:76px;
+            min-height: 76px;           
+            .file-grid-image{
+                display: block;
+                cursor: pointer;
+                width:52px;
+                height: 52px;   
+                margin: 0 auto;
+                margin-top: 37px;
+                margin-left: 39px;      
+                }
+        }
+    }  
     .folder-cont-grid{  
         margin-left:80px;
         position:relative;
@@ -174,7 +227,6 @@
                 float: right;
                 position: relative;
                 margin-top:3px; 
-                cursor: pointer;
              }
              .input-grid{
                  width: 100px;

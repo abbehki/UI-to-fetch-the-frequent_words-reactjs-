@@ -63,9 +63,11 @@ function* renamefolder(action) {
 }
 function* deletefolder(action) {
   try {
-    const deletefolder = yield call(PatchDataWithToken, API.deletefolders,action.data);
+    const deletefolder = yield call(PatchDataWithToken, API.deletefolders,action.data.data);
      yield put({type : "DELETE_SHOW", data : deletefolder });
-     yield put({type : ACTION.DASHBOARD.FOLDERLIST,data : {}});     
+     yield put({type : ACTION.DASHBOARD.FOLDERLIST,data : {}});  
+     yield put({type : ACTION.DASHBOARD.FOLDERDETAIL,data : action.data.parentDirectoryId});     
+     
   } catch (e) {
     console.error("error delete:-",e.message);
   }finally{

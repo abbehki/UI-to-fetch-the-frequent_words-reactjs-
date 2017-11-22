@@ -10,6 +10,7 @@ import About from './about/About';
 import Auth from './auth/auth';
 import Dashboard from './dashboard/dashboard';
 import Fileupload from './multiplefile/multiplefile';
+import Test from './test/test.js';
 import history from './history';
 
 //import Loadable from 'components/Loadable';
@@ -37,6 +38,7 @@ const routes = (
     <Router history={history}>
       <Switch>
         <Route exact path='/' component={Auth} />
+        <Route exact path='/test' component={Test} />
         <Route exact path='/about' component={About} />
         <Route exact path='/dashboard' component={Dashboard} />  
         <Route exact path='/fileupload' component={Fileupload} />          
