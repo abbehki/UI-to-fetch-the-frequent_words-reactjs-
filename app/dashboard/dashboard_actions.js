@@ -74,12 +74,20 @@ function* deletefolder(action) {
    
   }
 }
-
+function* search_tags(action) {
+  try {
+    const searched_tags = yield call(getDataWithToken, API.searching_tags+'?search='+action.data);
+    yield put({type : "SEARCHED_TAGS", data : searched_tags });
+  } catch (e) {
+    console.error("error delete:-",e.message);
+  }
+}
 export {
   createFolder,
   getFolderList,
   getFolderDetail,
   changebool,
   deletefolder,
-  renamefolder
+  renamefolder,
+  search_tags
 };

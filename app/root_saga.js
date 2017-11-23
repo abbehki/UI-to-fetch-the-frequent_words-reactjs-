@@ -2,7 +2,7 @@ import { takeEvery } from 'redux-saga/effects';
 import ACTION from './action_constants';
 import {about} from './about/about_saga';
 import {signin} from './auth/auth_actions';
-import {createFolder,getFolderList,getFolderDetail,changebool,deletefolder,renamefolder} from './dashboard/dashboard_actions';
+import {createFolder,getFolderList,getFolderDetail,changebool,deletefolder,renamefolder,search_tags} from './dashboard/dashboard_actions';
 import {uploadfiles} from './multiplefile/multiplefile_action';
 
 
@@ -16,7 +16,5 @@ export default function* rootSaga() {
   yield takeEvery(ACTION.POPUP.CHANGEBOOL, changebool);
   yield takeEvery( ACTION.DASHBOARD.DELETEFOLDER, deletefolder);
   yield takeEvery( ACTION.DASHBOARD.RENAME, renamefolder);
-  
-  
-  
+  yield takeEvery( ACTION.SEARCH.SEARCH_TAGS, search_tags);
 }

@@ -18,6 +18,9 @@ const actions = {
     },
     POPUP:{
        'CHANGEBOOL':'CHANGEBOOL'
+    },
+    SEARCH:{
+        'SEARCH_TAGS':'SEARCH_TAGS'
     }
 };
 export default actions;

@@ -5,10 +5,9 @@ import { Link } from 'react-router-dom';
 import injectSheet from 'react-jss';
 import CONSTANT from '../common_constants';
 import { GoogleLogin } from 'react-google-login-component';
-import Header from '../components/header/header';
 import PopUp from '../components/popup/popup';
 import ErrorMsg from '../components/error_message/error_message';
-import SideNavBar from '../components/side_nav_bar/side_nav_bar';
+import MenuBar from '../components/menu_bar/menu_bar';
 import './dashboard.less';
 import FolderImage from '../../assets/images/group-17.png';
 import FileImage from '../../assets/images/group-2-file.svg';
@@ -134,7 +133,14 @@ class DashBoard extends React.Component {
               this.setState({folderCreate:false,folderName:""});      
               const{dispatch}=this.props;
               dispatch({type :'CLOSE_CREATEFOLDER'});       
-      }  
+      }
+      
+      if(newProps.dashboard.search_flag){
+        console.log("type of :-",typeof(newProps.dashboard.search_content))
+        this.setState({filesArr:newProps.dashboard.search_content,
+              folderArr:[],
+            path:[{folderName:"Dashboard",_id:""}]});    
+      }
          
    }
 
@@ -306,8 +312,7 @@ class DashBoard extends React.Component {
   render() {
     return (
       <div>
-      <Header></Header>
-      <SideNavBar></SideNavBar>
+      <MenuBar/>
        {/**
         * Popups
         */}
@@ -337,7 +342,7 @@ class DashBoard extends React.Component {
               <div className="folder-path">
               {this.state.path.map((item,index) =>  {  
                     return(
-                          <div className="path-cont" onClick={()=> this.folderPath(item,index)}>                        
+                          <div key={index} className="path-cont" onClick={()=> this.folderPath(item,index)}>                        
                             <div className="path-name">{item.folderName} > </div>
                           </div>
                     )}

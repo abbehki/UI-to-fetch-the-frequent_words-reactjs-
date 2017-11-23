@@ -46,13 +46,17 @@ function dashboard(state = getSessionData() , action) {
           tempState.rename=false;
           return tempState;  
            
+    case 'SEARCHED_TAGS' :
+    console.log("====>",action.data.data)
+          tempState.search_content = action.data.data;
+          tempState.search_flag = true;     
+          return tempState;
 
     case  'ERROR':
           tempState.folderError = action.error;         
           return tempState;
 
-    default:
-      return state;
+    default:return state;
   }
 }
 

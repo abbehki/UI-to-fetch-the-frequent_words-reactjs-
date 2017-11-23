@@ -9,6 +9,7 @@ const API = {
   getfolderList2 : baseUrl2 + 'read/getDirectoryContent',  /*Shaziya*/
   deletefolders:baseUrl2+'write/archiveDirectory',
   renamefolder:baseUrl2+'write/updateDirectoryName',
+  searching_tags:baseUrl2+'read/searchFiles',
 };
 
 module.exports = API;
