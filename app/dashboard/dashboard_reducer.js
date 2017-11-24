@@ -31,7 +31,14 @@ function dashboard(state = getSessionData() , action) {
           return tempState;  
            
     case 'CLOSE_CREATEFOLDER' :
-          tempState.folderData=false;             
+          tempState.folderData=false; 
+          tempState.search_flag=false;   
+          return tempState; 
+          
+    case 'CLOSE_CREATEFILES' :
+          tempState.search_flag=false;            
+          tempState.folderArray = false;    
+          tempState.folderDetail=false;                
           return tempState; 
 
     case 'DELETE_NOSHOW' :
@@ -47,7 +54,6 @@ function dashboard(state = getSessionData() , action) {
           return tempState;  
            
     case 'SEARCHED_TAGS' :
-    console.log("====>",action.data.data)
           tempState.search_content = action.data.data;
           tempState.search_flag = true;     
           return tempState;

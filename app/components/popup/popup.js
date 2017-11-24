@@ -78,7 +78,7 @@ class Popup extends React.Component {
          </div>
       );
   }
- Create_Folder=(parentId)=>{
+  Create_Folder=(parentId)=>{
     return(
         <div>
           <div className="form-folder"><input type="text" value={this.state.foldername} onChange={this.onChangekey.bind(this,"foldername")} className="input-folder" placeholder="Foldername" ></input>
@@ -87,8 +87,7 @@ class Popup extends React.Component {
           </div>
        </div>
     );
-}
-
+  }
   pullfiles=(fileInput)=>{
     var i=0;
     var fl=fileInput.target.files.length;
@@ -100,72 +99,69 @@ class Popup extends React.Component {
       //upload in s3
       
     }
-        this.setState({
-          filecontent:f2,
-          filelength:fl
-        })
-    }
-
-    onClickuploadfile=(tags)=>{
+    this.setState({
+      filecontent:f2,
+      filelength:fl
+    })
+  }
+  onClickuploadfile=(tags)=>{
       if(tags=="single"){
           console.log(tags);
       }else{
         console.log(tags);        
       }
-    }
+  }
 
   individualcontents=(tags)=>{
     return(
      <div className="content-popup">
-         <label className="fileContainergroup">
-        <span>Select Files </span>
+        <label className="fileContainergroup">
+          <span>Select Files </span>
 
-            {         
-              tags=="single" && <input id="myfiles"  onChange={this.pullfiles.bind(this)} type="file"></input>
-            }
-            {
-              tags=="multiple" && <div> <div className="filelength">{this.state.filelength} files are selected</div> <input id="myfiles" multiple  onChange={this.pullfiles.bind(this)} type="file"></input></div>
-            }
-         </label>
-       <div className="select-platform">Select Platform</div>
-                 <div className="contain">
-                     <label className="container"><span>iOS</span>
-                       <input type="checkbox"/>
-                       <span className="checkmark"></span>
-                     </label>
-                     <label className="container"><span>Andoird </span>
-                       <input  type="checkbox"/>
-                       <span className="checkmark"></span>
-                     </label>
-                     <label className="container"><span>Web</span>
-                       <input type="checkbox"/>
-                       <span className="checkmark"></span>
-                     </label>
-                 </div>
-              
+              {         
+                tags=="single" && <input id="myfiles"  onChange={this.pullfiles.bind(this)} type="file"></input>
+              }
+              {
+                tags=="multiple" && <div> <div className="filelength">{this.state.filelength} files are selected</div> <input id="myfiles" multiple  onChange={this.pullfiles.bind(this)} type="file"></input></div>
+              }
+        </label>
+        <div className="select-platform">Select Platform</div>
+        <div className="contain">
+            <label className="container"><span>iOS</span>
+              <input type="checkbox"/>
+              <span className="checkmark"></span>
+            </label>
+            <label className="container"><span>Andoird </span>
+              <input  type="checkbox"/>
+              <span className="checkmark"></span>
+            </label>
+            <label className="container"><span>Web</span>
+              <input type="checkbox"/>
+              <span className="checkmark"></span>
+            </label>
+        </div>        
       </div>
     );
   }
-
   groupcontents=()=>{
-    return(<div>
-        {
-            this.individualcontents("multiple")
-        }
-       <div className="select-platform" style={{marginBottom:'0px'}}>Add Tags<span>(Minimum 3 Tags)</span></div>
-       <input type="text" value={this.state.tagname}  onChange={this.onChangekey.bind(this,"tagname")} onKeyUp={this._handlekeypress.bind(this)} className="input-tags" placeholder="Type and Enter to Commit Tag" ></input>
-       <div className="tags">
-       { 
-          this.state.tags.map((tag,index)=>(
-            <div key={index} className="tags-names">
-              <span>{tag}</span>  
-            </div>
-    ))}
-          </div>
-       </div>
+    return(
+    <div>
+      {
+        this.individualcontents("multiple")
+      }
+      <div className="select-platform" style={{marginBottom:'0px'}}>Add Tags<span>(Minimum 3 Tags)</span></div>
+      <input type="text" value={this.state.tagname}  onChange={this.onChangekey.bind(this,"tagname")} onKeyUp={this._handlekeypress.bind(this)} className="input-tags" placeholder="Type and Enter to Commit Tag" ></input>
+      <div className="tags">
+            { 
+                this.state.tags.map((tag,index)=>(
+                  <div key={index} className="tags-names">
+                    <span>{tag}</span>  
+                  </div>
+          ))}
+      </div>
+    </div>
     );
   }
-
   showcontentpopup=(tags)=>{
     if(tags=="individual"){
       this.setState({
@@ -177,20 +173,18 @@ class Popup extends React.Component {
         showIndividual:false
       });
     }
- }
-
+  }
   togglePopup(tags) {
      console.log(tags);
       if(tags=="Create Folder"){ 
     const{dispatch}=this.props;
     dispatch({type : ACTION.POPUP.CHANGEBOOL});
     }
-  else if(tags=="Upload File"){
-      const{dispatch}=this.props;
-      dispatch({type : ACTION.POPUP.CHANGEBOOL});
-     }
+      else if(tags=="Upload File"){
+        const{dispatch}=this.props;
+        dispatch({type : ACTION.POPUP.CHANGEBOOL});
+    }
   }
-
   render() {
     const {title} = this.props;
     const{width_resize}=this.props;
@@ -202,14 +196,14 @@ class Popup extends React.Component {
       <div>  
         { title!="Success" &&
            <div className='popup'>
-           <div className='popup_inner' style={{width:width_resize,height:height_resize}}>
-               <div className="popup-header">
-                   <span>{title}</span>
-                   <img onClick={this.togglePopup.bind(this,title)}  src={Closebutton} className="Group-15"/>
-               </div> 
-               {title=="Upload File" && this.Upload_File()} 
-               {title=="Create Folder" && this.Create_Folder(content)} 
-           </div>
+            <div className='popup_inner' style={{width:width_resize,height:height_resize}}>
+                <div className="popup-header">
+                    <span>{title}</span>
+                    <img onClick={this.togglePopup.bind(this,title)}  src={Closebutton} className="Group-15"/>
+                </div> 
+                {title=="Upload File" && this.Upload_File()} 
+                {title=="Create Folder" && this.Create_Folder(content)} 
+            </div>
            </div>
         }   
         {

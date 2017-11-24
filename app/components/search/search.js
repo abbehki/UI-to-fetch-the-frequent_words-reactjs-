@@ -34,7 +34,7 @@ class Search extends React.Component{
 
         return(
                  <div className="wrapper-search"> 
-                      <input type="text" placeholder="Search" value={this.state.search_content} onChange={this.onChange.bind(this)} onKeyUp={this.onPressEnter.bind(this)} className="search" /> <div className="icon-group-8 search-image" ></div>
+                      <input type="text" placeholder="Search" value={this.state.search_content} onChange={this.onChange.bind(this)} onKeyUp={this.onPressEnter.bind(this)} className="search" /> <div className="icon-icn_search search-image" ></div>
                  </div>
                   
         );
