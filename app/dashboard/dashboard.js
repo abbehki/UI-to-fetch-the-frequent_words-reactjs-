@@ -9,6 +9,8 @@ import Header from '../components/header/header';
 import PopUp from '../components/popup/popup';
 import ErrorMsg from '../components/error_message/error_message';
 import SideNavBar from '../components/side_nav_bar/side_nav_bar';
+import Dropzone from 'react-dropzone';
+import axios from 'axios';
 import './dashboard.less';
 import FolderImage from '../../assets/images/group-17.png';
 import MoreImage from '../../assets/images/more.png';
@@ -28,7 +30,6 @@ import '../common.less'
 class DashBoard extends React.Component {
   constructor(props) {
     super(props);
-    // this.addFolder = this.addFolder.bind(this);  
     this.state = {
        folderArr :[],
        folderName:"",
@@ -43,7 +44,8 @@ class DashBoard extends React.Component {
        showsmallpopup:false,
        index:0,
        folderOnFocus:null,
-       successMessage:false
+       successMessage:false,
+       totalCountOfFiles:0
     }
   }
 
@@ -84,7 +86,10 @@ class DashBoard extends React.Component {
         const { dispatch } = this.props;  
         dispatch({type : ACTION.DASHBOARD.FOLDERLIST, data : params });
   } 
-
+  // countOfFiles(count){
+  //   this.setState({totalCountOfFiles:count});
+  // }    
+ 
   componentWillReceiveProps(newProps) {
      
       this.setState({folderArr:newProps.dashboard.folderArray.folderList});
@@ -110,8 +115,16 @@ class DashBoard extends React.Component {
         dispatch({type :'DELETE_NOSHOW'});
         
       }
+
+     if(newProps.dashboard.fileUrl){
+          let fileArray=[]
+          fileArray.push(newProps.dashboard.fileUrl);           
+          if(fileArray.length == this.state.totalCountOfFiles){
+            console.log("all files are uplaoded");
+          }
+     }
       if(newProps.dashboard.folderDetail){
-        this.setState({folderArr:newProps.dashboard.folderDetail.folderList});    
+        this.setState({folderArr:newProps.dashboard.folderDetail.folderList});     
       }  
  
       if(newProps.dashboard.folderData){
@@ -121,7 +134,6 @@ class DashBoard extends React.Component {
               this.setState({folderCreate:false,folderName:""});      
               const{dispatch}=this.props;
               dispatch({type :'CLOSE_CREATEFOLDER'});
-              
       }
                   
    }
@@ -242,7 +254,7 @@ class DashBoard extends React.Component {
               : null
             }
             { this.state.showUploadfilesPopup ? 
-               <PopUp title={"Upload File"}/>                      
+               <PopUp title={"Upload File"} content={this.state.parentFolder}/>                      
               : null
             }
              { this.state.successMessage ? 
@@ -287,6 +299,7 @@ class DashBoard extends React.Component {
            {!this.state.showgridicon && this.listview()}
            {this.state.showgridicon && this.gridview()}
             </div>
+
         </div>
       </div>
     );
