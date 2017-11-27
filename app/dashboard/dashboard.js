@@ -9,8 +9,6 @@ import PopUp from '../components/popup/popup';
 import ErrorMsg from '../components/error_message/error_message';
 import MenuBar from '../components/menu_bar/menu_bar';
 import SideNavBar from '../components/side_nav_bar/side_nav_bar';
-import Dropzone from 'react-dropzone';
-import axios from 'axios';
 import './dashboard.less';
 import FolderImage from '../../assets/images/group-17.png';
 import FileImage from '../../assets/images/group-2-file.svg';
