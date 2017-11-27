@@ -34,13 +34,13 @@ function* getFolderList(action) {
 
 
 function* uploadImg(action) {
-  // try {   
+  try {   
     const uploadImdData = yield call(postMulitipartDataWithToken, API.uploadImg , action.data);
     yield put({type : "IMG_DATA", data : uploadImdData });     
    
-  // } catch (e) {
-  //   yield put({type : "ERROR", error : e.error});
-  // }
+  } catch (e) {
+    yield put({type : "ERROR", error : e.error});
+  }
 }
 
 
@@ -62,6 +62,13 @@ function* changebool(action) {
     console.error("error",e.message);
   }
 }
+function* filelength(action) {
+  try {
+    yield put({type : "FILE_LENGTH", data : action.data })    
+  } catch (e) {
+    console.error("error",e.message);
+  }
+}
 function* renamefolder(action) {
   try {
     const renamefolder = yield call(PatchDataWithToken, API.renamefolder,action.data);
@@ -76,7 +83,7 @@ function* deletefolder(action) {
   try {
     const deletefolder = yield call(PatchDataWithToken, API.deletefolders,action.data.data);
      yield put({type : "DELETE_SHOW", data : deletefolder });
-     yield put({type : ACTION.DASHBOARD.FOLDERLIST,data : {}});  
+     yield put({type : ACTION.DASHBOARD.FOLDERLIST,data :false});  
      yield put({type : ACTION.DASHBOARD.FOLDERDETAIL,data : action.data.parentDirectoryId});     
      
   } catch (e) {
@@ -101,6 +108,7 @@ export {
   deletefolder,
   renamefolder,
   search_tags,
-  uploadImg
+  uploadImg,
+  filelength
 };
 

@@ -60,6 +60,11 @@ function dashboard(state = getSessionData() , action) {
     case 'SEARCHED_TAGS' :
           tempState.search_content = action.data.data;
           tempState.search_flag = true;     
+          return tempState;FILE_LENGTH
+
+    case 'FILE_LENGTH' :
+          tempState.file_length = action.data;
+          tempState.changebool_cancel=true;
           return tempState;
 
     case  'ERROR':

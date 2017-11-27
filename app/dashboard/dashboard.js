@@ -36,7 +36,7 @@ class DashBoard extends React.Component {
        folderCreate:false,
        path:[{folderName:"Dashboard",_id:""}],
        showCreatefolderPopup:false,
-       showgridicon:false,
+       showgridicon:true,
        foldername:'',
        showUploadfilesPopup:false,
        showIndividual:true,
@@ -48,7 +48,8 @@ class DashBoard extends React.Component {
        showtext:"folder-name",
        renameproject:'',
        filesArr:[],
-       totalCountOfFiles:0
+       totalCountOfFiles:0,
+       fileArray:[]
     }
   }
   showCreateFolder(){
@@ -91,9 +92,7 @@ class DashBoard extends React.Component {
       const { dispatch } = this.props;  
       dispatch({type : ACTION.DASHBOARD.FOLDERLIST, data : params });
   } 
-  // countOfFiles(count){
-  //   this.setState({totalCountOfFiles:count});
-  // }    
+   
  
   componentWillReceiveProps(newProps) {
       if(newProps.dashboard.folderArray){
@@ -109,7 +108,7 @@ class DashBoard extends React.Component {
           showUploadfilesPopup:newProps.dashboard.changebool_cancel,
           showsmallpopup:newProps.dashboard.changestate_smallpopup,
         });
-        } 
+      } 
        if(newProps.dashboard.changestate_success){
         this.setState({
           successMessage:newProps.dashboard.changestate_success,
@@ -124,21 +123,18 @@ class DashBoard extends React.Component {
         const{dispatch}=this.props;
         dispatch({type :'DELETE_NOSHOW'});
       }
-
-    
        if(newProps.dashboard.folderDetail){
         this.setState({folderArr:newProps.dashboard.folderDetail.folderList});    
+   }  
 
-
-     if(newProps.dashboard.fileUrl){
-          let fileArray=[]
-          fileArray.push(newProps.dashboard.fileUrl);           
-          if(fileArray.length == this.state.totalCountOfFiles){
-            console.log("all files are uplaoded");
-          }
-     }
- 
-      }  
+   if(newProps.dashboard.fileUrl){
+    this.state.fileArray.push(newProps.dashboard.fileUrl); 
+    console.log(newProps.dashboard.fileUrl)  
+    // if(this.state.fileArray.length == newProps.dashboard.file_length){
+    //   const { dispatch } = this.props;
+    //   dispatch({type : ACTION.DASHBOARD.FOLDERDETAIL, data : newProps.dashboard.fileUrl.parentDirectoryId});
+    // }
+}
        if(newProps.dashboard.folderData){
         let folderArray =[];
         let eachFolderData =newProps.dashboard.folderData;
@@ -147,6 +143,7 @@ class DashBoard extends React.Component {
               const{dispatch}=this.props;
               dispatch({type :'CLOSE_CREATEFOLDER'});       
             }
+
       if(newProps.dashboard.search_flag){
         const{dispatch}=this.props;        
         this.setState({filesArr:newProps.dashboard.search_content,
@@ -268,7 +265,7 @@ class DashBoard extends React.Component {
              <div  id={index} className="smallpopup">
               <div className="smallpopup_inner">
                 <div><img src={Rename} onClick={this.togglepopup.bind(this,index)} className="folder-image"/>Rename</div>
-                <div><img src={Delete} onClick={this.onDelete.bind(this,item._id)} className="folder-image"/>Delete</div>
+                <div><img src={Delete} onClick={this.onDelete.bind(this,item._id,item.parentDirectoryId)} className="folder-image"/>Delete</div>
               </div>
              </div>
                 }
@@ -365,7 +362,9 @@ class DashBoard extends React.Component {
               * Left navigation bar
               */}
               <div className="side-nav-right">
-              <div onClick={this.togglePopup.bind(this,"upload_file")}> <img src={UploadImage} className="Upload_file"/> <span className="Upload_File">Upload File</span></div>
+                {this.state.path.length>1 &&
+                <div onClick={this.togglePopup.bind(this,"upload_file")}> <img src={UploadImage} className="Upload_file"/> <span className="Upload_File">Upload File</span></div>              
+                }
               </div>
               {/**
               * LIST OT GRID VIEW

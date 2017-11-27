@@ -12,7 +12,8 @@ const actions = {
         'FOLDERDETAIL':  'FOLDERDETAIL',
         'RENAME'   :'RENAME',
         'UPLOADIMAGE' : 'UPLOADIMAGE',
-        'DELETEFOLDER':'DELETEFOLDER'
+        'DELETEFOLDER':'DELETEFOLDER',
+        'FILELENGTH':'FILELENGTH'
     },
     FILEUPLOAD:{
         'UPLOAD':'UPLOAD'
@@ -22,6 +23,7 @@ const actions = {
     },
     SEARCH:{
         'SEARCH_TAGS':'SEARCH_TAGS'
-    }
+    },
+
 };
 export default actions;
