@@ -35,11 +35,15 @@ function dashboard(state = getSessionData() , action) {
           tempState.folderData=false;             
           return tempState; 
 
+    case 'IMG_DATA' :
+          tempState.fileUrl=action.data;            
+          return tempState;
+
     case 'DELETE_NOSHOW' :
           tempState.delete_folder = action.data;
           tempState.changestate_smallpopup=false;   
           tempState.changestate_success=false;  
-          return tempState;  
+          return tempState;         
            
     case  'ERROR':
           tempState.folderError = action.error;         

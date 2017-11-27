@@ -30,7 +30,6 @@ import '../common.less'
 class DashBoard extends React.Component {
   constructor(props) {
     super(props);
-    // this.addFolder = this.addFolder.bind(this);  
     this.state = {
        folderArr :[],
        folderName:"",
@@ -45,7 +44,8 @@ class DashBoard extends React.Component {
        showsmallpopup:false,
        index:0,
        folderOnFocus:null,
-       successMessage:false
+       successMessage:false,
+       totalCountOfFiles:0
     }
   }
 
@@ -86,25 +86,10 @@ class DashBoard extends React.Component {
         const { dispatch } = this.props;  
         dispatch({type : ACTION.DASHBOARD.FOLDERLIST, data : params });
   } 
-  getAllFiles(event){
-    let data =[]
-    data = event.target.files[0];
-    var formData = new FormData();
-    
-
-        formData.append("file", data);
-        formData.append("width","45");
-        formData.append("height","55");
-        formData.append("platform","IOS");
-        formData.append("parentDirectoryId","5a0010a497f48387547ff0ef");
-        formData.append("tags",JSON.stringify(["watani","home"]));
-
-        const { dispatch } = this.props;
-        dispatch({type : ACTION.DASHBOARD.UPLOADIMAGE, data : formData });
-        
-
-
-  }
+  // countOfFiles(count){
+  //   this.setState({totalCountOfFiles:count});
+  // }    
+ 
   componentWillReceiveProps(newProps) {
      
       this.setState({folderArr:newProps.dashboard.folderArray.folderList});
@@ -130,6 +115,14 @@ class DashBoard extends React.Component {
         dispatch({type :'DELETE_NOSHOW'});
         
       }
+
+     if(newProps.dashboard.fileUrl){
+          let fileArray=[]
+          fileArray.push(newProps.dashboard.fileUrl);           
+          if(fileArray.length == this.state.totalCountOfFiles){
+            console.log("all files are uplaoded");
+          }
+     }
       if(newProps.dashboard.folderDetail){
         this.setState({folderArr:newProps.dashboard.folderDetail.folderList});     
       }  
@@ -261,7 +254,7 @@ class DashBoard extends React.Component {
               : null
             }
             { this.state.showUploadfilesPopup ? 
-               <PopUp title={"Upload File"}/>                      
+               <PopUp title={"Upload File"} content={this.state.parentFolder}/>                      
               : null
             }
              { this.state.successMessage ? 
@@ -305,7 +298,6 @@ class DashBoard extends React.Component {
               */}
            {!this.state.showgridicon && this.listview()}
            {this.state.showgridicon && this.gridview()}
-            <div><input type="file" multiple onChange={(event)=> this.getAllFiles(event)}/></div>
             </div>
 
         </div>
