@@ -10,6 +10,8 @@ const API = {
   deletefolders:baseUrl2+'write/archiveDirectory',
   renamefolder:baseUrl2+'write/updateDirectoryName',
   searching_tags:baseUrl2+'read/searchFiles',
+  uploadImg : baseUrl + 'write/saveFile',
+
 };
 
 module.exports = API;

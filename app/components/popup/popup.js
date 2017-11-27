@@ -10,7 +10,8 @@ import './popup.less';
 
 class Popup extends React.Component {
   constructor(props) {
-    super(props);
+    super(props); 
+     const{getAllFile} =props;  
     this.state = {
         showCreatefolderPopup:false,
         showUploadfilesPopup:false,
@@ -19,7 +20,9 @@ class Popup extends React.Component {
         tagname:'',
         tags:[],
         foldername:'',
-        parentFolder:''
+        parentFolder:'',
+        platformArr :[{name:"IOS"},{name:"Android"},{name:"Web"}],
+        selectedPlatform:''
      }
   }
 
@@ -64,15 +67,36 @@ class Popup extends React.Component {
       foldername:'',
       tags:'',
     })
-  } 
+  }
+  selectPlatform(platformName){
+    this.setState({selectedPlatform:platformName})
+  }
+  
+  uploadFile(parentDirectoryId,event){
+    var data =this.state;
+   // for(var i=1;i<this.state.filecontent.length;i++){
+         var formData = new FormData();   
+        formData.append("file", this.state.filecontent[1]);
+        formData.append("width","45");
+        formData.append("height","55");
+        formData.append("platform",this.state.selectedPlatform);
+        formData.append("parentDirectoryId",parentDirectoryId);
+        formData.append("tags",JSON.stringify(this.state.tags));
 
-  Upload_File=()=>{
+        const { dispatch } = this.props;
+        dispatch({type : ACTION.DASHBOARD.UPLOADIMAGE, data : formData });
+
+ //   }
+  // this.props.getAllFile(this.state.filelength);    
+  }
+  Upload_File=(parentId)=>{
       return(
           <div>
          <div className="upload-file"><div className="upload-file-button" onClick={this.showcontentpopup.bind(this,"individual")}><span>Individual</span></div><div onClick={this.showcontentpopup.bind(this,"group")} className="upload-file-button"><span>Group</span></div></div>
          <div className="form-folder">
           {this.state.showIndividual && this.individualcontents("single")}
           {!this.state.showIndividual && this.groupcontents()}
+          <div className="upload-btn" onClick={this.uploadFile.bind(this,parentId)}>Upload</div>
          </div> 
          <div className="Uploadfiles"><span>Upload</span></div>
          </div>
@@ -115,31 +139,31 @@ class Popup extends React.Component {
   individualcontents=(tags)=>{
     return(
      <div className="content-popup">
-        <label className="fileContainergroup">
-          <span>Select Files </span>
 
-              {         
-                tags=="single" && <input id="myfiles"  onChange={this.pullfiles.bind(this)} type="file"></input>
-              }
-              {
-                tags=="multiple" && <div> <div className="filelength">{this.state.filelength} files are selected</div> <input id="myfiles" multiple  onChange={this.pullfiles.bind(this)} type="file"></input></div>
-              }
-        </label>
-        <div className="select-platform">Select Platform</div>
-        <div className="contain">
-            <label className="container"><span>iOS</span>
-              <input type="checkbox"/>
-              <span className="checkmark"></span>
-            </label>
-            <label className="container"><span>Andoird </span>
-              <input  type="checkbox"/>
-              <span className="checkmark"></span>
-            </label>
-            <label className="container"><span>Web</span>
-              <input type="checkbox"/>
-              <span className="checkmark"></span>
-            </label>
-        </div>        
+         <label className="fileContainergroup">
+        <span>Select Files </span>
+
+            {         
+              tags=="single" && <input id="myfiles"  onChange={this.pullfiles.bind(this)} type="file"></input>
+            }
+            {
+              tags=="multiple" && <div> <div className="filelength">{this.state.filelength} files are selected</div> <input id="myfiles" multiple  onChange={this.pullfiles.bind(this)} type="file"></input></div>
+            }
+         </label>
+       <div className="select-platform">Select Platform</div>          
+            <div className="contain">
+              {this.state.platformArr.map((item,index) =>  {                                    
+                            return(
+                                <div className="">
+                                  <label className="container"><span>{item.name}</span>
+                                      <input type="checkbox"  onClick={this.selectPlatform.bind(this,item.name)}/>  
+                                    <span className="checkmark"></span>
+                                </label>
+                                  </div> 
+                                  )                   
+                })
+                }
+        </div>                                                  
       </div>
     );
   }
@@ -190,20 +214,20 @@ class Popup extends React.Component {
     const{width_resize}=this.props;
     const{height_resize}=this.props;
     const{content}=this.props;
-    console.log("type of popup",title+"--->"+content);
     return (
       
       <div>  
         { title!="Success" &&
            <div className='popup'>
-            <div className='popup_inner' style={{width:width_resize,height:height_resize}}>
-                <div className="popup-header">
-                    <span>{title}</span>
-                    <img onClick={this.togglePopup.bind(this,title)}  src={Closebutton} className="Group-15"/>
-                </div> 
-                {title=="Upload File" && this.Upload_File()} 
-                {title=="Create Folder" && this.Create_Folder(content)} 
-            </div>
+
+           <div className='popup_inner' style={{width:width_resize,height:height_resize}}>
+               <div className="popup-header">
+                   <span>{title}</span>
+                   <img onClick={this.togglePopup.bind(this,title)}  src={Closebutton} className="Group-15"/>
+               </div> 
+               {title=="Upload File" && this.Upload_File(content)} 
+               {title=="Create Folder" && this.Create_Folder(content)} 
+           </div>
            </div>
         }   
         {

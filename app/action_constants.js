@@ -10,8 +10,9 @@ const actions = {
         'CREATEFOLDER':  'CREATEFOLDER'  ,
         'FOLDERLIST':    'FOLDERLIST',
         'FOLDERDETAIL':  'FOLDERDETAIL',
-        'DELETEFOLDER':'DELETEFOLDER',
         'RENAME'   :'RENAME',
+        'UPLOADIMAGE' : 'UPLOADIMAGE',
+        'DELETEFOLDER':'DELETEFOLDER'
     },
     FILEUPLOAD:{
         'UPLOAD':'UPLOAD'

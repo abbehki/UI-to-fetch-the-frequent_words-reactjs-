@@ -8,6 +8,9 @@ import { GoogleLogin } from 'react-google-login-component';
 import PopUp from '../components/popup/popup';
 import ErrorMsg from '../components/error_message/error_message';
 import MenuBar from '../components/menu_bar/menu_bar';
+import SideNavBar from '../components/side_nav_bar/side_nav_bar';
+import Dropzone from 'react-dropzone';
+import axios from 'axios';
 import './dashboard.less';
 import FolderImage from '../../assets/images/group-17.png';
 import FileImage from '../../assets/images/group-2-file.svg';
@@ -46,7 +49,8 @@ class DashBoard extends React.Component {
        hidetext:"hide",
        showtext:"folder-name",
        renameproject:'',
-       filesArr:[]
+       filesArr:[],
+       totalCountOfFiles:0
     }
   }
   showCreateFolder(){
@@ -89,7 +93,10 @@ class DashBoard extends React.Component {
       const { dispatch } = this.props;  
       dispatch({type : ACTION.DASHBOARD.FOLDERLIST, data : params });
   } 
-
+  // countOfFiles(count){
+  //   this.setState({totalCountOfFiles:count});
+  // }    
+ 
   componentWillReceiveProps(newProps) {
       if(newProps.dashboard.folderArray){
         this.setState({folderArr:newProps.dashboard.folderArray.folderList});
@@ -119,9 +126,20 @@ class DashBoard extends React.Component {
         const{dispatch}=this.props;
         dispatch({type :'DELETE_NOSHOW'});
       }
+
     
        if(newProps.dashboard.folderDetail){
         this.setState({folderArr:newProps.dashboard.folderDetail.folderList});    
+
+
+     if(newProps.dashboard.fileUrl){
+          let fileArray=[]
+          fileArray.push(newProps.dashboard.fileUrl);           
+          if(fileArray.length == this.state.totalCountOfFiles){
+            console.log("all files are uplaoded");
+          }
+     }
+ 
       }  
        if(newProps.dashboard.folderData){
         let folderArray =[];
@@ -138,6 +156,8 @@ class DashBoard extends React.Component {
             path:[{folderName:"Dashboard",_id:""}]});    
             dispatch({type :'CLOSE_CREATEFILES'});          
       }   
+
+
    }
 
   onClickshare=(e)=>{
@@ -312,7 +332,7 @@ class DashBoard extends React.Component {
               : null
             }
             { this.state.showUploadfilesPopup ? 
-               <PopUp title={"Upload File"}/>                      
+               <PopUp title={"Upload File"} content={this.state.parentFolder}/>                      
               : null
             }
              { this.state.successMessage ? 
@@ -355,6 +375,7 @@ class DashBoard extends React.Component {
               {!this.state.showgridicon && this.listview()}
               {this.state.showgridicon && this.gridview()}
           </div>
+
         </div>
       </div>
     );
