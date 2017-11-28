@@ -1,5 +1,4 @@
 
-  
 .side-nav-cont{
     position: absolute;;
     top:70px;
@@ -11,5 +10,83 @@
     width: 204px;
     height: 100%;
     background-color: #414a55;
+
+    .filter-cont{       
+        .hide-factes{
+            margin: 20px 20px;
+            font-family: SFUIText;
+            font-size: 10px;
+            text-align: right;
+            color: #ffffff;
+        }
+        .category-cont{
+            border-bottom: 2px solid #59626e;
+            padding: 15px 20px 15px 20px;
+
+            .title{
+                font-size: 12px;
+                    font-weight: bold;
+                    text-align: left;
+                    color: #ffffff; 
+                }
+            .sub-cat-cont{
+                margin-top:10px;
+                vertical-align: super;
+                display: inline-block;
+                font-family: SFUIText;
+                font-size: 10px;
+                text-align: left;
+                color: #ffffff;
+                margin: 10px 0px 0px;
+            }
+            .data-count{
+                    vertical-align: super;
+                    display: inline-block;
+                    margin-top: 10px;
+                    width: 33px;
+                    float: right;
+                    height: 15px;
+                    border-radius: 2px;
+                    border: solid 1px #77c87f;
+                    font-family: SFUIText;
+                    font-size: 8px;
+                    text-align: center;
+                    padding: 2px;
+                    color: #ffffff;
+            }
+        }
+        .wrapper-search .search{          
+            margin-left: 0px;
+            width: 165px;
+            padding:10px;          
+        }
+        .wrapper-search .search-image{          
+            right:20px;          
+        }
+        
+    }
+        /* Create a custom checkbox */
+    .checkmark {
+        border: solid 1px;
+        }
+     
+    /* When the checkbox is checked, add a blue background */
+    .container input:checked ~ .checkmark {
+        background-color: white;
+    }
     
+    
+    /* Style the checkmark/indicator */
+    .container .checkmark:after {
+        left:2px;
+        top: -3px;
+        width: 5px;
+        height: 11px;
+        border: solid #77c87f;
+        border-width: 0 1px 1px 0;
+        -webkit-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+        transform: rotate(45deg);
+    }
+   
 }
