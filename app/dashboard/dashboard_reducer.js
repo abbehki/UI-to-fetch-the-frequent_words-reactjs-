@@ -25,14 +25,20 @@ function dashboard(state = getSessionData() , action) {
           return tempState;  
 
     case 'DELETE_SHOW' :
-          tempState.delete_folder = action.data;
+          tempState.response = action.data.data;
           tempState.changestate_smallpopup=false;             
           tempState.changestate_success=true;  
-          console.log(tempState.delete_folder);
           return tempState;  
            
     case 'CLOSE_CREATEFOLDER' :
-          tempState.folderData=false;             
+          tempState.folderData=false; 
+          tempState.search_flag=false;   
+          return tempState; 
+          
+    case 'CLOSE_CREATEFILES' :
+          tempState.search_flag=false;            
+          tempState.folderArray = false;    
+          tempState.folderDetail=false;                
           return tempState; 
 
     case 'IMG_DATA' :
@@ -45,12 +51,27 @@ function dashboard(state = getSessionData() , action) {
           tempState.changestate_success=false;  
           return tempState;         
            
+    case 'RENAME' :
+          tempState.response = action.data.data;
+          tempState.changestate_success=true;  
+          tempState.rename=false;
+          return tempState;  
+           
+    case 'SEARCHED_TAGS' :
+          tempState.search_content = action.data.data;
+          tempState.search_flag = true;     
+          return tempState;FILE_LENGTH
+
+    case 'FILE_LENGTH' :
+          tempState.file_length = action.data;
+          tempState.changebool_cancel=true;
+          return tempState;
+
     case  'ERROR':
           tempState.folderError = action.error;         
           return tempState;
 
-    default:
-      return state;
+    default:return state;
   }
 }
 

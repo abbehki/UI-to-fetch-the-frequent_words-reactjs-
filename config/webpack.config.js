@@ -23,6 +23,7 @@ const devSpecifics = {
     compress: true,
     historyApiFallback: true,
     port: 9000,
+    allowedHosts:['0.0.0.0'],
   }
 };
 
