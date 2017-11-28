@@ -39,7 +39,7 @@ function* uploadImg(action) {
     yield put({type : "IMG_DATA", data : uploadImdData });     
    
   } catch (e) {
-    yield put({type : "ERROR", error : e.error});
+    yield put({type : "ERROR-Image", error : e.error});
   }
 }
 
@@ -71,6 +71,7 @@ function* filelength(action) {
 }
 function* renamefolder(action) {
   try {
+    console.log(action.data);
     const renamefolder = yield call(PatchDataWithToken, API.renamefolder,action.data);
     yield put({type : "RENAME", data : renamefolder });    
     yield put({type : ACTION.DASHBOARD.FOLDERLIST,data : false});        

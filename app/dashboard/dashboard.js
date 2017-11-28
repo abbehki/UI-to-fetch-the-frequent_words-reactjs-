@@ -49,7 +49,8 @@ class DashBoard extends React.Component {
        renameproject:'',
        filesArr:[],
        totalCountOfFiles:0,
-       fileArray:[]
+       fileArray:[],
+       showfileDetailPopup:false,
     }
   }
   showCreateFolder(){
@@ -67,10 +68,6 @@ class DashBoard extends React.Component {
       this.setState({parentFolder:folderObj._id}); 
       const { dispatch } = this.props;
       dispatch({type : ACTION.DASHBOARD.FOLDERDETAIL, data : folderObj._id });
-  }
-
-  fileDetail(fileObj){
-      alert("popup where file detail shows");
   }
 
   folderPath(pathObj,index){
@@ -104,9 +101,10 @@ class DashBoard extends React.Component {
       }
        if(!newProps.dashboard.changebool_cancel || !newProps.dashboard.changestate_smallpopup){
         this.setState({
-          showCreatefolderPopup:newProps.dashboard.changebool_cancel,
-          showUploadfilesPopup:newProps.dashboard.changebool_cancel,
-          showsmallpopup:newProps.dashboard.changestate_smallpopup,
+          showCreatefolderPopup:newProps.dashboard.changebool_cancel ,
+          showUploadfilesPopup:newProps.dashboard.changebool_cancel ,
+          showsmallpopup:newProps.dashboard.changebool_cancel ,
+          showfileDetailPopup:false,
         });
       } 
        if(newProps.dashboard.changestate_success){
@@ -134,7 +132,7 @@ class DashBoard extends React.Component {
     //   const { dispatch } = this.props;
     //   dispatch({type : ACTION.DASHBOARD.FOLDERDETAIL, data : newProps.dashboard.fileUrl.parentDirectoryId});
     // }
-}
+  }
        if(newProps.dashboard.folderData){
         let folderArray =[];
         let eachFolderData =newProps.dashboard.folderData;
@@ -180,8 +178,7 @@ class DashBoard extends React.Component {
     }
   onenter=(id,index_value,e)=>{
         if(e.key=="Enter"){ 
-          const{dispatch}=this.props;
-          dispatch({type :ACTION.DASHBOARD.RENAME, data : {newDirectoryName:e.target.value,directoryID:id} });  
+
           const newState = Object.assign(this.state);
           newState.folderArr.forEach((item, folderIndex)=> {
             item.showPopup = false;
@@ -191,6 +188,8 @@ class DashBoard extends React.Component {
             }
           });
           this.setState(newState); 
+          const{dispatch}=this.props;
+          dispatch({type :ACTION.DASHBOARD.RENAME, data : {newDirectoryName:e.target.value,directoryID:id} });  
         }
   }
   showActionPopup = (index)=> {
@@ -204,8 +203,12 @@ class DashBoard extends React.Component {
      });
      this.setState(newState);
    }
-  onDownload=(index)=>{
-     alert("download api");
+  onDownload=(fileUrl)=>{
+    return(
+      <div>
+      <a href={fileUrl}/>    
+      </div>
+    );
   }
    listview=()=>{
     return(
@@ -217,7 +220,6 @@ class DashBoard extends React.Component {
                 {!item.editable && <div className={this.state.showtext}>{item.directoryName}</div>}
                 {item.editable && <input defaultValue={item.directoryName} onKeyUp={this.onenter.bind(this,item._id,index)}  type="text" /> }
                 <div className="icon-icn_more more" onClick={this.showActionPopup.bind(this, index)}>
-                {/* <img className="more" src={MoreImage} onClick={this.showActionPopup.bind(this, index)}/>  */}
                 {this.state.showsmallpopup && item.showPopup && 
                 <div  id={index} className="smallpopup">
                   <div className="smallpopup_inner">
@@ -238,7 +240,7 @@ class DashBoard extends React.Component {
                   <div key={index}  className="folder-cont">
                     <img onClick={()=> this.fileDetail(item)} src={FileImage} className="folder-image"/>
                     <div className={this.state.showtext}>{item.fileName}</div>
-                    <div className="icon-icn_download2 more" onClick={this.onDownload.bind(this, index)}>
+                    <div className="icon-icn_download2 more" onClick={this.onDownload.bind(this, item.fileUrl)}>
                     </div>
                     <input type="button" onClick={this.onClickshare.bind(this)} className="Rectangle-share" value="Share"/>
                     <span className="project-size">{Math.round((item.fileSize/(1024*1024))* 100)/100 }mb</span>
@@ -279,10 +281,10 @@ class DashBoard extends React.Component {
           return(             
           <div id={index} key={index}  className="file-cont-grid">
             <div className="icon-Share file-share" onClick={this.onClickshare.bind(this)}></div>
-            <div className="file-outer-image" ><img onClick={()=> this.fileDetail(item)} src={item.fileUrl} className="file-grid-image" /></div>
+            <div className="file-outer-image" ><img onClick={this.togglePopup.bind(this,"file_detail",index)} src={item.fileUrl} className="file-grid-image" /></div>
             <div className="file-bottom">
               <div className="file-name">{item.fileName}</div>
-              <div className="icon-icn_download2 file-more" onClick={this.onDownload.bind(this,index)}></div>
+              <div className="icon-icn_download2 file-more" onClick={this.onDownload.bind(this,item.fileUrl)}></div>
             </div>
         </div>
             )}
@@ -292,8 +294,7 @@ class DashBoard extends React.Component {
      );
    }
 
-  togglePopup(tags) {
-     console.log(tags);
+  togglePopup(tags,index_number) {
      if(tags=="create_folder"){
       this.setState({
       showCreatefolderPopup: !this.state.showCreatefolderPopup,
@@ -301,6 +302,12 @@ class DashBoard extends React.Component {
     }else if(tags=="upload_file"){
     this.setState({
       showUploadfilesPopup: !this.state.showUploadfilesPopup,
+    });
+   }
+   else if(tags=="file_detail"){
+    this.setState({
+      showfileDetailPopup: !this.state.showfileDetailPopup,
+      index:index_number,
     });
    }
   }
@@ -332,6 +339,10 @@ class DashBoard extends React.Component {
             }
              { this.state.successMessage ? 
                <PopUp title={"Success"} content={this.props.dashboard.response}/>                      
+              : null
+            }
+             { this.state.showfileDetailPopup ? 
+               <PopUp title={"Filedetail"} content={{data:this.state.filesArr,index_number:this.state.index}} width_resize={'1024px'} height_resize={'792px'}/>                      
               : null
             }
         {/**

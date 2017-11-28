@@ -72,7 +72,13 @@ class Popup extends React.Component {
   selectPlatform(platformName){
     this.setState({selectedPlatform:platformName})
   }
-  
+  Share=()=>{
+    alert("Share it here");
+  }
+  dateConversion=(date)=>{
+    let objDate = new Date(date);
+    return (objDate.toLocaleString("en-us", { month: "long" }))+"   "+objDate.getDate();
+  }
   uploadFile(parentDirectoryId,event){
     var data =this.state;
     for(var i=1;i<this.state.filecontent.length;i++){
@@ -108,6 +114,26 @@ class Popup extends React.Component {
                 <div className="create-folder-button" onKeyPress={this._handlekeypress} onClick={this.addFolder.bind(this,parentId)}><span>Create Folder</span></div>
           </div>
        </div>
+    );
+  }
+  Detail_File=(fileArr,index,)=>{
+    console.log("Index to:-",index);
+    return(
+      <div className="filedetail">
+        <div className="fileImage">     
+          <div className="icon-side_arrow_left arrow" onClick={()=>this.Detail_File(fileArr,--index)}></div> 
+          <img className="fileImage-popup" src={fileArr[index].fileUrl} alt="[IMAGE]"/>
+          <div className="icon-Side_arrow_right arrow" onClick={()=>this.Detail_File(fileArr,++index)}></div>
+        </div>
+        <div className="filesinfo">
+          <div className="filename" >{fileArr[index].fileName}</div>
+          <div className="file-info"><span>File Type:</span><span>{fileArr[index].fileFormat}</span></div>
+          <div className="file-info"><span>File Size :</span><span>{Math.round((fileArr[index].fileSize/(1024*1024))* 100)/100 }MB</span></div>
+          <div className="file-info"><span>Created on:</span><span>{this.dateConversion(fileArr[index].createdAt)}</span></div>
+          <div className="file-info"><span>Modified date :</span><span>{this.dateConversion(fileArr[index].modifiedAt)}</span></div>
+          <button className="file-dowload-button">Download</button>
+        </div>
+      </div>
     );
   }
   pullfiles=(fileInput)=>{
@@ -197,8 +223,8 @@ class Popup extends React.Component {
       });
     }
   }
+
   togglePopup(tags) {
-     console.log(tags);
       if(tags=="Create Folder"){ 
     const{dispatch}=this.props;
     dispatch({type : ACTION.POPUP.CHANGEBOOL});
@@ -207,6 +233,10 @@ class Popup extends React.Component {
         const{dispatch}=this.props;
         dispatch({type : ACTION.POPUP.CHANGEBOOL});
     }
+    else if(tags=="Filedetail"){
+      const{dispatch}=this.props;
+      dispatch({type : ACTION.POPUP.CHANGEBOOL});
+    }
   }
   render() {
     const {title} = this.props;
@@ -214,18 +244,21 @@ class Popup extends React.Component {
     const{height_resize}=this.props;
     const{content}=this.props;
     return (
-      
       <div>  
         { title!="Success" &&
            <div className='popup'>
 
            <div className='popup_inner' style={{width:width_resize,height:height_resize}}>
                <div className="popup-header">
-                   <span>{title}</span>
-                   <img onClick={this.togglePopup.bind(this,title)}  src={Closebutton} className="Group-15"/>
+                  <span>{title}</span>
+                  <div onClick={this.togglePopup.bind(this,title)}  className="icon-icn_close_popup Group-15"></div>
+                  {title=="Filedetail" &&
+                   <div onClick={this.Share.bind(this,title)}  className="icon-Share2 Group-15"></div>
+                  } 
                </div> 
                {title=="Upload File" && this.Upload_File(content)} 
                {title=="Create Folder" && this.Create_Folder(content)} 
+               {title=="Filedetail" && this.Detail_File(content.data,content.index_number)} 
            </div>
            </div>
         }   
