@@ -206,7 +206,6 @@ class DashBoard extends React.Component {
   onDownload=(fileUrl)=>{
     return(
       <div>
-      <a href={fileUrl}/>    
       </div>
     );
   }
@@ -219,7 +218,7 @@ class DashBoard extends React.Component {
                 <img onClick={()=> this.folderDetail(item)} src={FolderImage} className="folder-image"/>
                 {!item.editable && <div className={this.state.showtext}>{item.directoryName}</div>}
                 {item.editable && <input defaultValue={item.directoryName} onKeyUp={this.onenter.bind(this,item._id,index)}  type="text" /> }
-                <div className="icon-icn_more more" onClick={this.showActionPopup.bind(this, index)}>
+                <div className="icon-icn_more folder-more" onClick={this.showActionPopup.bind(this, index)}>
                 {this.state.showsmallpopup && item.showPopup && 
                 <div  id={index} className="smallpopup">
                   <div className="smallpopup_inner">
@@ -240,8 +239,7 @@ class DashBoard extends React.Component {
                   <div key={index}  className="folder-cont">
                     <img onClick={()=> this.fileDetail(item)} src={FileImage} className="folder-image"/>
                     <div className={this.state.showtext}>{item.fileName}</div>
-                    <div className="icon-icn_download2 more" onClick={this.onDownload.bind(this, item.fileUrl)}>
-                    </div>
+                    <a href={item.fileUrl}><div className="icon-icn_download2 folder-more"> </div></a>
                     <input type="button" onClick={this.onClickshare.bind(this)} className="Rectangle-share" value="Share"/>
                     <span className="project-size">{Math.round((item.fileSize/(1024*1024))* 100)/100 }mb</span>
                   </div>
@@ -284,7 +282,7 @@ class DashBoard extends React.Component {
             <div className="file-outer-image" ><img onClick={this.togglePopup.bind(this,"file_detail",index)} src={item.fileUrl} className="file-grid-image" /></div>
             <div className="file-bottom">
               <div className="file-name">{item.fileName}</div>
-              <div className="icon-icn_download2 file-more" onClick={this.onDownload.bind(this,item.fileUrl)}></div>
+              <a href={item.fileUrl}><div className="icon-icn_download2 more"> </div></a>
             </div>
         </div>
             )}

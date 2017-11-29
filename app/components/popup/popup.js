@@ -25,6 +25,7 @@ class Popup extends React.Component {
         selectedPlatform:'',
         filecontent:[],
         indexnumber:0,
+        stoploop:true
      }
   }
 
@@ -117,19 +118,37 @@ class Popup extends React.Component {
        </div>
     );
   }
-  Next=(index)=>{
-   this.setState({
-     indexnumber:index
-   })
+  Next=(index,length)=>{
+    if(index>length){
+      this.setState({
+        indexnumber:0
+      })
+    }else{
+      this.setState({
+        indexnumber:index
+      })
+    }
+  }
+  Previous=(index,length)=>{
+    if(index<0){
+      this.setState({
+        indexnumber:length
+      })
+    }else{
+      this.setState({
+        indexnumber:index
+      })
+    }
   }
   Detail_File=(fileArr)=>{
     console.log("Index to:-",this.state.indexnumber);
+    console.log("Index to:-",fileArr);
     return(
       <div className="filedetail">
         <div className="fileImage">     
-          <div className="icon-side_arrow_left arrow" onClick={()=>this.Previous(--this.state.indexnumber)}></div> 
+          <div className="icon-side_arrow_left arrow" onClick={()=>this.Previous(--this.state.indexnumber,fileArr.length-1)}></div> 
           <img className="fileImage-popup" src={fileArr[this.state.indexnumber].fileUrl} alt="[IMAGE]"/>
-          <div className="icon-Side_arrow_right arrow" onClick={()=>this.Next(++this.state.indexnumber)}></div>
+          <div className="icon-Side_arrow_right arrow" onClick={()=>this.Next(++this.state.indexnumber,fileArr.length-1)}></div>
         </div>
         <div className="filesinfo">
           <div className="filename" >{fileArr[this.state.indexnumber].fileName}</div>
@@ -137,7 +156,7 @@ class Popup extends React.Component {
           <div className="file-info"><span>File Size :</span><span>{Math.round((fileArr[this.state.indexnumber].fileSize/(1024*1024))* 100)/100 }MB</span></div>
           <div className="file-info"><span>Created on:</span><span>{this.dateConversion(fileArr[this.state.indexnumber].createdAt)}</span></div>
           <div className="file-info"><span>Modified date :</span><span>{this.dateConversion(fileArr[this.state.indexnumber].modifiedAt)}</span></div>
-          <button className="file-dowload-button">Download</button>
+          <a href={fileArr[this.state.indexnumber].fileUrl}> <button className="file-dowload-button">Download</button></a>
         </div>
       </div>
     );
@@ -249,12 +268,12 @@ class Popup extends React.Component {
     const{width_resize}=this.props;
     const{height_resize}=this.props;
     const{content}=this.props;
-    if(content.index_number){
+    if(content.index_number && this.state.stoploop){
       let newState=Object.assign({},this.state);
       newState.indexnumber=content.index_number;
+      newState.stoploop=false;
       this.setState(newState);
     }
-    console.log(this.state.indexnumber);
     return (
       <div>  
         { title!="Success" &&
