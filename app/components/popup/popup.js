@@ -23,7 +23,8 @@ class Popup extends React.Component {
         parentFolder:'',
         platformArr :[{name:"IOS"},{name:"Android"},{name:"Web"}],
         selectedPlatform:'',
-        filecontent:[]
+        filecontent:[],
+        indexnumber:0,
      }
   }
 
@@ -96,14 +97,14 @@ class Popup extends React.Component {
 }
   Upload_File=(parentId)=>{
       return(
-          <div>
-         <div className="upload-file"><div className="upload-file-button" onClick={this.showcontentpopup.bind(this,"individual")}><span>Individual</span></div><div onClick={this.showcontentpopup.bind(this,"group")} className="upload-file-button"><span>Group</span></div></div>
-         <div className="form-folder">
-          {!this.state.showIndividual && this.individualcontents("single")}
-          {this.state.showIndividual && this.groupcontents()}
-          <div className="upload-btn" onClick={this.uploadFile.bind(this,parentId)}>Upload</div>
-         </div> 
-         </div>
+      <div>
+        <div className="upload-file"><div className="upload-file-button" onClick={this.showcontentpopup.bind(this,"individual")}><span>Individual</span></div><div onClick={this.showcontentpopup.bind(this,"group")} className="upload-file-button"><span>Group</span></div></div>
+        <div className="form-folder">
+        {!this.state.showIndividual && this.individualcontents("single")}
+        {this.state.showIndividual && this.groupcontents()}
+        <div className="upload-btn" onClick={this.uploadFile.bind(this,parentId)}>Upload</div>
+        </div> 
+       </div>
       );
   }
   Create_Folder=(parentId)=>{
@@ -116,21 +117,26 @@ class Popup extends React.Component {
        </div>
     );
   }
-  Detail_File=(fileArr,index,)=>{
-    console.log("Index to:-",index);
+  Next=(index)=>{
+   this.setState({
+     indexnumber:index
+   })
+  }
+  Detail_File=(fileArr)=>{
+    console.log("Index to:-",this.state.indexnumber);
     return(
       <div className="filedetail">
         <div className="fileImage">     
-          <div className="icon-side_arrow_left arrow" onClick={()=>this.Detail_File(fileArr,--index)}></div> 
-          <img className="fileImage-popup" src={fileArr[index].fileUrl} alt="[IMAGE]"/>
-          <div className="icon-Side_arrow_right arrow" onClick={()=>this.Detail_File(fileArr,++index)}></div>
+          <div className="icon-side_arrow_left arrow" onClick={()=>this.Previous(--this.state.indexnumber)}></div> 
+          <img className="fileImage-popup" src={fileArr[this.state.indexnumber].fileUrl} alt="[IMAGE]"/>
+          <div className="icon-Side_arrow_right arrow" onClick={()=>this.Next(++this.state.indexnumber)}></div>
         </div>
         <div className="filesinfo">
-          <div className="filename" >{fileArr[index].fileName}</div>
-          <div className="file-info"><span>File Type:</span><span>{fileArr[index].fileFormat}</span></div>
-          <div className="file-info"><span>File Size :</span><span>{Math.round((fileArr[index].fileSize/(1024*1024))* 100)/100 }MB</span></div>
-          <div className="file-info"><span>Created on:</span><span>{this.dateConversion(fileArr[index].createdAt)}</span></div>
-          <div className="file-info"><span>Modified date :</span><span>{this.dateConversion(fileArr[index].modifiedAt)}</span></div>
+          <div className="filename" >{fileArr[this.state.indexnumber].fileName}</div>
+          <div className="file-info"><span>File Type:</span><span>{fileArr[this.state.indexnumber].fileFormat}</span></div>
+          <div className="file-info"><span>File Size :</span><span>{Math.round((fileArr[this.state.indexnumber].fileSize/(1024*1024))* 100)/100 }MB</span></div>
+          <div className="file-info"><span>Created on:</span><span>{this.dateConversion(fileArr[this.state.indexnumber].createdAt)}</span></div>
+          <div className="file-info"><span>Modified date :</span><span>{this.dateConversion(fileArr[this.state.indexnumber].modifiedAt)}</span></div>
           <button className="file-dowload-button">Download</button>
         </div>
       </div>
@@ -243,6 +249,12 @@ class Popup extends React.Component {
     const{width_resize}=this.props;
     const{height_resize}=this.props;
     const{content}=this.props;
+    if(content.index_number){
+      let newState=Object.assign({},this.state);
+      newState.indexnumber=content.index_number;
+      this.setState(newState);
+    }
+    console.log(this.state.indexnumber);
     return (
       <div>  
         { title!="Success" &&
@@ -258,7 +270,7 @@ class Popup extends React.Component {
                </div> 
                {title=="Upload File" && this.Upload_File(content)} 
                {title=="Create Folder" && this.Create_Folder(content)} 
-               {title=="Filedetail" && this.Detail_File(content.data,content.index_number)} 
+               {title=="Filedetail" && this.Detail_File(content.data)} 
            </div>
            </div>
         }   
