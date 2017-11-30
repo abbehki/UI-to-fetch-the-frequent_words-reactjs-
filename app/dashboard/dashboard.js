@@ -83,13 +83,7 @@ class DashBoard extends React.Component {
       const { dispatch } = this.props;
       dispatch({type : ACTION.DASHBOARD.FOLDERDETAIL, data : pathObj._id });
   }
-
-  componentDidMount() {
-      let params ={};       
-      const { dispatch } = this.props;  
-      dispatch({type : ACTION.DASHBOARD.FOLDERLIST, data : params });
-  } 
-   
+  
  
   componentWillReceiveProps(newProps) {
       if(newProps.dashboard.folderArray){

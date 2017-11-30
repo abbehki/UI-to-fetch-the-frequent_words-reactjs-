@@ -24,6 +24,9 @@ const actions = {
     SEARCH:{
         'SEARCH_TAGS':'SEARCH_TAGS'
     },
+    SIDENAV:{
+        'SEARCHFILTER':'SEARCHFILTER'
+    }
 
 };
 export default actions;

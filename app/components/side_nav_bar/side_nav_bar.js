@@ -3,6 +3,9 @@ import './side_nav_bar.less';
 import {Link} from 'react-router';
 import Search from '../search/search';
 import '../popup/popup.less';
+import {connect} from 'react-redux';
+import ACTION from '../../action_constants';
+
 
 class SideNavBar extends React.Component{
     constructor(props){
@@ -13,22 +16,35 @@ class SideNavBar extends React.Component{
             dateArr :[{name:"DATE CREATED",count:"1234"},{name:"DATE MODIFIED",count:"1234"}],
             sizeArr :[{name:"WIDTH",count:"1234"},{name:"HEIGHT",count:"1234"}],
             icons:[{name:"PNG",count:"1234"},{name:"JPEG",count:"1234"},{name:"PDF", count:"342"},{name:"PDF", count:"342"}],
-            selectedPlatform:'',
-            selectedIcon:'',
-            selectedSize:'',
+            selectedPlatform:[],
+            selectedIcon:[],
+            selectedSize:[],
+            selectDate:'',   
+            selectProject:[],
+            projects:[],                 
             selectedPlatformBool:true,
             selectedIconBool:true,
             selectedSizeBool:true,
             selectDateBool:true,
-            selectedProjectBool:true,           
+            selectedProjectBool:true,     
+            topProjects:5
         }
     }
-
+    selectProject=(e)=>{
+        if(e.target.checked==true){
+            this.state.selectProject.push(e.target.value);            
+        }else{
+            this.state.selectProject.splice(this.state.selectProject.indexOf(e.target.value),1);
+        }
+      //  this.setState({selectProject:e.target.value})        
+    }
     selectPlatform=(e)=>{
-        this.setState({selectedPlatform:e.target.value})
+        this.state.selectedPlatform.push(e.target.value);        
+        // this.setState({selectedPlatform:e.target.value})
     }
     selectIcon=(e)=>{
-        this.setState({selectedIcon:e.target.value})
+        this.state.selectedIcon.push(e.target.value);                
+        // this.setState({selectedIcon:e.target.value})
     }
     selectDate=(e)=>{
         this.setState({selectedDate:e.target.value})
@@ -37,16 +53,21 @@ class SideNavBar extends React.Component{
         this.setState({selectedSize:e.target.value})
     }
     filtersearch=()=>{
-        console.log(this.state.selectedIcon);
-        console.log(this.state.selectedPlatform);
-        console.log(this.state.selectedDate);
-        console.log(this.state.selectedSize);
+        let param={
+            project:this.state.selectProject.toString(),
+            fileFormat:this.state.selectedIcon.toString(),
+            Plateform:this.state.selectedPlatform.toString(),
+            Date:this.state.selectedDate,
+            Size:this.state.selectedSize.toString()
+        }
+        const{dispatch}=this.props;
+        dispatch({type:ACTION.SIDENAV.SEARCHFILTER,data:param});
+        console.log(param);
     }
     toggle=(tags,e)=>{
         if(tags=="Plateform"){
             this.setState({
                 selectedPlatformBool:!this.state.selectedPlatformBool,
-                arrow:!this.state.arrow
             })
         }else if(tags=="Date"){
             this.setState({
@@ -84,10 +105,28 @@ class SideNavBar extends React.Component{
                     {this.state.selectedProjectBool && <span onClick={this.toggle.bind(this,"Project")} className="icon-icn_up_arrow drop-icon"></span>}
                     {!this.state.selectedProjectBool && <span onClick={this.toggle.bind(this,"Project")} className="icon-icn_drop_down drop-icon"></span>}
                     {
-                        this.state.selectedProjectBool && <Search type={this.state.search_tags}/>                                        
-                     }
+                        this.state.selectedProjectBool && 
+                        <div className="">
+                        {this.state.projects.map((item,index) =>  {
+                            if(index<this.state.topProjects){
+                                return(
+                                    <div className="">
+                                        <label className="container sub-cat-cont"><span>{item.directoryName}</span>
+                                            <input type="checkbox" key={index} value={item.directoryName} onClick={this.selectProject.bind(this)}/>  
+                                            <span className="checkmark"></span>
+                                        </label>
+                                    </div> 
+                            )    
+                         }                                       
+                    })
+                            
+                }
+                    <Search type={this.state.search_tags}/>                                       
                     </div> 
-                </div>
+                        
+                     }
+                </div> 
+            </div>
                 {/* platform section */}
              <div className="category-cont">
                     <div className="title">PLATFORM
@@ -173,6 +212,26 @@ class SideNavBar extends React.Component{
         </div>
         );
     }
+    componentWillReceiveProps(newprops){
+        let newState;
+        if(newprops.dashboard.folderArray){
+            newState=Object.assign({},this.state);
+            newState.projects=newprops.dashboard.folderArray.folderList;
+        }
+        this.setState(newState);
+        
+    }
+    componentDidMount() {
+        let params ={};       
+        const { dispatch } = this.props;  
+        dispatch({type : ACTION.DASHBOARD.FOLDERLIST, data : params });
+    } 
 }
 
-export default SideNavBar;
+const mapStateToProps = state => {
+    return {
+  dashboard:state.dashboard
+    };
+  };
+
+  export default connect(mapStateToProps)(SideNavBar);
