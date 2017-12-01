@@ -12,11 +12,16 @@ class Search extends React.Component{
         }
     }
 
-    onPressEnter=(event)=>{
+    onPressEnter=(type,event)=>{
         if(event.key=="Enter"){
             console.log("API call search content",event.target.value);
             const{dispatch}=this.props;
-            dispatch({type:ACTION.SEARCH.SEARCH_TAGS,data:event.target.value})
+            if(type=="search_tags"){
+                dispatch({type:ACTION.SEARCH.SEARCH_TAGS,data:event.target.value})                
+            }
+            else if(type="search_filter"){
+                dispatch({type:ACTION.SEARCH.SEARCH_PROJECTS})
+            }
             this.setState({
                 search_content:''                
             })
@@ -31,10 +36,9 @@ class Search extends React.Component{
 
     render(){
         const{type}=this.props;
-
         return(
                  <div className="wrapper-search"> 
-                      <input type="text" placeholder="Search" value={this.state.search_content} onChange={this.onChange.bind(this)} onKeyUp={this.onPressEnter.bind(this)} className="search" /> <div className="icon-icn_search search-image" ></div>
+                      <input type="text" placeholder="Search" value={this.state.search_content} onChange={this.onChange.bind(this,type)} onKeyUp={this.onPressEnter.bind(this)} className="search" /> <div className="icon-icn_search search-image" ></div>
                  </div>
                   
         );

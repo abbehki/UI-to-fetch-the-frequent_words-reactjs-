@@ -22,7 +22,8 @@ const actions = {
        'CHANGEBOOL':'CHANGEBOOL'
     },
     SEARCH:{
-        'SEARCH_TAGS':'SEARCH_TAGS'
+        'SEARCH_TAGS':'SEARCH_TAGS',
+        'SEARCH_PROJECTS':'SEARCH_PROJECTS'
     },
     SIDENAV:{
         'SEARCHFILTER':'SEARCHFILTER'

@@ -13,17 +13,27 @@ import history from '../../history';
 
 function* search_filter(action) {
   try {   
-     const filesDetailData = yield call(getDataWithToken, API.getfolderList +"?parentId="+action.data);
+     const filesDetailData = yield call(getDataWithToken, API.getfileList +"?parentId="+action.data);
      yield put({type : "FILEDATA", data : filesDetailData });     
    
   } catch (e) {
     yield put({type : "ERROR", error : e.error});
   }
 }
+function* search_project(action) {
+  try {   
+     const search_project = yield call(getDataWithToken, API.getfileList);
+     yield put({type : "SEARCH_PROJECT", data : search_project });
+    console.log();
+   
+  } catch (e) {
+    yield put({type : "ERROR", error : e.error});
+  }
+}search_project
 
 export {
 
     search_filter,
- 
+    search_project,
 };
 

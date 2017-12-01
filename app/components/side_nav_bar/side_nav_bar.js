@@ -12,10 +12,10 @@ class SideNavBar extends React.Component{
         super(props);
         this.state={
             search_tags:'search_tags',
+            search_filter:'search_filter',
             platformArr :[{name:"IOS",count:"1234"},{name:"ANDRIOD",count:"1234"},{name:"WEB", count:"342"}],
             dateArr :[{name:"DATE CREATED",count:"1234"},{name:"DATE MODIFIED",count:"1234"}],
-            sizeArr :[{name:"WIDTH",count:"1234"},{name:"HEIGHT",count:"1234"}],
-            icons:[{name:"PNG",count:"1234"},{name:"JPEG",count:"1234"},{name:"PDF", count:"342"},{name:"PDF", count:"342"}],
+            icons:[{name:"PNG",count:"1234"},{name:"JPEG",count:"1234"},{name:"PDF", count:"342"},{name:"SVG", count:"342"}],
             selectedPlatform:[],
             selectedIcon:[],
             selectedSize:[],
@@ -36,28 +36,45 @@ class SideNavBar extends React.Component{
         }else{
             this.state.selectProject.splice(this.state.selectProject.indexOf(e.target.value),1);
         }
-      //  this.setState({selectProject:e.target.value})        
     }
     selectPlatform=(e)=>{
-        this.state.selectedPlatform.push(e.target.value);        
-        // this.setState({selectedPlatform:e.target.value})
+        if(e.target.checked==true){
+            this.state.selectedPlatform.push(e.target.value);                    
+        }
+        else{
+            this.state.selectedPlatform.splice(this.state.selectedPlatform.indexOf(e.target.value),1);
+        }
     }
     selectIcon=(e)=>{
+        if(e.target.checked==true){            
         this.state.selectedIcon.push(e.target.value);                
-        // this.setState({selectedIcon:e.target.value})
+        }else{
+            this.state.selectedIcon.splice(this.state.selectedIcon.indexOf(e.target.value),1);
+        }
     }
     selectDate=(e)=>{
-        this.setState({selectedDate:e.target.value})
+        // if(e.target.checked==true){                        
+        //     this.state.selectDate.push(e.target.value);                
+        // }else{
+        //     this.state.selectDate.splice(this.state.selectDate.indexOf(e.target.value),1);
+        // }
+        this.setState({
+            selectDate:e.target.value
+        })
     }
     selectSize=(e)=>{
+        if(e.target.checked==true){                                    
         this.setState({selectedSize:e.target.value})
+        }else{
+            this.state.selectedSize.splice(this.state.selectedSize.indexOf(e.target.value),1);
+        }
     }
     filtersearch=()=>{
         let param={
             project:this.state.selectProject.toString(),
             fileFormat:this.state.selectedIcon.toString(),
             Plateform:this.state.selectedPlatform.toString(),
-            Date:this.state.selectedDate,
+            Date:this.state.selectDate,
             Size:this.state.selectedSize.toString()
         }
         const{dispatch}=this.props;
@@ -121,7 +138,7 @@ class SideNavBar extends React.Component{
                     })
                             
                 }
-                    <Search type={this.state.search_tags}/>                                       
+                    <Search type={this.state.search_filter}/>                                       
                     </div> 
                         
                      }
@@ -138,7 +155,7 @@ class SideNavBar extends React.Component{
                                     return(
                                         <div className="">
                                             <label className="container sub-cat-cont"><span>{item.name}</span>
-                                                <input type="checkbox" value={item.name}  onClick={this.selectPlatform.bind(this)}/>  
+                                               <input type="checkbox" value={item.name}  onClick={this.selectPlatform.bind(this)}/>  
                                                 <span className="checkmark"></span>
                                             </label>
                                             <div className="data-count">{item.count}</div>
@@ -168,7 +185,7 @@ class SideNavBar extends React.Component{
                         }
                     </div>   }   
                     </div>              
-                        {/* Date section */}
+                {/* Date section */}        
                  <div className="category-cont">
                     <div className="title">BY DATE
                     {this.state.selectDateBool && <span onClick={this.toggle.bind(this,"Date")} className="icon-icn_up_arrow drop-icon"></span>}
@@ -193,18 +210,20 @@ class SideNavBar extends React.Component{
                     <div className="title">BY SIZE
                     {this.state.selectedSizeBool && <span onClick={this.toggle.bind(this,"Size")} className="icon-icn_up_arrow drop-icon"></span>}
                     {!this.state.selectedSizeBool && <span onClick={this.toggle.bind(this,"Size")} className="icon-icn_drop_down drop-icon"></span>}                     </div>
-                    {this.state.selectedSizeBool && <div className="">
-                        {this.state.sizeArr.map((item,index) =>  {                                    
-                                    return(
-                                        <div className="">
-                                            <label className="container sub-cat-cont-input"><span>{item.name}</span>
-                                            </label>
-                                            <input type="text" className="data-input"></input>
-                                        </div> 
-                                )                   
-                            })
-                        }
-                    </div>   }             
+                    {this.state.selectedSizeBool && 
+                     <div className="">
+                        <div className="">
+                            <label className="container sub-cat-cont-input"><span>WIDTH (px)</span>
+                            </label>
+                            <input type="text" onClick={this.selectDate.bind(this,"width")} placeholder="Enter" className="data-input"></input>
+                        </div> 
+                        <div className="">
+                            <label className="container sub-cat-cont-input"><span>HEIGHT (px)</span>
+                            </label>
+                            <input type="text" onClick={this.selectDate.bind(this,"height")} placeholder="Enter" className="data-input"></input>
+                        </div> 
+                    </div>   
+                }             
                 </div>
 
             <button className="side-bar-search" onClick={()=>this.filtersearch(this)}>Search</button>               

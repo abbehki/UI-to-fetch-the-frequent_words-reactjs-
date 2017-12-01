@@ -117,16 +117,16 @@ class DashBoard extends React.Component {
       }
        if(newProps.dashboard.folderDetail){
         this.setState({folderArr:newProps.dashboard.folderDetail.folderList});    
-   }  
+     }  
 
-   if(newProps.dashboard.fileUrl){
-    this.state.fileArray.push(newProps.dashboard.fileUrl); 
-    console.log(newProps.dashboard.fileUrl)  
-    // if(this.state.fileArray.length == newProps.dashboard.file_length){
-    //   const { dispatch } = this.props;
-    //   dispatch({type : ACTION.DASHBOARD.FOLDERDETAIL, data : newProps.dashboard.fileUrl.parentDirectoryId});
-    // }
-  }
+      if(newProps.dashboard.fileUrl){
+        this.state.fileArray.push(newProps.dashboard.fileUrl); 
+        console.log(newProps.dashboard.fileUrl)  
+        // if(this.state.fileArray.length == newProps.dashboard.file_length){
+        //   const { dispatch } = this.props;
+        //   dispatch({type : ACTION.DASHBOARD.FOLDERDETAIL, data : newProps.dashboard.fileUrl.parentDirectoryId});
+        // }
+      }
        if(newProps.dashboard.folderData){
         let folderArray =[];
         let eachFolderData =newProps.dashboard.folderData;
@@ -313,7 +313,9 @@ class DashBoard extends React.Component {
       showgridicon:false
     })
    }
-
+   shouldComponentUpdate(){
+     return true; 
+    }
   render() {
     return (
       <div>

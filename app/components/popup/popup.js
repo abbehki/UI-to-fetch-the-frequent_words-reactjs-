@@ -268,7 +268,7 @@ class Popup extends React.Component {
     const{width_resize}=this.props;
     const{height_resize}=this.props;
     const{content}=this.props;
-    if(content.index_number && this.state.stoploop){
+    if(content && content.index_number && this.state.stoploop){
       let newState=Object.assign({},this.state);
       newState.indexnumber=content.index_number;
       newState.stoploop=false;
