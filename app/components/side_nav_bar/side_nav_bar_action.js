@@ -22,14 +22,14 @@ function* search_filter(action) {
 }
 function* search_project(action) {
   try {   
-     const search_project = yield call(getDataWithToken, API.getfileList);
-     yield put({type : "SEARCH_PROJECT", data : search_project });
-    console.log();
+    //  const search_project = yield call(getDataWithToken, API.getfileList);
+    //  yield put({type : "SEARCH_PROJECT", data : search_project });
+    console.log(action.data);
    
   } catch (e) {
     yield put({type : "ERROR", error : e.error});
   }
-}search_project
+}
 
 export {
 

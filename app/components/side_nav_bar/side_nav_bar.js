@@ -17,6 +17,7 @@ class SideNavBar extends React.Component{
             dateArr :[{name:"DATE CREATED",count:"1234"},{name:"DATE MODIFIED",count:"1234"}],
             icons:[{name:"PNG",count:"1234"},{name:"JPEG",count:"1234"},{name:"PDF", count:"342"},{name:"SVG", count:"342"}],
             selectedPlatform:[],
+            sidenavbool:false,
             selectedIcon:[],
             selectedSize:[],
             selectDate:'',   
@@ -110,13 +111,37 @@ class SideNavBar extends React.Component{
         }
 
     }
+    OnclickMoreLoad=()=>{
+        this.setState({
+            sidenavbool:!this.state.sidenavbool,
+        })
+    }
+   
     render(){
+        console.log("project list",this.state.projects);
         return(
             <div className="side-nav-cont">
+                {this.state.sidenavbool &&
+                  <div className="aSearch_option-Project-Admin">
+                      <div className="icon-icn_close_project close-sidebar" onClick={this.OnclickMoreLoad.bind(this)} ></div>
+                    <Search type={this.state.search_filter}/>  
+                    <div className="project-display">
+                    {this.state.projects.map((item,index) =>  {
+                   return(
+                    <label key={index} className="container sub-cat-cont"><span>{item.directoryName}</span>
+                        <input type="checkbox" value={item.directoryName} onClick={this.selectProject.bind(this)}/>  
+                        <span className="checkmark"></span>
+                    </label>
+                   ) 
+                    })
+                }
+                     </div>         
+                  </div>
+                }
                  <Search type={this.state.search_tags}/>           
                  <div className="filter-cont">
                  <div className="hide-factes">Hide Factes</div> 
-                 {/* platform section */}
+                 {/* project section */}
                  <div className="category-cont">
                     <div className="title">PROJECT
                     {this.state.selectedProjectBool && <span onClick={this.toggle.bind(this,"Project")} className="icon-icn_up_arrow drop-icon"></span>}
@@ -134,14 +159,15 @@ class SideNavBar extends React.Component{
                                         </label>
                                     </div> 
                             )    
-                         }                                       
+                         }                                      
                     })
                             
                 }
-                    <Search type={this.state.search_filter}/>                                       
+                    {!this.state.sidenavbool && <div onClick={this.OnclickMoreLoad.bind(this)} className="LOAD-MORE">LOAD MORE  >></div>}
+                    {this.state.sidenavbool && <div onClick={this.OnclickMoreLoad.bind(this)} className="LOAD-MORE">LOAD LESS >> </div>}
                     </div> 
                         
-                     }
+         }
                 </div> 
             </div>
                 {/* platform section */}
@@ -233,10 +259,21 @@ class SideNavBar extends React.Component{
     }
     componentWillReceiveProps(newprops){
         let newState;
-        if(newprops.dashboard.folderArray){
-            newState=Object.assign({},this.state);
+        newState=Object.assign({},this.state);
+        if("project_selected" in localStorage){
+             console.log('yes');
+             const objects = JSON.parse(localStorage.getItem("project_selected"));
+             newState.projects=objects;
+        } else {
+             console.log('no');
+            if(newprops.dashboard.folderArray){
+            localStorage.setItem("project_selected", JSON.stringify(newprops.dashboard.folderArray.folderList));
             newState.projects=newprops.dashboard.folderArray.folderList;
-        }
+           }
+        }      
+        //  if(newprops.dashboard.folderArray){
+        //     newState.projects=newprops.dashboard.folderArray.folderList;
+        // }
         this.setState(newState);
         
     }

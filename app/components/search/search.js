@@ -27,7 +27,7 @@ class Search extends React.Component{
             })
         }
     }
-    onChange=(event)=>{
+    onChangevalue=(event)=>{
         console.log(event.target.value);
         this.setState({
             search_content:event.target.value,
@@ -38,7 +38,8 @@ class Search extends React.Component{
         const{type}=this.props;
         return(
                  <div className="wrapper-search"> 
-                      <input type="text" placeholder="Search" value={this.state.search_content} onChange={this.onChange.bind(this,type)} onKeyUp={this.onPressEnter.bind(this)} className="search" /> <div className="icon-icn_search search-image" ></div>
+                     
+                      <input type="text" placeholder="Search" value={this.state.search_content} onChange={this.onChangevalue.bind(this)} onKeyUp={this.onPressEnter.bind(this,type)} className="search" /> <div className="icon-icn_search search-image" ></div>
                  </div>
                   
         );
