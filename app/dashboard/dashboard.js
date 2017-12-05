@@ -197,12 +197,6 @@ class DashBoard extends React.Component {
      });
      this.setState(newState);
    }
-  onDownload=(fileUrl)=>{
-    return(
-      <div>
-      </div>
-    );
-  }
    listview=()=>{
     return(
         <div className="folder-wrapper">

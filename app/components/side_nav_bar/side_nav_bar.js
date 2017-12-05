@@ -5,6 +5,7 @@ import Search from '../search/search';
 import '../popup/popup.less';
 import {connect} from 'react-redux';
 import ACTION from '../../action_constants';
+import '../../common.less';
 
 
 class SideNavBar extends React.Component{
@@ -23,19 +24,27 @@ class SideNavBar extends React.Component{
             selectDate:'',   
             selectProject:[],
             projects:[],                 
-            selectedPlatformBool:true,
-            selectedIconBool:true,
-            selectedSizeBool:true,
-            selectDateBool:true,
-            selectedProjectBool:true,     
-            topProjects:5
+            selectedPlatformBool:false,
+            selectedIconBool:false,
+            selectedSizeBool:false,
+            selectDateBool:false,
+            selectedProjectBool:false,     
+            topProjects:5,
+            factesBool:true,
+            width_size:'',
+            heigth_size:'',
+            project_id:[],
+            showfavourite:true
         }
     }
-    selectProject=(e)=>{
+    selectProject=(id,e)=>{
         if(e.target.checked==true){
-            this.state.selectProject.push(e.target.value);            
+            this.state.selectProject.push(e.target.value); 
+            this.state.project_id.push(id);             
         }else{
             this.state.selectProject.splice(this.state.selectProject.indexOf(e.target.value),1);
+            this.state.project_id.splice(this.state.project_id.indexOf(id),1);
+            
         }
     }
     selectPlatform=(e)=>{
@@ -63,20 +72,24 @@ class SideNavBar extends React.Component{
             selectDate:e.target.value
         })
     }
-    selectSize=(e)=>{
-        if(e.target.checked==true){                                    
-        this.setState({selectedSize:e.target.value})
+    selectSize=(type,e)=>{
+        let newStateSize=Object.assign({},this.state);
+        if(type=="width"){
+            newStateSize.width_size=e.target.value;
         }else{
-            this.state.selectedSize.splice(this.state.selectedSize.indexOf(e.target.value),1);
+            newStateSize.heigth_size=e.target.value
         }
+        this.setState(newStateSize);
     }
     filtersearch=()=>{
         let param={
             project:this.state.selectProject.toString(),
             fileFormat:this.state.selectedIcon.toString(),
             Plateform:this.state.selectedPlatform.toString(),
+            Id:this.state.project_id.toString(),            
             Date:this.state.selectDate,
-            Size:this.state.selectedSize.toString()
+            width:this.state.width_size,
+            height:this.state.heigth_size,
         }
         const{dispatch}=this.props;
         dispatch({type:ACTION.SIDENAV.SEARCHFILTER,data:param});
@@ -116,6 +129,37 @@ class SideNavBar extends React.Component{
             sidenavbool:!this.state.sidenavbool,
         })
     }
+    hideAll=(event)=>{
+            this.setState({
+                selectedPlatformBool:false,
+                selectedProjectBool:false,
+                selectedSizeBool:false,
+                selectedIconBool:false,  
+                selectDateBool:false,
+                factesBool:!this.state.factesBool,
+            })
+    }
+    showAll=(event)=>{
+        this.setState({
+            selectedPlatformBool:true,
+            selectedProjectBool:true,
+            selectedSizeBool:true,
+            selectedIconBool:true,  
+            selectDateBool:true,
+            factesBool:!this.state.factesBool,
+        })
+    }
+    onClickfavourite=(index,e)=>{
+        e.preventDefault();
+        const newState = Object.assign(this.state);
+        newState.projects.forEach((item, folderIndex)=> {
+          if(index === folderIndex) {
+            item.showfavourite = !item.showfavourite;   
+          }
+        });
+        this.setState(newState);
+        e.stopPropagation(); 
+   }
    
     render(){
         console.log("project list",this.state.projects);
@@ -126,10 +170,12 @@ class SideNavBar extends React.Component{
                       <div className="icon-icn_close_project close-sidebar" onClick={this.OnclickMoreLoad.bind(this)} ></div>
                     <Search type={this.state.search_filter}/>  
                     <div className="project-display">
-                    {this.state.projects.map((item,index) =>  {
-                   return(
+                    {this.state.projects.map((item,index) => {
+                    return(
                     <label key={index} className="container sub-cat-cont"><span>{item.directoryName}</span>
-                        <input type="checkbox" value={item.directoryName} onClick={this.selectProject.bind(this)}/>  
+                        <input type="checkbox" value={item.directoryName} onClick={this.selectProject.bind(this,item._id)}/>  
+                        {!item.showfavourite && <span id={index} onClick={this.onClickfavourite.bind(this,index)} className="icon-icn_favorite fav-icon"></span>}
+                        {item.showfavourite && <span id={index} onClick={this.onClickfavourite.bind(this,index)} className="icon-icn_favorite_selected fav-icon"></span>}
                         <span className="checkmark"></span>
                     </label>
                    ) 
@@ -137,24 +183,24 @@ class SideNavBar extends React.Component{
                 }
                      </div>         
                   </div>
-                }
+            }
                  <Search type={this.state.search_tags}/>           
                  <div className="filter-cont">
-                 <div className="hide-factes">Hide Factes</div> 
+                  {!this.state.factesBool &&  <div onClick={this.hideAll.bind(this)} className="hide-factes">Hide Factes</div> }
+                  {this.state.factesBool &&  <div onClick={this.showAll.bind(this)} className="hide-factes">Show Factes</div> }
                  {/* project section */}
                  <div className="category-cont">
                     <div className="title">PROJECT
                     {this.state.selectedProjectBool && <span onClick={this.toggle.bind(this,"Project")} className="icon-icn_up_arrow drop-icon"></span>}
                     {!this.state.selectedProjectBool && <span onClick={this.toggle.bind(this,"Project")} className="icon-icn_drop_down drop-icon"></span>}
-                    {
-                        this.state.selectedProjectBool && 
+                    { this.state.selectedProjectBool && 
                         <div className="">
                         {this.state.projects.map((item,index) =>  {
                             if(index<this.state.topProjects){
                                 return(
                                     <div className="">
                                         <label className="container sub-cat-cont"><span>{item.directoryName}</span>
-                                            <input type="checkbox" key={index} value={item.directoryName} onClick={this.selectProject.bind(this)}/>  
+                                            <input type="checkbox" key={index} value={item.directoryName} onClick={this.selectProject.bind(this,item._id)}/>  
                                             <span className="checkmark"></span>
                                         </label>
                                     </div> 
@@ -172,7 +218,7 @@ class SideNavBar extends React.Component{
             </div>
                 {/* platform section */}
              <div className="category-cont">
-                    <div className="title">PLATFORM
+                <div className="title">PLATFORM
                     {this.state.selectedPlatformBool && <span onClick={this.toggle.bind(this,"Plateform")} className="icon-icn_up_arrow drop-icon"></span>}
                     {!this.state.selectedPlatformBool && <span onClick={this.toggle.bind(this,"Plateform")} className="icon-icn_drop_down drop-icon"></span>}    
                     </div>
@@ -241,12 +287,12 @@ class SideNavBar extends React.Component{
                         <div className="">
                             <label className="container sub-cat-cont-input"><span>WIDTH (px)</span>
                             </label>
-                            <input type="text" onClick={this.selectDate.bind(this,"width")} placeholder="Enter" className="data-input"></input>
+                            <input type="text" onChange={this.selectSize.bind(this,"width")} placeholder="Enter" className="data-input"></input>
                         </div> 
                         <div className="">
                             <label className="container sub-cat-cont-input"><span>HEIGHT (px)</span>
                             </label>
-                            <input type="text" onClick={this.selectDate.bind(this,"height")} placeholder="Enter" className="data-input"></input>
+                            <input type="text" onChange={this.selectSize.bind(this,"height")} placeholder="Enter" className="data-input"></input>
                         </div> 
                     </div>   
                 }             
