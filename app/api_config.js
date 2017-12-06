@@ -1,6 +1,6 @@
 const config = require('../config/config');
 const baseUrl = config.baseUrl;
-const baseUrl2=config.baseUrl2;
+const baseUrl2= config.baseUrl2;
 
 const API = {
   signIn : baseUrl2 + 'write/signIn',
@@ -10,8 +10,9 @@ const API = {
   deletefolders:baseUrl2+'write/archiveDirectory',
   renamefolder:baseUrl2+'write/updateDirectoryName',
   searching_tags:baseUrl2+'read/searchFiles',
-  uploadImg : baseUrl + 'write/saveFile',
-
+  uploadImg : baseUrl2 + 'write/saveFile',
+  searching_filter:baseUrl2+'read/fileSearchSortFilter',
+  searching_project:baseUrl2+'read/searchProjectName?search=',
 };
 
 module.exports = API;

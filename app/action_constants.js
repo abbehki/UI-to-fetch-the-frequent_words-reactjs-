@@ -23,7 +23,8 @@ const actions = {
     },
     SEARCH:{
         'SEARCH_TAGS':'SEARCH_TAGS',
-        'SEARCH_PROJECTS':'SEARCH_PROJECTS'
+        'SEARCH_PROJECTS':'SEARCH_PROJECTS',
+        'FOLDERLIST':'FOLDERLIST',
     },
     SIDENAV:{
         'SEARCHFILTER':'SEARCHFILTER'

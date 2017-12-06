@@ -15,7 +15,7 @@ class SideNavBar extends React.Component{
             search_tags:'search_tags',
             search_filter:'search_filter',
             platformArr :[{name:"IOS",count:"1234"},{name:"ANDRIOD",count:"1234"},{name:"WEB", count:"342"}],
-            dateArr :[{name:"DATE CREATED",count:"1234"},{name:"DATE MODIFIED",count:"1234"}],
+            dateArr :[{name:"CREATED"},{name:"MODIFIED"}],
             icons:[{name:"PNG",count:"1234"},{name:"JPEG",count:"1234"},{name:"PDF", count:"342"},{name:"SVG", count:"342"}],
             selectedPlatform:[],
             sidenavbool:false,
@@ -34,7 +34,9 @@ class SideNavBar extends React.Component{
             width_size:'',
             heigth_size:'',
             project_id:[],
-            showfavourite:true
+            showfavourite:true,
+            search:'',
+            topproject:[]
         }
     }
     selectProject=(id,e)=>{
@@ -90,6 +92,7 @@ class SideNavBar extends React.Component{
             Date:this.state.selectDate,
             width:this.state.width_size,
             height:this.state.heigth_size,
+            search:this.state.search,
         }
         const{dispatch}=this.props;
         dispatch({type:ACTION.SIDENAV.SEARCHFILTER,data:param});
@@ -195,10 +198,10 @@ class SideNavBar extends React.Component{
                     {!this.state.selectedProjectBool && <span onClick={this.toggle.bind(this,"Project")} className="icon-icn_drop_down drop-icon"></span>}
                     { this.state.selectedProjectBool && 
                         <div className="">
-                        {this.state.projects.map((item,index) =>  {
+                        {this.state.topproject.map((item,index) =>  {
                             if(index<this.state.topProjects){
                                 return(
-                                    <div className="">
+                                    <div key={index} className="">
                                         <label className="container sub-cat-cont"><span>{item.directoryName}</span>
                                             <input type="checkbox" key={index} value={item.directoryName} onClick={this.selectProject.bind(this,item._id)}/>  
                                             <span className="checkmark"></span>
@@ -206,8 +209,7 @@ class SideNavBar extends React.Component{
                                     </div> 
                             )    
                          }                                      
-                    })
-                            
+                    })                          
                 }
                     {!this.state.sidenavbool && <div onClick={this.OnclickMoreLoad.bind(this)} className="LOAD-MORE">LOAD MORE  >></div>}
                     {this.state.sidenavbool && <div onClick={this.OnclickMoreLoad.bind(this)} className="LOAD-MORE">LOAD LESS >> </div>}
@@ -237,7 +239,7 @@ class SideNavBar extends React.Component{
                         }
                     </div>  }                  
                     </div> 
-                        {/* Icons section */}
+                {/* Icons section */}
                  <div className="category-cont">
                     <div className="title">ICONS
                     {this.state.selectedIconBool && <span onClick={this.toggle.bind(this,"Icons")} className="icon-icn_up_arrow drop-icon"></span>}
@@ -267,10 +269,9 @@ class SideNavBar extends React.Component{
                                     return(
                                         <div className="">
                                             <label className="container sub-cat-cont"><span>{item.name}</span>
-                                                <input type="checkbox" value={item.name}  onClick={this.selectDate.bind(this)}/>  
+                                                <input type="checkbox" value={item.name} onClick={this.selectDate.bind(this)}/>  
                                                 <span className="checkmark"></span>
                                             </label>
-                                            <div className="data-count">{item.count}</div>
                                         </div> 
                                 )                   
                             })
@@ -303,36 +304,40 @@ class SideNavBar extends React.Component{
         </div>
         );
     }
-    componentWillReceiveProps(newprops){
+    componentWillReceiveProps(newprops){    
         let newState;
         newState=Object.assign({},this.state);
-        if("project_selected" in localStorage){
-             console.log('yes');
-             const objects = JSON.parse(localStorage.getItem("project_selected"));
-             newState.projects=objects;
-        } else {
-             console.log('no');
-            if(newprops.dashboard.folderArray){
-            localStorage.setItem("project_selected", JSON.stringify(newprops.dashboard.folderArray.folderList));
-            newState.projects=newprops.dashboard.folderArray.folderList;
+        if(newprops.side_nav_bar.search_project){
+            newState.projects=newprops.side_nav_bar.search_project.data;
+        }
+        // if("project_selected" in localStorage){
+        //      console.log('yes');
+        //      const objects = JSON.parse(localStorage.getItem("project_selected"));
+        //      newState.projects=objects;
+        //      newState.topproject=objects;
+        // } else {
+        //      console.log('no');
+            if(newprops.side_nav_bar.folderArray){
+            localStorage.setItem("project_selected", JSON.stringify(newprops.side_nav_bar.folderArray.folderList));
+            newState.projects=newprops.side_nav_bar.folderArray.folderList;
+            newState.topproject=newprops.side_nav_bar.folderArray.folderList;
            }
-        }      
-        //  if(newprops.dashboard.folderArray){
-        //     newState.projects=newprops.dashboard.folderArray.folderList;
-        // }
+        // }      
+        
         this.setState(newState);
         
     }
     componentDidMount() {
         let params ={};       
         const { dispatch } = this.props;  
-        dispatch({type : ACTION.DASHBOARD.FOLDERLIST, data : params });
+        dispatch({type : ACTION.SEARCH.FOLDERLIST, data : params });
     } 
 }
 
 const mapStateToProps = state => {
     return {
-  dashboard:state.dashboard
+  dashboard:state.dashboard,
+  side_nav_bar:state.side_nav_bar
     };
   };
 
