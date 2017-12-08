@@ -6,24 +6,33 @@ function side_nav_bar(state = getSessionData() , action) {
   switch (action.type) {
     case 'FILEDATA' :
           tempState.folderData = action.data.data;        
-          console.log( "FILEDATA:-",tempState.folderData);
           return tempState;
 
     case 'SEARCH_PROJECT' :
           tempState.search_project = action.data;   
           tempState.folderArray=false;
-          console.log( "SEARCH_PROJECT:-",tempState.search_project);
           return tempState;
 
     case 'STORE_FOLDER_LIST' :
           tempState.folderArray = action.data.data;        
-          console.log( "Folderarray:-",tempState.folderArray);
           return tempState; 
 
-    case 'SEARCH_PROJECT_FAIL' :
-          tempState.search_project = false;        
+    case 'FILTERDETAIL_FALSE' :
+          tempState.filterdetail = false;        
+          return tempState; 
+      
+    case 'FILTERDETAIL' :
+          tempState.filterdetail= action.data;        
           return tempState; 
 
+    case 'COUNTS_FILTER' :
+          tempState.platform= action.data.platform;        
+          tempState.fileformat=action.data.fileformats;         
+          return tempState; 
+
+    case 'GETFAVOURITE' :
+          tempState.favourite= action.data;        
+          return tempState;
 
     case  'ERROR':
           tempState.folderError = action.error;         

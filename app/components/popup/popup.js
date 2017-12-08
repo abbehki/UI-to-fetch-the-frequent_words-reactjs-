@@ -57,7 +57,6 @@ class Popup extends React.Component {
 
   _handlekeypress=(event)=>{
       if(event.key=="Enter"){
-        console.log(event.target.value);
         this.state.tags.push(event.target.value);
         this.setState({
           tagname:''
@@ -84,7 +83,6 @@ class Popup extends React.Component {
   uploadFile(parentDirectoryId,event){
     var data =this.state;
     for(var i=1;i<this.state.filecontent.length;i++){
-      console.log(this.state.filecontent[i])
         let formData = new FormData();   
         formData.append("file", this.state.filecontent[1]);
         formData.append("width","45");
@@ -141,8 +139,6 @@ class Popup extends React.Component {
     }
   }
   Detail_File=(fileArr)=>{
-    console.log("Index to:-",this.state.indexnumber);
-    console.log("Index to:-",fileArr);
     return(
       <div className="filedetail">
         <div className="fileImage">     
@@ -178,13 +174,7 @@ class Popup extends React.Component {
     });
     dispatch({type:ACTION.DASHBOARD.FILELENGTH,data:fl})
   }
-  onClickuploadfile=(tags)=>{
-      if(tags=="single"){
-          console.log(tags);
-      }else{
-        console.log(tags);        
-      }
-  }
+ 
 
   individualcontents=(tags)=>{
     return(

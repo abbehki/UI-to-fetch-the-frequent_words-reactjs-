@@ -25,6 +25,8 @@ const actions = {
         'SEARCH_TAGS':'SEARCH_TAGS',
         'SEARCH_PROJECTS':'SEARCH_PROJECTS',
         'FOLDERLIST':'FOLDERLIST',
+        'COUNT':'COUNT',
+        'FAVOURITE':'FAVOURITE'
     },
     SIDENAV:{
         'SEARCHFILTER':'SEARCHFILTER'

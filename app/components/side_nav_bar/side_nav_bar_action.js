@@ -13,9 +13,8 @@ import history from '../../history';
 
 function* search_filter(action) {
   try {   
-     const filterdetail = yield call(getDataWithToken, API.searching_filter +"?fileFormat="+action.data.fileFormat+'&directoryId='+action.data.Id+'&platform='+action.data.Plateform+'&height='+action.data.height+'&width='+action.data.width+'&search='+action.data.search+'&sort='+action.data.Date);
-    //  yield put({type : "FILEDATA", data : filesDetailData });     
-    console.log("Filter details",filterdetail)   
+     const filterdetail = yield call(getDataWithToken, API.searching_filter +"?fileFormat="+action.data.fileFormat+'&directoryId='+action.data.Id+'&platform='+action.data.Platform+'&height='+action.data.height+'&width='+action.data.width+'&search='+action.data.search+'&sort='+action.data.Date);
+     yield put({type : "FILTERDETAIL", data : filterdetail });     
   } catch (e) {
     yield put({type : "ERROR", error : e.error});
   }
@@ -39,10 +38,27 @@ function* getProjectList(action) {
     yield put({type : "ERROR", error : e.error});
   }
 }  
-
+function* getCount(action) {
+  try { 
+    const counts = yield call(getDataWithToken, API.getCountof);
+    yield put({type : "COUNTS_FILTER", data : {platform:counts.data.platforms,fileformats:counts.data.fileFormats} });   
+  } catch (e) {
+    yield put({type : "ERROR", error : e.error});
+  }
+}  
+function* getFavorite(action) {
+  try { 
+    const Favorite = yield call(getDataWithToken, API.getFavouriteof);
+    yield put({type : "GETFAVOURITE", data :Favorite });   
+  } catch (e) {
+    yield put({type : "ERROR", error : e.error});
+  }
+}  
 export {
     search_filter,
     search_project,
-    getProjectList
+    getProjectList,
+    getCount,
+    getFavorite
 };
 

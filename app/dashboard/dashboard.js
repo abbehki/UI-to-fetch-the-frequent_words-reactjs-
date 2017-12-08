@@ -89,10 +89,28 @@ class DashBoard extends React.Component {
       if(newProps.dashboard.folderArray){
         this.setState({folderArr:newProps.dashboard.folderArray.folderList});
       }
-      if(newProps.dashboard.folderDetail){
-        this.setState({filesArr:newProps.dashboard.folderDetail.filesList});   
-        this.setState({folderArr:newProps.dashboard.folderDetail.folderList});         
+      if(newProps.side_nav_bar.filterdetail){
+        const{dispatch}=this.props;                
+        this.setState({filesArr:newProps.side_nav_bar.filterdetail.data,
+          folderArr:[]}); 
+          newProps.dashboard.folderArray=false; 
+          newProps.dashboard.folderDetail =false;
+          dispatch({type :'FILTERDETAIL_FALSE'});             
       }
+      if(newProps.dashboard.folderDetail ){
+        this.setState({filesArr:newProps.dashboard.folderDetail.filesList});   
+        this.setState({folderArr:newProps.dashboard.folderDetail.folderList });         
+      }
+      
+
+      if(newProps.dashboard.search_flag){
+        const{dispatch}=this.props;        
+        this.setState({filesArr:newProps.dashboard.search_content,
+              folderArr:[],
+            path:[{folderName:"Dashboard",_id:""}]});    
+            dispatch({type :'CLOSE_CREATEFILES'});          
+      }   
+
        if(!newProps.dashboard.changebool_cancel || !newProps.dashboard.changestate_smallpopup){
         this.setState({
           showCreatefolderPopup:newProps.dashboard.changebool_cancel ,
@@ -121,7 +139,6 @@ class DashBoard extends React.Component {
 
       if(newProps.dashboard.fileUrl){
         this.state.fileArray.push(newProps.dashboard.fileUrl); 
-        console.log(newProps.dashboard.fileUrl)  
         // if(this.state.fileArray.length == newProps.dashboard.file_length){
         //   const { dispatch } = this.props;
         //   dispatch({type : ACTION.DASHBOARD.FOLDERDETAIL, data : newProps.dashboard.fileUrl.parentDirectoryId});
@@ -136,13 +153,6 @@ class DashBoard extends React.Component {
               dispatch({type :'CLOSE_CREATEFOLDER'});       
             }
 
-      if(newProps.dashboard.search_flag){
-        const{dispatch}=this.props;        
-        this.setState({filesArr:newProps.dashboard.search_content,
-              folderArr:[],
-            path:[{folderName:"Dashboard",_id:""}]});    
-            dispatch({type :'CLOSE_CREATEFILES'});          
-      }   
 
 
    }
@@ -381,7 +391,9 @@ class DashBoard extends React.Component {
 
 const mapStateToProps = state => {
   return {
-dashboard:state.dashboard
+    dashboard:state.dashboard,
+    side_nav_bar:state.side_nav_bar
+
   };
 };
 

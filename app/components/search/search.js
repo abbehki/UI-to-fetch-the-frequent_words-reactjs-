@@ -14,7 +14,6 @@ class Search extends React.Component{
 
     onPressEnter=(type,event)=>{
         if(event.key=="Enter"){
-            console.log("API call search content",event.target.value);
             const{dispatch}=this.props;
             if(type=="search_tags"){
                 dispatch({type:ACTION.SEARCH.SEARCH_TAGS,data:event.target.value})                

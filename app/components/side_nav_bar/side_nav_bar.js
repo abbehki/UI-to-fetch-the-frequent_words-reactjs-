@@ -14,9 +14,9 @@ class SideNavBar extends React.Component{
         this.state={
             search_tags:'search_tags',
             search_filter:'search_filter',
-            platformArr :[{name:"IOS",count:"1234"},{name:"ANDRIOD",count:"1234"},{name:"WEB", count:"342"}],
+            platformArr :[],
             dateArr :[{name:"CREATED"},{name:"MODIFIED"}],
-            icons:[{name:"PNG",count:"1234"},{name:"JPEG",count:"1234"},{name:"PDF", count:"342"},{name:"SVG", count:"342"}],
+            icons:[],
             selectedPlatform:[],
             sidenavbool:false,
             selectedIcon:[],
@@ -39,6 +39,12 @@ class SideNavBar extends React.Component{
             topproject:[]
         }
     }
+
+    conversionSplit=(stringvalue)=>{
+        var a = stringvalue.split("/") // Delimiter is a string
+        return a[1].toUpperCase();
+        }
+
     selectProject=(id,e)=>{
         if(e.target.checked==true){
             this.state.selectProject.push(e.target.value); 
@@ -65,11 +71,6 @@ class SideNavBar extends React.Component{
         }
     }
     selectDate=(e)=>{
-        // if(e.target.checked==true){                        
-        //     this.state.selectDate.push(e.target.value);                
-        // }else{
-        //     this.state.selectDate.splice(this.state.selectDate.indexOf(e.target.value),1);
-        // }
         this.setState({
             selectDate:e.target.value
         })
@@ -87,7 +88,7 @@ class SideNavBar extends React.Component{
         let param={
             project:this.state.selectProject.toString(),
             fileFormat:this.state.selectedIcon.toString(),
-            Plateform:this.state.selectedPlatform.toString(),
+            Platform:this.state.selectedPlatform.toString(),
             Id:this.state.project_id.toString(),            
             Date:this.state.selectDate,
             width:this.state.width_size,
@@ -96,10 +97,9 @@ class SideNavBar extends React.Component{
         }
         const{dispatch}=this.props;
         dispatch({type:ACTION.SIDENAV.SEARCHFILTER,data:param});
-        console.log(param);
     }
     toggle=(tags,e)=>{
-        if(tags=="Plateform"){
+        if(tags=="Platform"){
             this.setState({
                 selectedPlatformBool:!this.state.selectedPlatformBool,
             })
@@ -156,6 +156,7 @@ class SideNavBar extends React.Component{
         e.preventDefault();
         const newState = Object.assign(this.state);
         newState.projects.forEach((item, folderIndex)=> {
+            //change this
           if(index === folderIndex) {
             item.showfavourite = !item.showfavourite;   
           }
@@ -165,7 +166,7 @@ class SideNavBar extends React.Component{
    }
    
     render(){
-        console.log("project list",this.state.projects);
+        console.log("this.state.favourite",this.props.side_nav_bar.favourite && this.props.side_nav_bar.favourite._id);        
         return(
             <div className="side-nav-cont">
                 {this.state.sidenavbool &&
@@ -182,11 +183,11 @@ class SideNavBar extends React.Component{
                         <span className="checkmark"></span>
                     </label>
                    ) 
-                    })
-                }
+                 })
+            }
                      </div>         
                   </div>
-            }
+         }
                  <Search type={this.state.search_tags}/>           
                  <div className="filter-cont">
                   {!this.state.factesBool &&  <div onClick={this.hideAll.bind(this)} className="hide-factes">Hide Factes</div> }
@@ -221,15 +222,15 @@ class SideNavBar extends React.Component{
                 {/* platform section */}
              <div className="category-cont">
                 <div className="title">PLATFORM
-                    {this.state.selectedPlatformBool && <span onClick={this.toggle.bind(this,"Plateform")} className="icon-icn_up_arrow drop-icon"></span>}
-                    {!this.state.selectedPlatformBool && <span onClick={this.toggle.bind(this,"Plateform")} className="icon-icn_drop_down drop-icon"></span>}    
+                    {this.state.selectedPlatformBool && <span onClick={this.toggle.bind(this,"Platform")} className="icon-icn_up_arrow drop-icon"></span>}
+                    {!this.state.selectedPlatformBool && <span onClick={this.toggle.bind(this,"Platform")} className="icon-icn_drop_down drop-icon"></span>}    
                     </div>
                     {this.state.selectedPlatformBool && <div className="">
                         {this.state.platformArr.map((item,index) =>  {                                    
                                     return(
                                         <div className="">
-                                            <label className="container sub-cat-cont"><span>{item.name}</span>
-                                               <input type="checkbox" value={item.name}  onClick={this.selectPlatform.bind(this)}/>  
+                                            <label className="container sub-cat-cont"><span>{item.platform.toUpperCase()}</span>
+                                               <input type="checkbox" value={item.platform.toUpperCase()}  onClick={this.selectPlatform.bind(this)}/>  
                                                 <span className="checkmark"></span>
                                             </label>
                                             <div className="data-count">{item.count}</div>
@@ -248,8 +249,8 @@ class SideNavBar extends React.Component{
                         {this.state.icons.map((item,index) =>  {                                    
                                     return(
                                         <div className="">
-                                            <label className="container sub-cat-cont"><span>{item.name}</span>
-                                                <input type="checkbox" value={item.name}  onClick={this.selectIcon.bind(this)}/>  
+                                            <label className="container sub-cat-cont"><span>{this.conversionSplit(item.fileFormat)}</span>
+                                                <input type="checkbox" value={this.conversionSplit(item.fileFormat)}  onClick={this.selectIcon.bind(this)}/>  
                                                 <span className="checkmark"></span>
                                             </label>
                                             <div className="data-count">{item.count}</div>
@@ -323,7 +324,13 @@ class SideNavBar extends React.Component{
             newState.topproject=newprops.side_nav_bar.folderArray.folderList;
            }
         // }      
-        
+                
+        if(newprops.side_nav_bar.platform && newprops.side_nav_bar.fileformat){
+            //alert("asas")
+            newState.platformArr=newprops.side_nav_bar.platform;
+             newState.icons=newprops.side_nav_bar.fileformat;
+        }
+
         this.setState(newState);
         
     }
@@ -331,6 +338,8 @@ class SideNavBar extends React.Component{
         let params ={};       
         const { dispatch } = this.props;  
         dispatch({type : ACTION.SEARCH.FOLDERLIST, data : params });
+        dispatch({type : ACTION.SEARCH.COUNT});
+        dispatch({type : ACTION.SEARCH.FAVOURITE});      
     } 
 }
 

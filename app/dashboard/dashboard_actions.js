@@ -23,7 +23,6 @@ function* createFolder(action) {
 function* getFolderList(action) {
   try { 
     const folderListData = yield call(getDataWithToken, API.getfolderList , action.data.params);
-    console.log("folderlist we have:-",folderListData)
     yield put({type : "STORE_FOLDER_LIST", data : folderListData });  
        
    
@@ -71,7 +70,6 @@ function* filelength(action) {
 }
 function* renamefolder(action) {
   try {
-    console.log(action.data);
     const renamefolder = yield call(PatchDataWithToken, API.renamefolder,action.data);
     yield put({type : "RENAME", data : renamefolder });    
     yield put({type : ACTION.DASHBOARD.FOLDERLIST,data : false});        

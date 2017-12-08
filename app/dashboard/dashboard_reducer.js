@@ -31,7 +31,7 @@ function dashboard(state = getSessionData() , action) {
           return tempState;  
            
     case 'CLOSE_CREATEFOLDER' :
-          tempState.folderData=false; 
+          tempState.folderData=false;     
           tempState.search_flag=false;   
           return tempState; 
           
