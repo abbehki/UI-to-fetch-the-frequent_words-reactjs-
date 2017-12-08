@@ -152,13 +152,40 @@ class SideNavBar extends React.Component{
             factesBool:!this.state.factesBool,
         })
     }
+    checkArray(favourite_array,id){
+          for(let i=0; i<favourite_array.length;i++){
+                if(favourite_array[i]._id==id){
+                     return true;
+                     break;
+                    }else{
+                        return false;
+                    }
+          }
+    }
     onClickfavourite=(index,e)=>{
         e.preventDefault();
         const newState = Object.assign(this.state);
         newState.projects.forEach((item, folderIndex)=> {
-            //change this
-          if(index === folderIndex) {
-            item.showfavourite = !item.showfavourite;   
+            //array match item.showfavourite = true
+            // console.log(this.props.side_nav_bar.favourite.data);
+            if(this.props.side_nav_bar.favourite.data.length>0){
+                item.favourite=this.checkArray(this.props.side_nav_bar.favourite.data,item._id);        
+                console.log("return statement checkArray",item.favourite);        
+            }else{
+                item.favourite=false;
+            }
+            if(index === folderIndex) {
+            const{dispatch}=this.props;   
+           if(item.showfavourite==true){
+               //delete API
+               dispatch({type:ACTION.SIDENAV.DELETEFAV,data:item._id})
+               item.showfavourite=!item.showfavourite;
+               
+           }else if(item.favourite==false){
+               //add API
+               dispatch({type:ACTION.SIDENAV.ADDFAV,data:item._id})               
+               item.showfavourite=!item.showfavourite;
+           }
           }
         });
         this.setState(newState);
@@ -166,7 +193,6 @@ class SideNavBar extends React.Component{
    }
    
     render(){
-        console.log("this.state.favourite",this.props.side_nav_bar.favourite && this.props.side_nav_bar.favourite._id);        
         return(
             <div className="side-nav-cont">
                 {this.state.sidenavbool &&
@@ -175,13 +201,15 @@ class SideNavBar extends React.Component{
                     <Search type={this.state.search_filter}/>  
                     <div className="project-display">
                     {this.state.projects.map((item,index) => {
-                    return(
+                    return(<div>
                     <label key={index} className="container sub-cat-cont"><span>{item.directoryName}</span>
                         <input type="checkbox" value={item.directoryName} onClick={this.selectProject.bind(this,item._id)}/>  
                         {!item.showfavourite && <span id={index} onClick={this.onClickfavourite.bind(this,index)} className="icon-icn_favorite fav-icon"></span>}
                         {item.showfavourite && <span id={index} onClick={this.onClickfavourite.bind(this,index)} className="icon-icn_favorite_selected fav-icon"></span>}
                         <span className="checkmark"></span>
                     </label>
+                   
+                    </div>
                    ) 
                  })
             }

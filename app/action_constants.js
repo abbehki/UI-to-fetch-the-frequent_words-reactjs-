@@ -26,10 +26,13 @@ const actions = {
         'SEARCH_PROJECTS':'SEARCH_PROJECTS',
         'FOLDERLIST':'FOLDERLIST',
         'COUNT':'COUNT',
-        'FAVOURITE':'FAVOURITE'
+        'FAVOURITE':'FAVOURITE',
+        
     },
     SIDENAV:{
-        'SEARCHFILTER':'SEARCHFILTER'
+        'SEARCHFILTER':'SEARCHFILTER',
+        'DELETEFAV':'DELETEFAV',
+        'ADDFAV':'ADDFAV',
     }
 
 };

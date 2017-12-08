@@ -54,11 +54,31 @@ function* getFavorite(action) {
     yield put({type : "ERROR", error : e.error});
   }
 }  
+function* deletefavourite(action) {
+  try { 
+    alert(action.data);
+    // const Favorite = yield call(getDataWithToken, API.getFavouriteof);
+    // yield put({type : "GETFAVOURITE", data :Favorite });   
+  } catch (e) {
+    yield put({type : "ERROR", error : e.error});
+  }
+}  
+function* addfavourite(action) {
+  try { 
+    alert(action.data);
+    // const Favorite = yield call(getDataWithToken, API.getFavouriteof);
+    // yield put({type : "GETFAVOURITE", data :Favorite });   
+  } catch (e) {
+    yield put({type : "ERROR", error : e.error});
+  }
+} 
 export {
     search_filter,
     search_project,
     getProjectList,
     getCount,
-    getFavorite
+    getFavorite,
+    deletefavourite,
+    addfavourite
 };
 
