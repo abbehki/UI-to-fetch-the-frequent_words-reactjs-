@@ -21,11 +21,9 @@ function* search_filter(action) {
 }
 function* search_project(action) {
   try {   
-    if(action.data==""){
-     yield put({type : ACTION.SEARCH.FOLDERLIST, data : {} });
-  }
      const search_project = yield call(getDataWithToken, API.searching_project+action.data);
      yield put({type : "SEARCH_PROJECT", data : search_project });
+     console.log(search_project);
   } catch (e) {
     yield put({type : "ERROR", error : e.error});
   }
@@ -57,7 +55,6 @@ function* getFavorite(action) {
  
 function* addfavourite(action) {
   try { 
-    console.log(action.data);
     const addFavorite = yield call(postDataWithToken, API.Favouriteof,action.data);
    // yield put({type : "ADDFAVOURITE", data : addFavorite });   
    console.log(addFavorite)
@@ -68,7 +65,6 @@ function* addfavourite(action) {
 
 function* deletefavourite(action) {
   try { 
-    console.log(action.data);
     const deleteFavorite = yield call(deleteDataWithToken, API.Favouriteof,action.data);
     //yield put({type : "GETFAVOURITE", data :deleteFavorite }); API
   } catch (e) {

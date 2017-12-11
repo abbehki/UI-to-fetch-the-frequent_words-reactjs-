@@ -18,7 +18,6 @@ function getDataWithToken(url) {
   });
 }
 function deleteDataWithToken(url,data) {
-  alert("deletetetete")
   return new Promise((resolve, reject)=>{
     $.ajax({
       url: url,

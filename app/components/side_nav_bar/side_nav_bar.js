@@ -162,13 +162,11 @@ class SideNavBar extends React.Component{
             const{dispatch}=this.props;   
            if(showfavourites==true){
                //delete API
-               alert("delete");
                dispatch({type:ACTION.SIDENAV.DELETEFAV,data:{directoryId:item._id.toString()}})               
                item.showfavourite=!item.showfavourite;
                
            }else if(showfavourites==false){
                //add API
-               alert("add");
                dispatch({type:ACTION.SIDENAV.ADDFAV,data:{directoryId:item._id.toString()}})               
                item.showfavourite=!item.showfavourite;
            }
@@ -338,6 +336,7 @@ class SideNavBar extends React.Component{
         newState=Object.assign({},this.state);
         if(newprops.side_nav_bar.search_project){
             newState.projects=newprops.side_nav_bar.search_project.data;
+            newState.i=0;
         }
         // if("project_selected" in localStorage){
         //      console.log('yes');
