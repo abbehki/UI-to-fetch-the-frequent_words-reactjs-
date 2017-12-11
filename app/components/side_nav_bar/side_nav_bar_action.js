@@ -1,6 +1,6 @@
 import { delay } from 'redux-saga';
 import { call,put, takeEvery,select} from 'redux-saga/effects';
-import {PostDataWithOutToken,postDataWithToken,getDataWithToken,postMulitipartDataWithToken,PatchDataWithToken} from '../../util/ajax';
+import {PostDataWithOutToken,postDataWithToken,getDataWithToken,postMulitipartDataWithToken,PatchDataWithToken,deleteDataWithToken} from '../../util/ajax';
 import API from '../../api_config';
 import { browserHistory } from 'react-router';
 import ACTION from '../../action_constants';
@@ -48,27 +48,31 @@ function* getCount(action) {
 }  
 function* getFavorite(action) {
   try { 
-    const Favorite = yield call(getDataWithToken, API.getFavouriteof);
+    const Favorite = yield call(getDataWithToken, API.Favouriteof);
     yield put({type : "GETFAVOURITE", data :Favorite });   
   } catch (e) {
     yield put({type : "ERROR", error : e.error});
   }
 }  
-function* deletefavourite(action) {
-  try { 
-    alert(action.data);
-    // const Favorite = yield call(getDataWithToken, API.getFavouriteof);
-    // yield put({type : "GETFAVOURITE", data :Favorite });   
-  } catch (e) {
-    yield put({type : "ERROR", error : e.error});
-  }
-}  
+ 
 function* addfavourite(action) {
   try { 
-    alert(action.data);
-    // const Favorite = yield call(getDataWithToken, API.getFavouriteof);
-    // yield put({type : "GETFAVOURITE", data :Favorite });   
+    console.log(action.data);
+    const addFavorite = yield call(postDataWithToken, API.Favouriteof,action.data);
+   // yield put({type : "ADDFAVOURITE", data : addFavorite });   
+   console.log(addFavorite)
   } catch (e) {
+    yield put({type : "ERROR", error : e.error.message});
+  }
+} 
+
+function* deletefavourite(action) {
+  try { 
+    console.log(action.data);
+    const deleteFavorite = yield call(deleteDataWithToken, API.Favouriteof,action.data);
+    //yield put({type : "GETFAVOURITE", data :deleteFavorite }); API
+  } catch (e) {
+    alert(e)
     yield put({type : "ERROR", error : e.error});
   }
 } 
@@ -79,6 +83,7 @@ export {
     getCount,
     getFavorite,
     deletefavourite,
-    addfavourite
+    addfavourite,
+    
 };
 

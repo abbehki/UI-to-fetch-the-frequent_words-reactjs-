@@ -14,7 +14,7 @@ const API = {
   searching_filter:baseUrl2+'read/fileSearchSortFilter',
   searching_project:baseUrl2+'read/searchProjectName?search=',
   getCountof:baseUrl2+'read/getCountOf',
-  getFavouriteof:baseUrl2+'write/UserFavourites',
+  Favouriteof:baseUrl2+'write/UserFavourites',
   
 };
 

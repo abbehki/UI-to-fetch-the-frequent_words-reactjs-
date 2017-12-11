@@ -36,7 +36,8 @@ class SideNavBar extends React.Component{
             project_id:[],
             showfavourite:true,
             search:'',
-            topproject:[]
+            topproject:[],
+            i:0
         }
     }
 
@@ -152,46 +153,41 @@ class SideNavBar extends React.Component{
             factesBool:!this.state.factesBool,
         })
     }
-    checkArray(favourite_array,id){
-          for(let i=0; i<favourite_array.length;i++){
-                if(favourite_array[i]._id==id){
-                     return true;
-                     break;
-                    }else{
-                        return false;
-                    }
-          }
-    }
-    onClickfavourite=(index,e)=>{
+    onClickfavourite=(index,showfavourites,e)=>{
         e.preventDefault();
+        // console.error(item.showfavourite);        
         const newState = Object.assign(this.state);
         newState.projects.forEach((item, folderIndex)=> {
-            //array match item.showfavourite = true
-            // console.log(this.props.side_nav_bar.favourite.data);
-            if(this.props.side_nav_bar.favourite.data.length>0){
-                item.favourite=this.checkArray(this.props.side_nav_bar.favourite.data,item._id);        
-                console.log("return statement checkArray",item.favourite);        
-            }else{
-                item.favourite=false;
-            }
             if(index === folderIndex) {
             const{dispatch}=this.props;   
-           if(item.showfavourite==true){
+           if(showfavourites==true){
                //delete API
-               dispatch({type:ACTION.SIDENAV.DELETEFAV,data:item._id})
+               alert("delete");
+               dispatch({type:ACTION.SIDENAV.DELETEFAV,data:{directoryId:item._id.toString()}})               
                item.showfavourite=!item.showfavourite;
                
-           }else if(item.favourite==false){
+           }else if(showfavourites==false){
                //add API
-               dispatch({type:ACTION.SIDENAV.ADDFAV,data:item._id})               
+               alert("add");
+               dispatch({type:ACTION.SIDENAV.ADDFAV,data:{directoryId:item._id.toString()}})               
                item.showfavourite=!item.showfavourite;
            }
           }
-        });
+         });
         this.setState(newState);
         e.stopPropagation(); 
    }
-   
+
+   checkFavourite=(id,favourite_array)=>{
+        for(let i=0; i<favourite_array.length;i++){
+            if(favourite_array[i]._id==id){
+                 return true;
+                }else{
+                    continue;
+                }
+      } 
+      return false;       
+   }
     render(){
         return(
             <div className="side-nav-cont">
@@ -201,11 +197,15 @@ class SideNavBar extends React.Component{
                     <Search type={this.state.search_filter}/>  
                     <div className="project-display">
                     {this.state.projects.map((item,index) => {
-                    return(<div>
+                        if(this.state.projects.length>this.state.i++){
+                            item.showfavourite=this.checkFavourite(item._id,this.props.side_nav_bar.favourite.data);
+                        }                      
+                    return(
+                    <div>
                     <label key={index} className="container sub-cat-cont"><span>{item.directoryName}</span>
                         <input type="checkbox" value={item.directoryName} onClick={this.selectProject.bind(this,item._id)}/>  
-                        {!item.showfavourite && <span id={index} onClick={this.onClickfavourite.bind(this,index)} className="icon-icn_favorite fav-icon"></span>}
-                        {item.showfavourite && <span id={index} onClick={this.onClickfavourite.bind(this,index)} className="icon-icn_favorite_selected fav-icon"></span>}
+                        {!item.showfavourite && <span id={index} onClick={this.onClickfavourite.bind(this,index,item.showfavourite)} className="icon-icn_favorite fav-icon"></span>}
+                        {item.showfavourite && <span id={index} onClick={this.onClickfavourite.bind(this,index,item.showfavourite)} className="icon-icn_favorite_selected fav-icon"></span>}
                         <span className="checkmark"></span>
                     </label>
                    

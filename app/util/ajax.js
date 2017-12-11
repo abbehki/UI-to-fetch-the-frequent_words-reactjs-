@@ -17,6 +17,25 @@ function getDataWithToken(url) {
     });
   });
 }
+function deleteDataWithToken(url,data) {
+  alert("deletetetete")
+  return new Promise((resolve, reject)=>{
+    $.ajax({
+      url: url,
+      type:'DELETE',
+      data:data,
+      success: (data)=> {
+        resolve(data);
+      },
+      headers: {       
+         token:common.getSessionToken()
+      },
+      error: (error)=> {
+        reject(error);
+      }
+    });
+  });
+}
 function postDataWithToken(url, data) {
   return new Promise((resolve, reject)=>{
     $.ajax({
@@ -100,5 +119,6 @@ export {
   postDataWithToken,
   PostDataWithOutToken,
   postMulitipartDataWithToken,
-  PatchDataWithToken
+  PatchDataWithToken,
+  deleteDataWithToken
 };
