@@ -14,6 +14,14 @@ function dashboard(state = getSessionData() , action) {
           console.log( "Folderarray:-",tempState.folderArray);
           return tempState; 
 
+   case  'PROFILE_DETAILS' :
+          tempState.profile_detail = action.data;    
+          tempState.user_name=action.data.name;
+          localStorage.setItem("name", action.data.name);
+          localStorage.setItem("profile", action.data.picture);
+          
+          return tempState; 
+
     case 'STORE_FOLDER_DETAIL' :
           tempState.folderDetail = action.data.data;        
           console.log( "Folderdetail:-",tempState.folderDetail);

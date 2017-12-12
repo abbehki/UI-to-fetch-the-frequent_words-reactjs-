@@ -21,9 +21,7 @@ class Search extends React.Component{
             else if(type="search_filter"){
                 dispatch({type:ACTION.SEARCH.SEARCH_PROJECTS,data:event.target.value});
             }
-            this.setState({
-                search_content:''                
-            })
+           
         }
     }
 

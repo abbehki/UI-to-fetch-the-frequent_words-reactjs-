@@ -21,6 +21,10 @@ function* search_filter(action) {
 }
 function* search_project(action) {
   try {   
+    if(action.data==''){
+      let params={};
+      yield put({type : ACTION.SEARCH.FOLDERLIST, data : params });      
+    }
      const search_project = yield call(getDataWithToken, API.searching_project+action.data);
      yield put({type : "SEARCH_PROJECT", data : search_project });
      console.log(search_project);

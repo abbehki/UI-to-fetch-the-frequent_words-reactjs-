@@ -25,7 +25,9 @@ class Popup extends React.Component {
         selectedPlatform:'',
         filecontent:[],
         indexnumber:0,
-        stoploop:true
+        stoploop:true,
+        active:'#32CD32',
+        noactive:''
      }
   }
 
@@ -97,7 +99,7 @@ class Popup extends React.Component {
   Upload_File=(parentId)=>{
       return(
       <div>
-        <div className="upload-file"><div className="upload-file-button" onClick={this.showcontentpopup.bind(this,"individual")}><span>Individual</span></div><div onClick={this.showcontentpopup.bind(this,"group")} className="upload-file-button"><span>Group</span></div></div>
+        <div className="upload-file"><div className="upload-file-button" style={{backgroundColor:this.state.active}} onClick={this.showcontentpopup.bind(this,"individual")}><span>Individual</span></div><div onClick={this.showcontentpopup.bind(this,"group")} style={{backgroundColor:this.state.noactive}} className="upload-file-button"><span>Group</span></div></div>
         <div className="form-folder">
         {!this.state.showIndividual && this.individualcontents("single")}
         {this.state.showIndividual && this.groupcontents()}
@@ -198,9 +200,9 @@ class Popup extends React.Component {
                                   <label className="container"><span>{item.name}</span>
                                       <input type="checkbox"  onClick={this.selectPlatform.bind(this,item.name)}/>  
                                     <span className="checkmark"></span>
-                                </label>
-                                  </div> 
-                               )                   
+                                  </label>
+                                </div> 
+                      )                   
                 })
                 }
         </div>                                                  
@@ -229,12 +231,16 @@ class Popup extends React.Component {
   showcontentpopup=(tags)=>{
     if(tags=="individual"){
       this.setState({
-        showIndividual:true
+        showIndividual:true,
+        active:'#32CD32',
+        noactive:''
       });
     }
     else if(tags=="group"){
       this.setState({
-        showIndividual:false
+        showIndividual:false,
+        noactive:'#32CD32',
+        active:''
       });
     }
   }

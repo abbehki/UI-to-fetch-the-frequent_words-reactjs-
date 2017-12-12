@@ -1,6 +1,6 @@
 import { delay } from 'redux-saga';
 import { call,put, takeEvery,select} from 'redux-saga/effects';
-import {PostDataWithOutToken,postDataWithToken,getDataWithToken,postMulitipartDataWithToken,PatchDataWithToken} from '../util/ajax';
+import {PostDataWithOutToken,postDataWithToken,getDataWithToken,postMulitipartDataWithToken,PatchDataWithToken,getDataWithoutToken} from '../util/ajax';
 import API from '../api_config';
 import { browserHistory } from 'react-router';
 import ACTION from '../action_constants';
@@ -14,6 +14,16 @@ function* createFolder(action) {
   try {   
     const folderData = yield call(postDataWithToken, API.folderCreate , action.data.paramObj);
     yield put({type : "STORE_FOLDER_DETAILS", data : folderData });     
+   
+  } catch (e) {
+    yield put({type : "ERROR", error : e.error});
+  }
+}
+
+function* profile(action) {
+  try {   
+    const profileDetail = yield call(getDataWithoutToken, API.profiledetail+action.data);
+    yield put({type : "PROFILE_DETAILS", data : profileDetail });     
    
   } catch (e) {
     yield put({type : "ERROR", error : e.error});
@@ -108,6 +118,7 @@ export {
   renamefolder,
   search_tags,
   uploadImg,
-  filelength
+  filelength,
+  profile
 };
 

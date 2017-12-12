@@ -17,6 +17,19 @@ function getDataWithToken(url) {
     });
   });
 }
+function getDataWithoutToken(url) {
+  return new Promise((resolve, reject)=>{
+    $.ajax({
+      url: url,
+      success: (data)=> {
+        resolve(data);
+      },
+      error: (error)=> {
+        reject(error);
+      }
+    });
+  });
+}
 function deleteDataWithToken(url,data) {
   return new Promise((resolve, reject)=>{
     $.ajax({
@@ -119,5 +132,6 @@ export {
   PostDataWithOutToken,
   postMulitipartDataWithToken,
   PatchDataWithToken,
-  deleteDataWithToken
+  deleteDataWithToken,
+  getDataWithoutToken
 };

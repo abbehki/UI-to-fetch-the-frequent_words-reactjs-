@@ -104,7 +104,8 @@ class DashBoard extends React.Component {
       
 
       if(newProps.dashboard.search_flag){
-        const{dispatch}=this.props;        
+        const{dispatch}=this.props;  
+        newProps.dashboard.folderDetail=false;  
         this.setState({filesArr:newProps.dashboard.search_content,
               folderArr:[],
             path:[{folderName:"Dashboard",_id:""}]});    
@@ -156,6 +157,10 @@ class DashBoard extends React.Component {
 
 
    }
+   componentWillMount(){
+     const {dispatch}=this.props;
+      dispatch({type:ACTION.DASHBOARD.PROFILE,data:this.props.auth.userToken});
+  }
 
   onClickshare=(e)=>{
         e.preventDefault();
@@ -321,6 +326,7 @@ class DashBoard extends React.Component {
      return true; 
     }
   render() {
+    // alert(this.props.auth.userToken);
     return (
       <div>
       <MenuBar/>
@@ -392,8 +398,8 @@ class DashBoard extends React.Component {
 const mapStateToProps = state => {
   return {
     dashboard:state.dashboard,
-    side_nav_bar:state.side_nav_bar
-
+    side_nav_bar:state.side_nav_bar,
+    auth:state.auth,
   };
 };
 

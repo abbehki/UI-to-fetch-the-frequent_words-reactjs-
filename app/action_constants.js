@@ -13,7 +13,8 @@ const actions = {
         'RENAME'   :'RENAME',
         'UPLOADIMAGE' : 'UPLOADIMAGE',
         'DELETEFOLDER':'DELETEFOLDER',
-        'FILELENGTH':'FILELENGTH'
+        'FILELENGTH':'FILELENGTH',
+        'PROFILE':'PROFILE'
     },
     FILEUPLOAD:{
         'UPLOAD':'UPLOAD'
