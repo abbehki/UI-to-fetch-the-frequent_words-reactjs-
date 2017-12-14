@@ -255,8 +255,8 @@ class SideNavBar extends React.Component{
                         {this.state.platformArr.map((item,index) =>  {                                    
                                     return(
                                         <div className="">
-                                            <label className="container sub-cat-cont"><span>{item.platform.toUpperCase()}</span>
-                                               <input type="checkbox" value={item.platform.toUpperCase()}  onClick={this.selectPlatform.bind(this)}/>  
+                                            <label className="container sub-cat-cont"><span>{item.platform}</span>
+                                               <input type="checkbox" value={item.platform}  onClick={this.selectPlatform.bind(this)}/>  
                                                 <span className="checkmark"></span>
                                             </label>
                                             <div className="data-count">{item.count}</div>

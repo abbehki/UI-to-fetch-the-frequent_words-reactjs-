@@ -22,7 +22,7 @@ class Popup extends React.Component {
         foldername:'',
         parentFolder:'',
         platformArr :[{name:"IOS"},{name:"Android"},{name:"Web"}],
-        selectedPlatform:'',
+        selectedPlatform:[],
         filecontent:[],
         indexnumber:0,
         stoploop:true,
@@ -55,8 +55,7 @@ class Popup extends React.Component {
             tagname:name.target.value
             })
         }
-    }
-
+      }
   _handlekeypress=(event)=>{
       if(event.key=="Enter"){
         this.state.tags.push(event.target.value);
@@ -65,15 +64,19 @@ class Popup extends React.Component {
         })
       }          
   }
-
   clearinput=(e)=>{
     this.setState({
       foldername:'',
       tags:'',
     })
   }
-  selectPlatform(platformName){
-    this.setState({selectedPlatform:platformName})
+  selectPlatform(event){
+    if(event.target.checked==true){
+      this.state.selectedPlatform.push(event.target.value);                    
+  }
+    else{
+      this.state.selectedPlatform.splice(this.state.selectedPlatform.indexOf(event.target.value),1);
+  }
   }
   Share=()=>{
     alert("Share it here");
@@ -89,11 +92,11 @@ class Popup extends React.Component {
         formData.append("file", this.state.filecontent[1]);
         formData.append("width","45");
         formData.append("height","55");
-        formData.append("platform",this.state.selectedPlatform);
+        formData.append("platform",JSON.stringify(this.state.selectedPlatform));
         formData.append("parentDirectoryId",parentDirectoryId);
         formData.append("tags",JSON.stringify(this.state.tags));
         const { dispatch } = this.props;
-        dispatch({type : ACTION.DASHBOARD.UPLOADIMAGE, data : formData });
+        dispatch({type : ACTION.DASHBOARD.UPLOADIMAGE, data : {data:formData,totalfilelength:this.state.filelength} });
   }
 }
   Upload_File=(parentId)=>{
@@ -112,8 +115,21 @@ class Popup extends React.Component {
     return(
         <div>
           <div className="form-folder"><input type="text" value={this.state.foldername} onChange={this.onChangekey.bind(this,"foldername")} className="input-folder" placeholder="Foldername" ></input>
-                <img onClick={this.clearinput.bind(this)} src={Closebutton} className="text-clear"/>
-                <div className="create-folder-button" onKeyPress={this._handlekeypress} onClick={this.addFolder.bind(this,parentId)}><span>Create Folder</span></div>
+              <img onClick={this.clearinput.bind(this)} src={Closebutton} className="text-clear"/>
+              <div className="create-folder-button" onKeyPress={this._handlekeypress} onClick={this.addFolder.bind(this,parentId)}><span>Create Folder</span></div>
+          </div>
+       </div>
+    );
+  }
+  Loading=(loading_value)=>{
+    return(
+        <div>
+          <div className="form-folder">
+              <span class="progress-bar">
+                <span class="indicator" style={{width:"500px"}}>
+
+                </span>
+              </span>
           </div>
        </div>
     );
@@ -198,7 +214,7 @@ class Popup extends React.Component {
                             return(
                                 <div className="">
                                   <label className="container"><span>{item.name}</span>
-                                      <input type="checkbox"  onClick={this.selectPlatform.bind(this,item.name)}/>  
+                                      <input type="checkbox" value={item.name.toUpperCase()}  onClick={this.selectPlatform.bind(this)}/>  
                                     <span className="checkmark"></span>
                                   </label>
                                 </div> 
@@ -258,7 +274,12 @@ class Popup extends React.Component {
       const{dispatch}=this.props;
       dispatch({type : ACTION.POPUP.CHANGEBOOL});
     }
+    else if(tags=="Loading"){
+      const{dispatch}=this.props;
+      dispatch({type : ACTION.POPUP.CHANGEBOOL});
+    }
   }
+
   render() {
     const {title} = this.props;
     const{width_resize}=this.props;
@@ -286,6 +307,7 @@ class Popup extends React.Component {
                {title=="Upload File" && this.Upload_File(content)} 
                {title=="Create Folder" && this.Create_Folder(content)} 
                {title=="Filedetail" && this.Detail_File(content.data)} 
+               {title=="Loading" && this.Loading(content)} 
            </div>
            </div>
         }   

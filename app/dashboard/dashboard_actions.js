@@ -41,12 +41,17 @@ function* getFolderList(action) {
   }
 }        
 
-
+var i=1;
 function* uploadImg(action) {
-  try {   
-    const uploadImdData = yield call(postMulitipartDataWithToken, API.uploadImg , action.data);
-    yield put({type : "IMG_DATA", data : uploadImdData });     
-   
+  try {  
+    const uploadImdData = yield call(postMulitipartDataWithToken, API.uploadImg , action.data.data);    
+    if(i<action.data.totalfilelength){
+      yield put({type : "IMG_DATA", data : {data:uploadImdData,countOffie:i}});  
+      ++i; 
+    }else if(i==action.data.totalfilelength){
+      yield put({type : "IMG_DATA", data : {data:uploadImdData,countOffie:i}});          
+      i=1;
+    }
   } catch (e) {
     yield put({type : "ERROR-Image", error : e.error});
   }

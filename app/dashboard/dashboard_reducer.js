@@ -50,7 +50,8 @@ function dashboard(state = getSessionData() , action) {
           return tempState; 
 
     case 'IMG_DATA' :
-          tempState.fileUrl=action.data;            
+          tempState.fileUrl=action.data.data;
+          tempState.countoffile=action.data.countOffie;            
           return tempState;
 
     case 'DELETE_NOSHOW' :
