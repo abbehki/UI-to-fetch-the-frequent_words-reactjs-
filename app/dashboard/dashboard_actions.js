@@ -1,6 +1,6 @@
 import { delay } from 'redux-saga';
 import { call,put, takeEvery,select} from 'redux-saga/effects';
-import {PostDataWithOutToken,postDataWithToken,getDataWithToken,postMulitipartDataWithToken,PatchDataWithToken} from '../util/ajax';
+import {PostDataWithOutToken,postDataWithToken,getDataWithToken,postMulitipartDataWithToken,PatchDataWithToken,getDataWithoutToken} from '../util/ajax';
 import API from '../api_config';
 import { browserHistory } from 'react-router';
 import ACTION from '../action_constants';
@@ -20,10 +20,19 @@ function* createFolder(action) {
   }
 }
 
+function* profile(action) {
+  try {   
+    const profileDetail = yield call(getDataWithoutToken, API.profiledetail+action.data);
+    yield put({type : "PROFILE_DETAILS", data : profileDetail });     
+   
+  } catch (e) {
+    yield put({type : "ERROR", error : e.error});
+  }
+}
+
 function* getFolderList(action) {
   try { 
     const folderListData = yield call(getDataWithToken, API.getfolderList , action.data.params);
-    console.log("folderlist we have:-",folderListData)
     yield put({type : "STORE_FOLDER_LIST", data : folderListData });  
        
    
@@ -32,14 +41,19 @@ function* getFolderList(action) {
   }
 }        
 
-
+var i=1;
 function* uploadImg(action) {
-  try {   
-    const uploadImdData = yield call(postMulitipartDataWithToken, API.uploadImg , action.data);
-    yield put({type : "IMG_DATA", data : uploadImdData });     
-   
+  try {  
+    const uploadImdData = yield call(postMulitipartDataWithToken, API.uploadImg , action.data.data);    
+    if(i<action.data.totalfilelength){
+      yield put({type : "IMG_DATA", data : {data:uploadImdData,countOffie:i}});  
+      ++i; 
+    }else if(i==action.data.totalfilelength){
+      yield put({type : "IMG_DATA", data : {data:uploadImdData,countOffie:i}});          
+      i=1;
+    }
   } catch (e) {
-    yield put({type : "ERROR", error : e.error});
+    yield put({type : "ERROR-Image", error : e.error});
   }
 }
 
@@ -109,6 +123,7 @@ export {
   renamefolder,
   search_tags,
   uploadImg,
-  filelength
+  filelength,
+  profile
 };
 

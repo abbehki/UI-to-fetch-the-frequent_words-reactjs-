@@ -13,7 +13,8 @@ const actions = {
         'RENAME'   :'RENAME',
         'UPLOADIMAGE' : 'UPLOADIMAGE',
         'DELETEFOLDER':'DELETEFOLDER',
-        'FILELENGTH':'FILELENGTH'
+        'FILELENGTH':'FILELENGTH',
+        'PROFILE':'PROFILE'
     },
     FILEUPLOAD:{
         'UPLOAD':'UPLOAD'
@@ -22,8 +23,18 @@ const actions = {
        'CHANGEBOOL':'CHANGEBOOL'
     },
     SEARCH:{
-        'SEARCH_TAGS':'SEARCH_TAGS'
+        'SEARCH_TAGS':'SEARCH_TAGS',
+        'SEARCH_PROJECTS':'SEARCH_PROJECTS',
+        'FOLDERLIST':'FOLDERLIST',
+        'COUNT':'COUNT',
+        'FAVOURITE':'FAVOURITE',
+        
     },
+    SIDENAV:{
+        'SEARCHFILTER':'SEARCHFILTER',
+        'DELETEFAV':'DELETEFAV',
+        'ADDFAV':'ADDFAV',
+    }
 
 };
 export default actions;

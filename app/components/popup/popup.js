@@ -22,8 +22,12 @@ class Popup extends React.Component {
         foldername:'',
         parentFolder:'',
         platformArr :[{name:"IOS"},{name:"Android"},{name:"Web"}],
-        selectedPlatform:'',
-        filecontent:[]
+        selectedPlatform:[],
+        filecontent:[],
+        indexnumber:0,
+        stoploop:true,
+        active:'#32CD32',
+        noactive:''
      }
   }
 
@@ -51,63 +55,124 @@ class Popup extends React.Component {
             tagname:name.target.value
             })
         }
-    }
-
+      }
   _handlekeypress=(event)=>{
       if(event.key=="Enter"){
-        console.log(event.target.value);
         this.state.tags.push(event.target.value);
         this.setState({
           tagname:''
         })
       }          
   }
-
   clearinput=(e)=>{
     this.setState({
       foldername:'',
       tags:'',
     })
   }
-  selectPlatform(platformName){
-    this.setState({selectedPlatform:platformName})
+  selectPlatform(event){
+    if(event.target.checked==true){
+      this.state.selectedPlatform.push(event.target.value);                    
   }
-  
+    else{
+      this.state.selectedPlatform.splice(this.state.selectedPlatform.indexOf(event.target.value),1);
+  }
+  }
+  Share=()=>{
+    alert("Share it here");
+  }
+  dateConversion=(date)=>{
+    let objDate = new Date(date);
+    return (objDate.toLocaleString("en-us", { month: "long" }))+"   "+objDate.getDate();
+  }
   uploadFile(parentDirectoryId,event){
     var data =this.state;
     for(var i=1;i<this.state.filecontent.length;i++){
-      console.log(this.state.filecontent[i])
         let formData = new FormData();   
         formData.append("file", this.state.filecontent[1]);
         formData.append("width","45");
         formData.append("height","55");
-        formData.append("platform",this.state.selectedPlatform);
+        formData.append("platform",JSON.stringify(this.state.selectedPlatform));
         formData.append("parentDirectoryId",parentDirectoryId);
         formData.append("tags",JSON.stringify(this.state.tags));
         const { dispatch } = this.props;
-        dispatch({type : ACTION.DASHBOARD.UPLOADIMAGE, data : formData });
+        dispatch({type : ACTION.DASHBOARD.UPLOADIMAGE, data : {data:formData,totalfilelength:this.state.filelength} });
   }
 }
   Upload_File=(parentId)=>{
       return(
-          <div>
-         <div className="upload-file"><div className="upload-file-button" onClick={this.showcontentpopup.bind(this,"individual")}><span>Individual</span></div><div onClick={this.showcontentpopup.bind(this,"group")} className="upload-file-button"><span>Group</span></div></div>
-         <div className="form-folder">
-          {!this.state.showIndividual && this.individualcontents("single")}
-          {this.state.showIndividual && this.groupcontents()}
-          <div className="upload-btn" onClick={this.uploadFile.bind(this,parentId)}>Upload</div>
-         </div> 
-         </div>
+      <div>
+        <div className="upload-file"><div className="upload-file-button" style={{backgroundColor:this.state.active}} onClick={this.showcontentpopup.bind(this,"individual")}><span>Individual</span></div><div onClick={this.showcontentpopup.bind(this,"group")} style={{backgroundColor:this.state.noactive}} className="upload-file-button"><span>Group</span></div></div>
+        <div className="form-folder">
+        {!this.state.showIndividual && this.individualcontents("single")}
+        {this.state.showIndividual && this.groupcontents()}
+        <div className="upload-btn" onClick={this.uploadFile.bind(this,parentId)}>Upload</div>
+        </div> 
+       </div>
       );
   }
   Create_Folder=(parentId)=>{
     return(
         <div>
           <div className="form-folder"><input type="text" value={this.state.foldername} onChange={this.onChangekey.bind(this,"foldername")} className="input-folder" placeholder="Foldername" ></input>
-                <img onClick={this.clearinput.bind(this)} src={Closebutton} className="text-clear"/>
-                <div className="create-folder-button" onKeyPress={this._handlekeypress} onClick={this.addFolder.bind(this,parentId)}><span>Create Folder</span></div>
+              <img onClick={this.clearinput.bind(this)} src={Closebutton} className="text-clear"/>
+              <div className="create-folder-button" onKeyPress={this._handlekeypress} onClick={this.addFolder.bind(this,parentId)}><span>Create Folder</span></div>
           </div>
        </div>
+    );
+  }
+  Loading=(loading_value)=>{
+    return(
+        <div>
+          <div className="form-folder">
+              <span class="progress-bar">
+                <span class="indicator" style={{width:"500px"}}>
+
+                </span>
+              </span>
+          </div>
+       </div>
+    );
+  }
+  Next=(index,length)=>{
+    if(index>length){
+      this.setState({
+        indexnumber:0
+      })
+    }else{
+      this.setState({
+        indexnumber:index
+      })
+    }
+  }
+  Previous=(index,length)=>{
+    if(index<0){
+      this.setState({
+        indexnumber:length
+      })
+    }else{
+      this.setState({
+        indexnumber:index
+      })
+    }
+  }
+  Detail_File=(fileArr)=>{
+    return(
+      <div className="filedetail">
+        <div className="fileImage">     
+          <div className="icon-side_arrow_left arrow" onClick={()=>this.Previous(--this.state.indexnumber,fileArr.length-1)}></div> 
+          <img className="fileImage-popup" src={fileArr[this.state.indexnumber].fileUrl} alt="[IMAGE]"/>
+          <div className="icon-Side_arrow_right arrow" onClick={()=>this.Next(++this.state.indexnumber,fileArr.length-1)}></div>
+        </div>
+        <div className="filesinfo">
+          <div className="filename" >{fileArr[this.state.indexnumber].fileName}</div>
+          <div className="file-info"><span>File Type:</span><span>{fileArr[this.state.indexnumber].fileFormat}</span></div>
+          <div className="file-info"><span>File Size :</span><span>{Math.round((fileArr[this.state.indexnumber].fileSize/(1024*1024))* 100)/100 }MB</span></div>
+          <div className="file-info"><span>Created on:</span><span>{this.dateConversion(fileArr[this.state.indexnumber].createdAt)}</span></div>
+          <div className="file-info"><span>Modified date :</span><span>{this.dateConversion(fileArr[this.state.indexnumber].modifiedAt)}</span></div>
+          <a href={fileArr[this.state.indexnumber].fileUrl}> <button className="file-dowload-button">Download</button></a>
+        </div>
+      </div>
     );
   }
   pullfiles=(fileInput)=>{
@@ -127,13 +192,7 @@ class Popup extends React.Component {
     });
     dispatch({type:ACTION.DASHBOARD.FILELENGTH,data:fl})
   }
-  onClickuploadfile=(tags)=>{
-      if(tags=="single"){
-          console.log(tags);
-      }else{
-        console.log(tags);        
-      }
-  }
+ 
 
   individualcontents=(tags)=>{
     return(
@@ -155,11 +214,11 @@ class Popup extends React.Component {
                             return(
                                 <div className="">
                                   <label className="container"><span>{item.name}</span>
-                                      <input type="checkbox"  onClick={this.selectPlatform.bind(this,item.name)}/>  
+                                      <input type="checkbox" value={item.name.toUpperCase()}  onClick={this.selectPlatform.bind(this)}/>  
                                     <span className="checkmark"></span>
-                                </label>
-                                  </div> 
-                               )                   
+                                  </label>
+                                </div> 
+                      )                   
                 })
                 }
         </div>                                                  
@@ -188,17 +247,21 @@ class Popup extends React.Component {
   showcontentpopup=(tags)=>{
     if(tags=="individual"){
       this.setState({
-        showIndividual:true
+        showIndividual:true,
+        active:'#32CD32',
+        noactive:''
       });
     }
     else if(tags=="group"){
       this.setState({
-        showIndividual:false
+        showIndividual:false,
+        noactive:'#32CD32',
+        active:''
       });
     }
   }
+
   togglePopup(tags) {
-     console.log(tags);
       if(tags=="Create Folder"){ 
     const{dispatch}=this.props;
     dispatch({type : ACTION.POPUP.CHANGEBOOL});
@@ -207,25 +270,44 @@ class Popup extends React.Component {
         const{dispatch}=this.props;
         dispatch({type : ACTION.POPUP.CHANGEBOOL});
     }
+    else if(tags=="Filedetail"){
+      const{dispatch}=this.props;
+      dispatch({type : ACTION.POPUP.CHANGEBOOL});
+    }
+    else if(tags=="Loading"){
+      const{dispatch}=this.props;
+      dispatch({type : ACTION.POPUP.CHANGEBOOL});
+    }
   }
+
   render() {
     const {title} = this.props;
     const{width_resize}=this.props;
     const{height_resize}=this.props;
     const{content}=this.props;
+    if(content && content.index_number && this.state.stoploop){
+      let newState=Object.assign({},this.state);
+      newState.indexnumber=content.index_number;
+      newState.stoploop=false;
+      this.setState(newState);
+    }
     return (
-      
       <div>  
         { title!="Success" &&
            <div className='popup'>
 
            <div className='popup_inner' style={{width:width_resize,height:height_resize}}>
                <div className="popup-header">
-                   <span>{title}</span>
-                   <img onClick={this.togglePopup.bind(this,title)}  src={Closebutton} className="Group-15"/>
+                  <span>{title}</span>
+                  <div onClick={this.togglePopup.bind(this,title)}  className="icon-icn_close_popup Group-15"></div>
+                  {title=="Filedetail" &&
+                   <div onClick={this.Share.bind(this,title)}  className="icon-Share2 Group-15"></div>
+                  } 
                </div> 
                {title=="Upload File" && this.Upload_File(content)} 
                {title=="Create Folder" && this.Create_Folder(content)} 
+               {title=="Filedetail" && this.Detail_File(content.data)} 
+               {title=="Loading" && this.Loading(content)} 
            </div>
            </div>
         }   

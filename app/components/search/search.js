@@ -12,29 +12,43 @@ class Search extends React.Component{
         }
     }
 
-    onPressEnter=(event)=>{
+    onPressEnter=(type,event)=>{
         if(event.key=="Enter"){
-            console.log("API call search content",event.target.value);
             const{dispatch}=this.props;
-            dispatch({type:ACTION.SEARCH.SEARCH_TAGS,data:event.target.value})
-            this.setState({
-                search_content:''                
-            })
+            if(type=="search_tags"){
+                dispatch({type:ACTION.SEARCH.SEARCH_TAGS,data:event.target.value})                
+            }
+            else if(type="search_filter"){
+                dispatch({type:ACTION.SEARCH.SEARCH_PROJECTS,data:event.target.value});
+            }
+           
         }
     }
-    onChange=(event)=>{
-        console.log(event.target.value);
-        this.setState({
-            search_content:event.target.value,
-        })
+
+    timeout;
+
+    onChangevalue=(type,event)=>{
+        let val=event.target.value;
+        const {dispatch}= this.props;    
+        if(this.timeout) {
+            clearTimeout(this.timeout);
+        }
+            if(type=="search_filter"){
+            this.timeout = setTimeout(()=> {
+                dispatch({type:ACTION.SEARCH.SEARCH_PROJECTS,data:val});            
+            },1000);
+        }
+
+            this.setState({
+                search_content:event.target.value,
+            })
     }
 
     render(){
         const{type}=this.props;
-
         return(
                  <div className="wrapper-search"> 
-                      <input type="text" placeholder="Search" value={this.state.search_content} onChange={this.onChange.bind(this)} onKeyUp={this.onPressEnter.bind(this)} className="search" /> <div className="icon-icn_search search-image" ></div>
+                      <input type="text" placeholder="Search" value={this.state.search_content} onChange={this.onChangevalue.bind(this,type)} onKeyUp={this.onPressEnter.bind(this,type)} className="search" /> <div className="icon-icn_search search-image" ></div>
                  </div>
                   
         );

@@ -23,14 +23,12 @@ class Auth extends React.Component {
    const id_token = googleUser.getAuthResponse().id_token;
    const emailId = googleUser.getBasicProfile().getEmail();
    const name = googleUser.getBasicProfile().getGivenName();
-   console.log(id_token);
-   const paramObj = {
+   const paramObjs= {
                       googleToken : id_token,
-                      email : emailId                  
+                      email : emailId,
                     };
    const { dispatch } = this.props;
-   dispatch({type : ACTION.SINGIN.SINGIN , data : {paramObj}});
-  
+   dispatch({type : ACTION.SINGIN.SINGIN , data : {paramObj:paramObjs,access_token:googleUser.getAuthResponse().access_token}});
  }
 
   render() {

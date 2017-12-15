@@ -41,6 +41,7 @@ class DashBoard extends React.Component {
        showUploadfilesPopup:false,
        showIndividual:true,
        showsmallpopup:false,
+       loading:false,
        index:0,
        folderOnFocus:null,
        successMessage:false,
@@ -49,7 +50,9 @@ class DashBoard extends React.Component {
        renameproject:'',
        filesArr:[],
        totalCountOfFiles:0,
-       fileArray:[]
+       fileArray:[],
+       showfileDetailPopup:false,
+       loading_px:500,
     }
   }
   showCreateFolder(){
@@ -69,10 +72,6 @@ class DashBoard extends React.Component {
       dispatch({type : ACTION.DASHBOARD.FOLDERDETAIL, data : folderObj._id });
   }
 
-  fileDetail(fileObj){
-      alert("popup where file detail shows");
-  }
-
   folderPath(pathObj,index){
     if(index <this.state.path.length){
       let pathArray = [];
@@ -86,27 +85,41 @@ class DashBoard extends React.Component {
       const { dispatch } = this.props;
       dispatch({type : ACTION.DASHBOARD.FOLDERDETAIL, data : pathObj._id });
   }
-
-  componentDidMount() {
-      let params ={};       
-      const { dispatch } = this.props;  
-      dispatch({type : ACTION.DASHBOARD.FOLDERLIST, data : params });
-  } 
-   
+  
  
   componentWillReceiveProps(newProps) {
-      if(newProps.dashboard.folderArray){
-        this.setState({folderArr:newProps.dashboard.folderArray.folderList});
+        if(newProps.dashboard.folderArray){
+          this.setState({folderArr:newProps.dashboard.folderArray.folderList});
+        }
+        if(newProps.side_nav_bar.filterdetail){
+          const{dispatch}=this.props;                
+          this.setState({filesArr:newProps.side_nav_bar.filterdetail.data,
+            folderArr:[]}); 
+            newProps.dashboard.folderArray=false; 
+            newProps.dashboard.folderDetail =false;
+            dispatch({type :'FILTERDETAIL_FALSE'});             
       }
-      if(newProps.dashboard.folderDetail){
-        this.setState({filesArr:newProps.dashboard.folderDetail.filesList});   
-        this.setState({folderArr:newProps.dashboard.folderDetail.folderList});         
-      }
+        if(newProps.dashboard.folderDetail ){
+          this.setState({filesArr:newProps.dashboard.folderDetail.filesList});   
+          this.setState({folderArr:newProps.dashboard.folderDetail.folderList });         
+        }
+        if(newProps.dashboard.search_flag){
+          const{dispatch}=this.props;  
+          newProps.dashboard.folderDetail=false;  
+          this.setState({filesArr:newProps.dashboard.search_content,
+                folderArr:[],
+              path:[{folderName:"Dashboard",_id:""}]});    
+              dispatch({type :'CLOSE_CREATEFILES'});          
+      }   
+
        if(!newProps.dashboard.changebool_cancel || !newProps.dashboard.changestate_smallpopup){
         this.setState({
-          showCreatefolderPopup:newProps.dashboard.changebool_cancel,
-          showUploadfilesPopup:newProps.dashboard.changebool_cancel,
-          showsmallpopup:newProps.dashboard.changestate_smallpopup,
+          showCreatefolderPopup:newProps.dashboard.changebool_cancel ,
+          showUploadfilesPopup:newProps.dashboard.changebool_cancel ,
+          showsmallpopup:newProps.dashboard.changebool_cancel ,
+          showfileDetailPopup:false,
+          loading:false,
+          
         });
       } 
        if(newProps.dashboard.changestate_success){
@@ -123,18 +136,25 @@ class DashBoard extends React.Component {
         const{dispatch}=this.props;
         dispatch({type :'DELETE_NOSHOW'});
       }
-       if(newProps.dashboard.folderDetail){
-        this.setState({folderArr:newProps.dashboard.folderDetail.folderList});    
-   }  
 
-   if(newProps.dashboard.fileUrl){
-    this.state.fileArray.push(newProps.dashboard.fileUrl); 
-    console.log(newProps.dashboard.fileUrl)  
-    // if(this.state.fileArray.length == newProps.dashboard.file_length){
-    //   const { dispatch } = this.props;
-    //   dispatch({type : ACTION.DASHBOARD.FOLDERDETAIL, data : newProps.dashboard.fileUrl.parentDirectoryId});
-    // }
-}
+        if(newProps.dashboard.folderDetail){
+          this.setState({folderArr:newProps.dashboard.folderDetail.folderList});    
+      }  
+
+        if(newProps.dashboard.fileUrl){
+          this.state.fileArray.push(newProps.dashboard.fileUrl);
+          this.setState({
+            loading:true,
+          })
+          if(newProps.dashboard.countoffile==newProps.dashboard.file_length){
+            //alert("uploaded !!!!")
+            this.setState({
+              loading:false
+            })
+            newProps.dashboard.countoffile=null;
+          }
+        }
+
        if(newProps.dashboard.folderData){
         let folderArray =[];
         let eachFolderData =newProps.dashboard.folderData;
@@ -143,17 +163,11 @@ class DashBoard extends React.Component {
               const{dispatch}=this.props;
               dispatch({type :'CLOSE_CREATEFOLDER'});       
             }
-
-      if(newProps.dashboard.search_flag){
-        const{dispatch}=this.props;        
-        this.setState({filesArr:newProps.dashboard.search_content,
-              folderArr:[],
-            path:[{folderName:"Dashboard",_id:""}]});    
-            dispatch({type :'CLOSE_CREATEFILES'});          
-      }   
-
-
    }
+   componentWillMount(){
+     const {dispatch}=this.props;
+      dispatch({type:ACTION.DASHBOARD.PROFILE,data:this.props.auth.userToken});
+  }
 
   onClickshare=(e)=>{
         e.preventDefault();
@@ -180,8 +194,6 @@ class DashBoard extends React.Component {
     }
   onenter=(id,index_value,e)=>{
         if(e.key=="Enter"){ 
-          const{dispatch}=this.props;
-          dispatch({type :ACTION.DASHBOARD.RENAME, data : {newDirectoryName:e.target.value,directoryID:id} });  
           const newState = Object.assign(this.state);
           newState.folderArr.forEach((item, folderIndex)=> {
             item.showPopup = false;
@@ -191,6 +203,8 @@ class DashBoard extends React.Component {
             }
           });
           this.setState(newState); 
+          const{dispatch}=this.props;
+          dispatch({type :ACTION.DASHBOARD.RENAME, data : {newDirectoryName:e.target.value,directoryID:id} });  
         }
   }
   showActionPopup = (index)=> {
@@ -204,9 +218,6 @@ class DashBoard extends React.Component {
      });
      this.setState(newState);
    }
-  onDownload=(index)=>{
-     alert("download api");
-  }
    listview=()=>{
     return(
         <div className="folder-wrapper">
@@ -216,8 +227,7 @@ class DashBoard extends React.Component {
                 <img onClick={()=> this.folderDetail(item)} src={FolderImage} className="folder-image"/>
                 {!item.editable && <div className={this.state.showtext}>{item.directoryName}</div>}
                 {item.editable && <input defaultValue={item.directoryName} onKeyUp={this.onenter.bind(this,item._id,index)}  type="text" /> }
-                <div className="icon-icn_more more" onClick={this.showActionPopup.bind(this, index)}>
-                {/* <img className="more" src={MoreImage} onClick={this.showActionPopup.bind(this, index)}/>  */}
+                <div className="icon-icn_more folder-more" onClick={this.showActionPopup.bind(this, index)}>
                 {this.state.showsmallpopup && item.showPopup && 
                 <div  id={index} className="smallpopup">
                   <div className="smallpopup_inner">
@@ -233,13 +243,13 @@ class DashBoard extends React.Component {
           )                
           }
           {this.state.filesArr.map((item,index) =>{
+            console.error(item.fileSize);
               return(
                 <div>
                   <div key={index}  className="folder-cont">
                     <img onClick={()=> this.fileDetail(item)} src={FileImage} className="folder-image"/>
                     <div className={this.state.showtext}>{item.fileName}</div>
-                    <div className="icon-icn_download2 more" onClick={this.onDownload.bind(this, index)}>
-                    </div>
+                    <a href={item.fileUrl}><div className="icon-icn_download2 folder-more"> </div></a>
                     <input type="button" onClick={this.onClickshare.bind(this)} className="Rectangle-share" value="Share"/>
                     <span className="project-size">{Math.round((item.fileSize/(1024*1024))* 100)/100 }mb</span>
                   </div>
@@ -260,7 +270,7 @@ class DashBoard extends React.Component {
             <div className="folder-bottom">
              {!item.editable && <div className={this.state.showtext}>{item.directoryName}</div>}
              {item.editable && <input className="input-grid" defaultValue={item.directoryName} onKeyUp={this.onenter.bind(this,item._id,index)}  type="text" /> }           
-             <div className="icon-icn_more folder-more" onClick={this.showActionPopup.bind(this,index)}>
+             <div className="icon-icn_more folder-more-grid" onClick={this.showActionPopup.bind(this,index)}>
              {this.state.showsmallpopup && item.showPopup && 
              <div  id={index} className="smallpopup">
               <div className="smallpopup_inner">
@@ -279,10 +289,10 @@ class DashBoard extends React.Component {
           return(             
           <div id={index} key={index}  className="file-cont-grid">
             <div className="icon-Share file-share" onClick={this.onClickshare.bind(this)}></div>
-            <div className="file-outer-image" ><img onClick={()=> this.fileDetail(item)} src={item.fileUrl} className="file-grid-image" /></div>
+            <div className="file-outer-image" ><img onClick={this.togglePopup.bind(this,"file_detail",index)} src={item.fileUrl} className="file-grid-image" /></div>
             <div className="file-bottom">
               <div className="file-name">{item.fileName}</div>
-              <div className="icon-icn_download2 file-more" onClick={this.onDownload.bind(this,index)}></div>
+              <a href={item.fileUrl}><div className="icon-icn_download2 more"> </div></a>
             </div>
         </div>
             )}
@@ -292,8 +302,7 @@ class DashBoard extends React.Component {
      );
    }
 
-  togglePopup(tags) {
-     console.log(tags);
+  togglePopup(tags,index_number) {
      if(tags=="create_folder"){
       this.setState({
       showCreatefolderPopup: !this.state.showCreatefolderPopup,
@@ -301,6 +310,12 @@ class DashBoard extends React.Component {
     }else if(tags=="upload_file"){
     this.setState({
       showUploadfilesPopup: !this.state.showUploadfilesPopup,
+    });
+   }
+   else if(tags=="file_detail"){
+    this.setState({
+      showfileDetailPopup: !this.state.showfileDetailPopup,
+      index:index_number,
     });
    }
   }
@@ -314,7 +329,9 @@ class DashBoard extends React.Component {
       showgridicon:false
     })
    }
-
+   shouldComponentUpdate(){
+     return true; 
+    }
   render() {
     return (
       <div>
@@ -332,6 +349,14 @@ class DashBoard extends React.Component {
             }
              { this.state.successMessage ? 
                <PopUp title={"Success"} content={this.props.dashboard.response}/>                      
+              : null
+            }
+            { this.state.loading ? 
+               <PopUp title={"Loading"} content={(this.props.dashboard.countoffile/this.props.dashboard.file_length)*this.state.loading_px} width_resize={'567px'} height_resize={'200px'}/>                      
+              : null
+            }
+             { this.state.showfileDetailPopup ? 
+               <PopUp title={"Filedetail"} content={{data:this.state.filesArr,index_number:this.state.index}} width_resize={'1024px'} height_resize={'792px'}/>                      
               : null
             }
         {/**
@@ -382,7 +407,9 @@ class DashBoard extends React.Component {
 
 const mapStateToProps = state => {
   return {
-dashboard:state.dashboard
+    dashboard:state.dashboard,
+    side_nav_bar:state.side_nav_bar,
+    auth:state.auth,
   };
 };
 

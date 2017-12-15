@@ -4,14 +4,14 @@
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 3;
+    top:0;
     .popup_inner {
         position: absolute;
         z-index: 30;            
         width: 567px;
-        left: 25%;
-        right: 25%;
-        top: 25%;
-        bottom: 25%;
+        transform:translate(-50%,-50%);
+        top:50%;
+        left: 50%;
         margin: auto;
         background: white;
         border-radius: 4px;
@@ -40,6 +40,7 @@
             object-fit: contain;
             float: right;
             cursor: pointer;
+            margin-left:30px; 
           }
           .upload-button{
             display: block;
@@ -97,6 +98,60 @@
          } 
      }
          
+  }
+  .filedetail{
+      display: flex;
+      justify-content:space-around;
+      flex-direction: row;
+      height: 730px;
+      .fileImage{
+          display:flex;
+          align-self: center;
+          flex-direction:row;
+          width: 70%;
+          height: 200px;
+          justify-content: space-between;
+          .arrow{
+              margin-top: 60px;
+              cursor: pointer;
+          }
+          .fileImage-popup{
+              height: 130px;
+              width: 151px;
+              align-content: center;
+          }
+      }
+      .filesinfo{
+          width: 30%;
+          padding: 48px 30px 0 30px;
+          border-left: solid 1px #e8e8e8;   
+          .filename{
+            font-family: SFUIText;
+            font-size: 17px;
+            font-weight: 600;
+            text-align: left;
+            color: #2b2b2b;
+            margin-bottom: 25px;
+          }
+          .file-info{
+            font-family: SFUIText;
+            font-size: 13px;
+            text-align: left;
+            color: #4b4b4b;
+            display:flex;
+            flex:0 0 50%;
+            justify-content: space-between;
+            margin-bottom: 25px;
+          }
+          .file-dowload-button{
+            width: 184px;
+            height: 33px;
+            border-radius: 2px;
+            background-color: #77c87f;
+            color: white;
+            margin-left: 20px;
+          }
+      }
   }
  
 
@@ -219,6 +274,7 @@
         span{
             margin-right: 20px;
             font-size: 12px;
+            color:#4a4a4a;
         }
     }
     /* The container */
@@ -234,7 +290,7 @@
         user-select: none;
         font-family: SFUIText;
         font-size: 12px;
-        color: #717171;
+        color: white;
         
     }
     
@@ -291,6 +347,21 @@
         -ms-transform: rotate(45deg);
         transform: rotate(45deg);
     }
+    .progress-bar {
+        display: inline-block;
+        width: 500px;
+        height: 10px;
+        border: 1px solid black;
+        border-radius: 5px;
+      }
+      .indicator {
+        display: inline-block;
+        background: green;
+        height: 10px;
+        width: 100px;
+        vertical-align: top;
+        transition: 1s width;
+      }
 
     .successmessage{
         position: fixed;
@@ -337,3 +408,4 @@
             color: #ffffff;
         }
     }
+    

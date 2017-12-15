@@ -14,6 +14,14 @@ function dashboard(state = getSessionData() , action) {
           console.log( "Folderarray:-",tempState.folderArray);
           return tempState; 
 
+   case  'PROFILE_DETAILS' :
+          tempState.profile_detail = action.data;    
+          tempState.user_name=action.data.name;
+          localStorage.setItem("name", action.data.name);
+          localStorage.setItem("profile", action.data.picture);
+          
+          return tempState; 
+
     case 'STORE_FOLDER_DETAIL' :
           tempState.folderDetail = action.data.data;        
           console.log( "Folderdetail:-",tempState.folderDetail);
@@ -31,7 +39,7 @@ function dashboard(state = getSessionData() , action) {
           return tempState;  
            
     case 'CLOSE_CREATEFOLDER' :
-          tempState.folderData=false; 
+          tempState.folderData=false;     
           tempState.search_flag=false;   
           return tempState; 
           
@@ -42,7 +50,8 @@ function dashboard(state = getSessionData() , action) {
           return tempState; 
 
     case 'IMG_DATA' :
-          tempState.fileUrl=action.data;            
+          tempState.fileUrl=action.data.data;
+          tempState.countoffile=action.data.countOffie;            
           return tempState;
 
     case 'DELETE_NOSHOW' :
