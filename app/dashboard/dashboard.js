@@ -114,18 +114,16 @@ class DashBoard extends React.Component {
 
        if(!newProps.dashboard.changebool_cancel || !newProps.dashboard.changestate_smallpopup){
         this.setState({
-          showCreatefolderPopup:newProps.dashboard.changebool_cancel ,
-          showUploadfilesPopup:newProps.dashboard.changebool_cancel ,
-          showsmallpopup:newProps.dashboard.changebool_cancel ,
+          showCreatefolderPopup:false,
+          showUploadfilesPopup:false,
+          showsmallpopup:false,
           showfileDetailPopup:false,
-          loading:false,
-          
         });
       } 
        if(newProps.dashboard.changestate_success){
         this.setState({
           successMessage:newProps.dashboard.changestate_success,
-          showsmallpopup:!newProps.dashboard.changestate_success
+          showsmallpopup:!newProps.dashboard.changestate_success,
         })
         let self = this;
         setTimeout(function(){
@@ -142,16 +140,15 @@ class DashBoard extends React.Component {
       }  
 
         if(newProps.dashboard.fileUrl){
-          this.state.fileArray.push(newProps.dashboard.fileUrl);
+          this.state.filesArr.push(newProps.dashboard.fileUrl.data);
           this.setState({
-            loading:true,
+            filesArr:this.state.filesArr
           })
           if(newProps.dashboard.countoffile==newProps.dashboard.file_length){
-            //alert("uploaded !!!!")
             this.setState({
-              loading:false
+              filesArr:this.state.filesArr              
             })
-            newProps.dashboard.countoffile=null;
+            newProps.dashboard.fileUrl=false;
           }
         }
 
@@ -163,6 +160,22 @@ class DashBoard extends React.Component {
               const{dispatch}=this.props;
               dispatch({type :'CLOSE_CREATEFOLDER'});       
             }
+
+        if(newProps.dashboard.loading_flag){
+         this.setState({
+           loading:true,
+           showUploadfilesPopup:false
+         })
+        }
+
+        if(newProps.dashboard.loading_flag_false==false){
+          this.setState({
+            loading:newProps.dashboard.loading_flag_false ,
+            showUploadfilesPopup:false 
+          })
+          newProps.dashboard.loading_flag=false;
+          newProps.dashboard.loading_flag_false=true;
+        }
    }
    componentWillMount(){
      const {dispatch}=this.props;
@@ -243,7 +256,6 @@ class DashBoard extends React.Component {
           )                
           }
           {this.state.filesArr.map((item,index) =>{
-            console.error(item.fileSize);
               return(
                 <div>
                   <div key={index}  className="folder-cont">
@@ -332,10 +344,24 @@ class DashBoard extends React.Component {
    shouldComponentUpdate(){
      return true; 
     }
+    logout=(event)=>{
+      localStorage.removeItem("name");
+      localStorage.removeItem("profile");
+    }
   render() {
     return (
       <div>
       <MenuBar/>
+      {/**
+       * Profile popup
+       */}
+          {
+            this.props.dashboard.profilepopup_flag &&  <div className="profile-smallpopup">
+            <div className="profile-smallpopup_inner">
+            <Link className={this.state.noactive} onClick={this.logout.bind(this)} to="/" >LOGOUT</Link>            
+            </div>
+          </div>
+          }
        {/**
         * Popups
         */}
@@ -352,7 +378,7 @@ class DashBoard extends React.Component {
               : null
             }
             { this.state.loading ? 
-               <PopUp title={"Loading"} content={(this.props.dashboard.countoffile/this.props.dashboard.file_length)*this.state.loading_px} width_resize={'567px'} height_resize={'200px'}/>                      
+               <PopUp title={"Loading"} content={this.state.loading_px} width_resize={'467px'} height_resize={'476px'}/>                      
               : null
             }
              { this.state.showfileDetailPopup ? 

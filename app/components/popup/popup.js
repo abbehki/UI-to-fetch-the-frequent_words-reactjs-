@@ -27,7 +27,8 @@ class Popup extends React.Component {
         indexnumber:0,
         stoploop:true,
         active:'#32CD32',
-        noactive:''
+        noactive:'',
+        loading_value:0,
      }
   }
 
@@ -86,16 +87,17 @@ class Popup extends React.Component {
     return (objDate.toLocaleString("en-us", { month: "long" }))+"   "+objDate.getDate();
   }
   uploadFile(parentDirectoryId,event){
+    const { dispatch } = this.props;  
+    dispatch({type : ACTION.POPUP.LOADING});    
     var data =this.state;
     for(var i=1;i<this.state.filecontent.length;i++){
         let formData = new FormData();   
-        formData.append("file", this.state.filecontent[1]);
+        formData.append("file", this.state.filecontent[i]);
         formData.append("width","45");
         formData.append("height","55");
         formData.append("platform",JSON.stringify(this.state.selectedPlatform));
         formData.append("parentDirectoryId",parentDirectoryId);
         formData.append("tags",JSON.stringify(this.state.tags));
-        const { dispatch } = this.props;
         dispatch({type : ACTION.DASHBOARD.UPLOADIMAGE, data : {data:formData,totalfilelength:this.state.filelength} });
   }
 }
@@ -121,17 +123,17 @@ class Popup extends React.Component {
        </div>
     );
   }
-  Loading=(loading_value)=>{
+  Loading=(e)=>{
+    console.log("------>",this.state.loading_value);
     return(
-        <div>
-          <div className="form-folder">
-              <span class="progress-bar">
-                <span class="indicator" style={{width:"500px"}}>
+        <div className="progress-bar-outer">
+              <div className="progress-bar-content">Your File has been Uploading...<span>{Math.round(this.state.loading_value)}%</span></div>
+              <span className="progress-bar">
+                <span className="indicator" style={{width:this.state.loading_value+"%"}}>
 
                 </span>
               </span>
           </div>
-       </div>
     );
   }
   Next=(index,length)=>{
@@ -211,13 +213,13 @@ class Popup extends React.Component {
        <div className="select-platform">Select Platform</div>          
             <div className="contain">
               {this.state.platformArr.map((item,index) =>  {                                    
-                            return(
-                                <div className="">
-                                  <label className="container"><span>{item.name}</span>
-                                      <input type="checkbox" value={item.name.toUpperCase()}  onClick={this.selectPlatform.bind(this)}/>  
-                                    <span className="checkmark"></span>
-                                  </label>
-                                </div> 
+                    return(
+                        <div className="">
+                          <label className="container"><span>{item.name}</span>
+                              <input type="checkbox" value={item.name.toUpperCase()}  onClick={this.selectPlatform.bind(this)}/>  
+                            <span className="checkmark"></span>
+                          </label>
+                        </div> 
                       )                   
                 })
                 }
@@ -235,10 +237,10 @@ class Popup extends React.Component {
       <input type="text" value={this.state.tagname}  onChange={this.onChangekey.bind(this,"tagname")} onKeyUp={this._handlekeypress.bind(this)} className="input-tags" placeholder="Type and Enter to Commit Tag" ></input>
       <div className="tags">
             { 
-                this.state.tags.map((tag,index)=>(
-                  <div key={index} className="tags-names">
-                    <span>{tag}</span>  
-                  </div>
+              this.state.tags.map((tag,index)=>(
+                <div key={index} className="tags-names">
+                  <span>{tag}</span>  
+                </div>
           ))}
       </div>
     </div>
@@ -276,7 +278,7 @@ class Popup extends React.Component {
     }
     else if(tags=="Loading"){
       const{dispatch}=this.props;
-      dispatch({type : ACTION.POPUP.CHANGEBOOL});
+      dispatch({type : ACTION.POPUP.CHANGEBOOL_LOADING});
     }
   }
 
@@ -321,8 +323,15 @@ class Popup extends React.Component {
       </div>
     );
   }
+  componentWillReceiveProps(newProps){
+    if(newProps.dashboard.countoffile){
+      this.setState({
+        loading_value:(newProps.dashboard.countoffile/newProps.dashboard.file_length)*100
+      })
+    }
+  }
   componentDidMount(){
-   
+       
   }
 }
 
@@ -331,7 +340,6 @@ const mapStateToProps = (state) => {
   return {
     about: state.about,
     dashboard: state.dashboard
-    
   };
 };
 export default connect(mapStateToProps)(Popup);

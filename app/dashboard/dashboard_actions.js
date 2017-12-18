@@ -46,10 +46,10 @@ function* uploadImg(action) {
   try {  
     const uploadImdData = yield call(postMulitipartDataWithToken, API.uploadImg , action.data.data);    
     if(i<action.data.totalfilelength){
-      yield put({type : "IMG_DATA", data : {data:uploadImdData,countOffie:i}});  
+      yield put({type : "IMG_DATA", data : {data:uploadImdData,countOffile:i}});  
       ++i; 
     }else if(i==action.data.totalfilelength){
-      yield put({type : "IMG_DATA", data : {data:uploadImdData,countOffie:i}});          
+      yield put({type : "IMG_DATA", data : {data:uploadImdData,countOffile:i}});          
       i=1;
     }
   } catch (e) {
@@ -67,7 +67,20 @@ function* getFolderDetail(action) {
     yield put({type : "ERROR", error : e.error});
   }
 }
-
+function* loading(action) {
+  try {   
+    yield put({type : "LOADING_FLAG_TRUE", data : true })  
+  } catch (e) {
+    yield put({type : "ERROR", error : e.error});
+  }
+}
+function* profile_popup(action) {
+  try {   
+    yield put({type : "POPUP_PROFILE", data : action.data })  
+  } catch (e) {
+    yield put({type : "ERROR", error : e.error});
+  }
+}
 function* changebool(action) {
   try {
     yield put({type : "CHANGEBOOL_CANCEL", data : false })
@@ -79,6 +92,13 @@ function* changebool(action) {
 function* filelength(action) {
   try {
     yield put({type : "FILE_LENGTH", data : action.data })    
+  } catch (e) {
+    console.error("error",e.message);
+  }
+}
+function* changebool_load(action) {
+  try {
+    yield put({type : "LOADING_FLAG_FALSE", data :false})    
   } catch (e) {
     console.error("error",e.message);
   }
@@ -124,6 +144,9 @@ export {
   search_tags,
   uploadImg,
   filelength,
-  profile
+  profile,
+  loading,
+  changebool_load,
+  profile_popup
 };
 
