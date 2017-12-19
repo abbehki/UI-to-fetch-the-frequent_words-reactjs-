@@ -14,7 +14,8 @@ const actions = {
         'UPLOADIMAGE' : 'UPLOADIMAGE',
         'DELETEFOLDER':'DELETEFOLDER',
         'FILELENGTH':'FILELENGTH',
-        'PROFILE':'PROFILE'
+        'PROFILE':'PROFILE',
+        'DELETEFILE':'DELETEFILE',
     },
     FILEUPLOAD:{
         'UPLOAD':'UPLOAD'

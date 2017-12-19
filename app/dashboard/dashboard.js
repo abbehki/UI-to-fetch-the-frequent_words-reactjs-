@@ -231,6 +231,10 @@ class DashBoard extends React.Component {
      });
      this.setState(newState);
    }
+   onDeletefile=(id,parentDirectoryID,event)=>{
+     const{dispatch}=this.props;
+     dispatch({type:ACTION.DASHBOARD.DELETEFILE, data:{fileID:id,parentDirectoryId:parentDirectoryID}});
+   }
    listview=()=>{
     return(
         <div className="folder-wrapper">
@@ -262,6 +266,7 @@ class DashBoard extends React.Component {
                     <img onClick={()=> this.fileDetail(item)} src={FileImage} className="folder-image"/>
                     <div className={this.state.showtext}>{item.fileName}</div>
                     <a href={item.fileUrl}><div className="icon-icn_download2 folder-more"> </div></a>
+                    <img src={Delete}className="file-delete" onClick={this.onDeletefile.bind(this,item._id,item.parentDirectoryId)}/>
                     <input type="button" onClick={this.onClickshare.bind(this)} className="Rectangle-share" value="Share"/>
                     <span className="project-size">{Math.round((item.fileSize/(1024*1024))* 100)/100 }mb</span>
                   </div>
@@ -294,22 +299,22 @@ class DashBoard extends React.Component {
               </div>
           </div>
         </div>
-            )}
-          )                
-          }
-          {this.state.filesArr.map((item,index) =>  {  
-          return(             
-          <div id={index} key={index}  className="file-cont-grid">
-            <div className="icon-Share file-share" onClick={this.onClickshare.bind(this)}></div>
-            <div className="file-outer-image" ><img onClick={this.togglePopup.bind(this,"file_detail",index)} src={item.fileUrl} className="file-grid-image" /></div>
-            <div className="file-bottom">
-              <div className="file-name">{item.fileName}</div>
-              <a href={item.fileUrl}><div className="icon-icn_download2 more"> </div></a>
-            </div>
-        </div>
-            )}
-          )                
-          }
+          )}
+        )                
+      }
+       {this.state.filesArr.map((item,index) => {  
+            return(             
+            <div id={index} key={index}  className="file-cont-grid">
+            <img src={Delete}className="file-share-delete" onClick={this.onDeletefile.bind(this,item._id,item.parentDirectoryId)}/>
+            <div className="icon-Share file-share-delete" onClick={this.onClickshare.bind(this)}></div>
+              <div className="file-outer-image" ><img onClick={this.togglePopup.bind(this,"file_detail",index)} src={item.fileUrl} className="file-grid-image" /></div>
+              <div className="file-bottom">
+                <div className="file-name">{item.fileName}</div>
+                <a href={item.fileUrl}><div className="icon-icn_download2 more"> </div></a>
+              </div>
+          </div>
+        )})                
+      }
     </div>
      );
    }

@@ -10,6 +10,7 @@ const API = {
   getfolderList : baseUrl2 + 'read/getDirectoryContent',/* ASter*/ 
   getfolderList2 : baseUrl2 + 'read/getDirectoryContent',  /*Shaziya*/
   deletefolders:baseUrl2+'write/archiveDirectory',
+  delete_file:baseUrl2+'write/archiveFile',  
   renamefolder:baseUrl2+'write/updateDirectoryName',
   searching_tags:baseUrl2+'read/searchFiles',
   uploadImg : baseUrl2 + 'write/saveFile',
@@ -17,8 +18,6 @@ const API = {
   searching_project:baseUrl2+'read/searchProjectName?search=',
   getCountof:baseUrl2+'read/getCountOf',
   Favouriteof:baseUrl2+'write/UserFavourites',
-
-  
 };
 
 module.exports = API;
