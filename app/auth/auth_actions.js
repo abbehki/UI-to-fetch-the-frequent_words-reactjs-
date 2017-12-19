@@ -13,11 +13,12 @@ import history from '../history';
 function* signin(action) {
   try {   
     const signInData = yield call(PostDataWithOutToken, API.signIn , action.data.paramObj);
-    yield put({type : "STORE_SIGNIN_DETAILS", data : signInData });
+    yield put({type : "STORE_SIGNIN_DETAILS", data :{data: signInData,userToken:action.data.access_token}});
       history.push('/dashboard');     
    
   } catch (e) {
-    yield put({type : "AUTH_ERROR", error : e.error});
+    console.log("error--->",e.responseJSON.errorMessage)
+    yield put({type : "AUTH_ERROR", data :e.responseJSON.errorMessage});
   }
 }
 

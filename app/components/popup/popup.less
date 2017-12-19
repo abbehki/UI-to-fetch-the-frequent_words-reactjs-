@@ -1,0 +1,429 @@
+.popup {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 3;
+    top:0;
+    .popup_inner {
+        position: absolute;
+        z-index: 30;            
+        width: 567px;
+        transform:translate(-50%,-50%);
+        top:50%;
+        left: 50%;
+        margin: auto;
+        background: white;
+        border-radius: 4px;
+        box-shadow: 21px 21px 40px 0 rgba(0, 0, 0, 0.21);
+        .button-popup-close{
+            width: 1.3px;
+            height: 13px;
+            transform: rotate(-90deg);
+            background-color: #656565;
+            cursor: pointer;
+            float: right;
+        }
+        .popup-header{
+            display: block;
+            margin-bottom: auto;
+            padding: 22px 22px 22px 22px;
+            border-bottom: solid 1px #b3b3b3;
+            font-family: SFUIText;
+            font-size: 15px;
+            text-align: left;
+            color: #2b2b2b;
+        }
+        .Group-15 {
+            width: 13px;
+            height: 13px;
+            object-fit: contain;
+            float: right;
+            cursor: pointer;
+            margin-left:30px; 
+          }
+          .upload-button{
+            display: block;
+            margin: 0 auto;
+            margin-top: 270px;
+            width: 200px;
+            height: 40px;
+            border-radius: 2px;
+            background-color: #77c87f;
+            color: white; 
+            cursor: pointer; 
+            &:hover {
+                /* some rules */
+                box-shadow: 1px 2px 3px #888888;
+              }
+          }
+      }
+  }
+  .content-popup{
+    display: flex;
+    flex-direction: column;
+    .filelength{
+        margin-top: -12px;
+        margin-left: 90px;
+        width: 100px;
+        height: 10px;
+        font-family: SFUIText;
+        font-size: 8px;
+        font-weight: 50;
+        font-style: italic;
+        text-align: left;
+        color: #4a4a4a;    
+     }
+    .fileContainergroup [type=file] {
+        display: none;  
+        cursor: pointer;     
+     }    
+     .fileContainergroup {
+        margin-bottom: 30px;            
+        width: 81px;
+        height: 24px;
+        float: right;
+        opacity: 0.4;
+        border-radius: 2px;
+        border: solid 2px #77c87f;
+        font-size: 10px;
+        text-align: center;
+        color: #717171;
+        span{
+            line-height: 2;
+        }
+        &:hover {
+            background-color: #77c87f;
+            color: white;
+         } 
+     }
+         
+  }
+  .filedetail{
+      display: flex;
+      justify-content:space-around;
+      flex-direction: row;
+      height: 730px;
+      .fileImage{
+          display:flex;
+          align-self: center;
+          flex-direction:row;
+          width: 70%;
+          height: 200px;
+          justify-content: space-between;
+          .arrow{
+              margin-top: 60px;
+              cursor: pointer;
+          }
+          .fileImage-popup{
+              height: 130px;
+              width: 151px;
+              align-content: center;
+          }
+      }
+      .filesinfo{
+          width: 30%;
+          padding: 48px 30px 0 30px;
+          border-left: solid 1px #e8e8e8;   
+          .filename{
+            font-family: SFUIText;
+            font-size: 17px;
+            font-weight: 600;
+            text-align: left;
+            color: #2b2b2b;
+            margin-bottom: 25px;
+          }
+          .file-info{
+            font-family: SFUIText;
+            font-size: 13px;
+            text-align: left;
+            color: #4b4b4b;
+            display:flex;
+            flex:0 0 50%;
+            justify-content: space-between;
+            margin-bottom: 25px;
+          }
+          .file-dowload-button{
+            width: 184px;
+            height: 33px;
+            border-radius: 2px;
+            background-color: #77c87f;
+            color: white;
+            margin-left: 20px;
+          }
+      }
+  }
+ 
+
+  .form-folder{
+    padding: 31px 99px 5px 99px;
+     .input-folder{
+      border: 0;
+      outline: 0;
+      background: transparent;
+      border-bottom:solid 1px #dcdcdc;
+      font-family: SFUIText;
+      font-size: 15px;
+      text-align: left;
+      color: #4a4a4a;
+      margin-bottom: 60px;
+     }
+     .input-tags{
+        margin-bottom: 8px;
+        border:0;
+        width: 100%;
+        background: transparent;
+        font-family: SFUIText;
+        text-align: left;
+        color: #4a4a4a;
+        font-size: 11px;
+        font-style: italic;
+       }
+     .text-clear{
+         cursor: pointer;
+         height: 10px;
+         width: 7px;
+     }
+     .upload-btn{
+        width: 200px;
+        height: 40px;
+        border-radius: 2px;
+        background-color: #77c87f;
+        font-family: SFUIText;
+        font-size: 15px;
+        font-weight: 600;
+        text-align: center;
+        color: #ffffff;
+        padding: 12px;
+        margin: 50px auto;
+        cursor: pointer; 
+     }   
+     .create-folder-button{
+         cursor: pointer;
+         padding-top: 5px;
+        width: 81px;
+        height: 24px;
+        opacity: 0.4;
+        border-radius: 2px;
+        border: solid 1px #77c87f;
+        float: right;
+        font-size: 10px;
+        font-weight: 500;
+        text-align: center;
+        font-family: SFUIText;
+        &:hover {
+            background-color: #77c87f;
+            color: white;
+         }     
+         span{
+             margin-top:13px; 
+         }          
+    }
+     .select-platform{
+        margin-bottom: 14px;
+        font-family: SFUIText;
+        font-size: 13px;
+        text-align: left;
+        color: #4a4a4a;
+        border-bottom: solid 1px #dcdcdc;
+        padding-bottom: 4px;
+      .horizontal-line{
+        width: 20%;
+        height: 2px;
+        border: solid 1px #dcdcdc;
+      }
+      span{
+        width: 68px;
+        height: 10px;
+        font-family: SFUIText;
+        font-size: 8px;
+        float: right;
+        line-height: 22px;
+        color: #949494;
+      }
+     }
+     .tags{
+         display: flex;
+         justify-content: flex-start;
+         flex-wrap: wrap;
+         overflow: scroll;
+         height: 50px;
+        .tags-names{
+            min-width: 75px;
+            height: 20px;
+            border-radius: 16px;
+            background-color: #77c87f;
+            span{
+                margin-right: 32px;
+                width: 31px;    
+                height: 11px;
+                font-family: SFUIText;
+                font-size: 10px;
+                text-align: left;
+                margin-left: 12px;
+                color: #ffffff;
+              
+            }
+         }
+     }
+     
+}
+      /*check box flex container*/
+    .contain{
+        display:flex;
+        span{
+            margin-right: 20px;
+            font-size: 12px;
+            color:#4a4a4a;
+        }
+    }
+    /* The container */
+    .container {
+        display: block;
+        position: relative;
+        padding-left: 20px;
+        margin-bottom: 20px;
+        cursor: pointer;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        font-family: SFUIText;
+        font-size: 12px;
+        color: white;
+        
+    }
+    
+    /* Hide the browser's default checkbox */
+    .container input {
+        position: absolute;
+        opacity: 0;
+        
+    }
+    
+    /* Create a custom checkbox */
+    .checkmark {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 12px;
+        width: 12px;
+        background-color: transparent;
+        border-radius: 2px;
+        border: solid 1px #77c87f;
+        }
+    
+    /* On mouse-over, add a grey background color */
+    .container:hover input ~ .checkmark {
+        background-color: #ccc;
+    }
+    
+    /* When the checkbox is checked, add a blue background */
+    .container input:checked ~ .checkmark {
+        background-color: #77c87f;
+    }
+    
+    /* Create the checkmark/indicator (hidden when not checked) */
+    .checkmark:after {
+        content: "";
+        position: absolute;
+        display: none;
+    }
+    
+    /* Show the checkmark when checked */
+    .container input:checked ~ .checkmark:after {
+        display: block;
+    }
+    
+    /* Style the checkmark/indicator */
+    .container .checkmark:after {
+        left: auto;
+        top: -3px;
+        width: 6px;
+        height: 11px;
+        border: solid white;
+        border-width: 0 1px 1px 0;
+        -webkit-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+        transform: rotate(45deg);
+    }
+    .progress-bar-outer{
+        padding:126px 62px;
+        .progress-bar {
+            display: inline-block;
+            width: 347px;
+            height: 11px;
+            border-radius: 5px;
+            background-color: #f6f6f6;
+          }
+          .indicator {
+            display: inline-block;
+            margin: 2px;
+            height: 7px;
+            vertical-align: top;
+            border-radius: 5px;
+            background-color: #90e48c;
+            transition: 1s width; 
+          }
+          .progress-bar-content{
+            width: 100%;
+            height: 15px;
+            font-family: SFUIText;
+            font-size: 13px;
+            text-align: left;
+            color: #3d3d3d;
+            margin-bottom: 8px;
+            span{
+                float: right;
+            }
+          }
+         
+    }
+    
+
+    .successmessage{
+        position: fixed;
+        top:72px;
+        left: 40%;
+        margin: 0 auto;
+        width: 455px;
+        height: 76px;
+        border-radius: 2px;
+        background-color: #ffffff;
+        box-shadow: 8px 8px 14px 0 rgba(0, 0, 0, 0.12);
+        .successimage{
+            margin-top:10px ;
+            margin-left: 18px;
+        }
+        .Message-success{
+            height: 18px;
+            margin-left: 40px;
+            font-family: SFUIText;
+            font-size: 15px;
+            font-weight: 600;
+            text-align: center;
+            color: #717171;
+            margin-top: -40px;
+        }
+    }
+    .Uploadfiles{
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        bottom:30px;
+        left: 34%;
+        width: 200px;
+        height: 40px;
+        border-radius: 2px;
+        background-color: #77c87f;
+        span{
+            width: 49px;
+            height: 15px;
+            font-family: SFUIText;
+            font-size: 13px;
+            margin-top: 13px;
+            font-weight: 600;
+            color: #ffffff;
+        }
+    }
+    

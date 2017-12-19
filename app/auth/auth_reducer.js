@@ -5,13 +5,14 @@ function auth(state = getSessionData() , action) {
   let tempState = Object.assign({},state);
   switch (action.type) {
     case 'STORE_SIGNIN_DETAILS' :
-          tempState.userData = action.data;
-          storeSessionOnCookie(action.data);
-          console.log( tempState.userData);
+          tempState.userData = action.data.data;
+          tempState.userToken=action.data.userToken;
+          storeSessionOnCookie(action.data.data);
+          console.log(action.data);
           return tempState;
 
     case  'AUTH_ERROR':
-          tempState.authError = action.error;         
+          tempState.authError = action.data;         
           return tempState;
 
     default:
