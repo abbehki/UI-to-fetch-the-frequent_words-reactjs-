@@ -126,6 +126,19 @@ function* deletefolder(action) {
    
   }
 }
+function* deletefile(action) {
+  try {
+    const deletefile = yield call(PatchDataWithToken, API.delete_file,action.data);
+    yield put({type : "DELETE_SHOW", data : deletefile });  
+    //yield put({type : ACTION.DASHBOARD.FOLDERLIST,data :false});      
+    yield put({type : ACTION.DASHBOARD.FOLDERDETAIL,data : action.data.parentDirectoryId});     
+    
+  } catch (e) {
+    console.error("error delete:-",e.message);
+  }finally{
+   
+  }
+}
 function* search_tags(action) {
   try {
     const searched_tags = yield call(getDataWithToken, API.searching_tags+'?search='+action.data);
@@ -147,6 +160,7 @@ export {
   profile,
   loading,
   changebool_load,
-  profile_popup
+  profile_popup,
+  deletefile
 };
 
