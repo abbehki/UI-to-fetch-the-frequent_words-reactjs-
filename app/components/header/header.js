@@ -1,5 +1,6 @@
 import React from 'react';
 import './header.less';
+import ACTION from '../../action_constants';
 import { Link } from 'react-router-dom';
 import SettingImage from '../../../assets/images/setting.png';
 import NotificationImage from '../../../assets/images/notification.png';
@@ -13,6 +14,7 @@ class Header extends React.Component{
         this.state={
             active:"link-header-active",
             noactive:"link-header-unactive",
+            profilepopup:false,
         }
     }
 
@@ -31,6 +33,13 @@ class Header extends React.Component{
         }
     
     }
+    onProfile=(event)=>{
+        const {dispatch}=this.props;
+        this.setState({
+            profilepopup:!this.state.profilepopup,
+        })
+        dispatch({type:ACTION.HEADER.PROFILEPOPUP,data:!this.state.profilepopup});
+    }
     
     render(){
             const picture_profile=localStorage.getItem("profile");
@@ -39,7 +48,7 @@ class Header extends React.Component{
             <img src={Logo} style={{marginLeft:'60px'}}/> 
             <div>
             {localStorage.getItem("name")=="" && <img src={ProfileIcon} style={{height:'20px'}} className="image-tabbar"></img>}
-            {localStorage.getItem("profile")!="" && <img src={picture_profile} style={{height:'40px'}} className="image-tabbar"></img> }
+            {localStorage.getItem("profile")!="" && <img src={picture_profile} style={{height:'40px'}} onClick={this.onProfile.bind(this)} className="image-tabbar"></img> }
             {/* <img src={NotificationImage} style={{height:'20px'}} className="image-tabbar"></img>
             <img src={SettingImage} style={{height:'20px'}} className="image-tabbar"></img> */}
             <div className="name-tabbar">{this.props.dashboard && <span> {localStorage.getItem("name")} </span>}</div>

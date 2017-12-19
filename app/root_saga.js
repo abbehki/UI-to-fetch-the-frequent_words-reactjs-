@@ -2,7 +2,7 @@ import { takeEvery } from 'redux-saga/effects';
 import ACTION from './action_constants';
 import {about} from './about/about_saga';
 import {signin} from './auth/auth_actions';
-import {createFolder,getFolderList,getFolderDetail,changebool,deletefolder,renamefolder,search_tags,uploadImg,filelength,profile} from './dashboard/dashboard_actions';
+import {createFolder,getFolderList,getFolderDetail,changebool,deletefolder,renamefolder,search_tags,uploadImg,filelength,profile,loading,changebool_load,profile_popup} from './dashboard/dashboard_actions';
 import {uploadfiles} from './multiplefile/multiplefile_action';
 import {search_filter,search_project,getProjectList,getCount,getFavorite,deletefavourite,addfavourite} from './components/side_nav_bar/side_nav_bar_action';
 
@@ -11,6 +11,7 @@ import {search_filter,search_project,getProjectList,getCount,getFavorite,deletef
 export default function* rootSaga() {
   yield takeEvery(ACTION.ABOUT.GETABOUT, about);
   yield takeEvery(ACTION.SINGIN.SINGIN, signin);
+  yield takeEvery(ACTION.HEADER.PROFILEPOPUP, profile_popup);  
   yield takeEvery(ACTION.DASHBOARD.PROFILE, profile);  
   yield takeEvery(ACTION.DASHBOARD.CREATEFOLDER, createFolder);
   yield takeEvery(ACTION.DASHBOARD.FOLDERLIST, getFolderList);
@@ -18,6 +19,8 @@ export default function* rootSaga() {
   yield takeEvery(ACTION.DASHBOARD.UPLOADIMAGE, uploadImg);
   yield takeEvery(ACTION.FILEUPLOAD.UPLOAD, uploadfiles);
   yield takeEvery(ACTION.POPUP.CHANGEBOOL, changebool);
+  yield takeEvery(ACTION.POPUP.CHANGEBOOL_LOADING, changebool_load);  
+  yield takeEvery(ACTION.POPUP.LOADING, loading);  
   yield takeEvery(ACTION.DASHBOARD.DELETEFOLDER, deletefolder);
   yield takeEvery(ACTION.DASHBOARD.RENAME, renamefolder);
   yield takeEvery(ACTION.SEARCH.SEARCH_TAGS, search_tags);

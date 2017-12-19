@@ -20,7 +20,9 @@ const actions = {
         'UPLOAD':'UPLOAD'
     },
     POPUP:{
-       'CHANGEBOOL':'CHANGEBOOL'
+       'CHANGEBOOL':'CHANGEBOOL',
+       'LOADING':'LOADING',
+       'CHANGEBOOL_LOADING':'CHANGEBOOL_LOADING'
     },
     SEARCH:{
         'SEARCH_TAGS':'SEARCH_TAGS',
@@ -34,6 +36,9 @@ const actions = {
         'SEARCHFILTER':'SEARCHFILTER',
         'DELETEFAV':'DELETEFAV',
         'ADDFAV':'ADDFAV',
+    },
+    HEADER:{
+        'PROFILEPOPUP':'PROFILEPOPUP'
     }
 
 };

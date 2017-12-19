@@ -216,8 +216,8 @@ class SideNavBar extends React.Component{
          }
                  <Search type={this.state.search_tags}/>           
                  <div className="filter-cont">
-                  {!this.state.factesBool &&  <div onClick={this.hideAll.bind(this)} className="hide-factes">Hide Factes</div> }
-                  {this.state.factesBool &&  <div onClick={this.showAll.bind(this)} className="hide-factes">Show Factes</div> }
+                  {!this.state.factesBool &&  <div onClick={this.hideAll.bind(this)} className="hide-factes">Hide Facts</div> }
+                  {this.state.factesBool &&  <div onClick={this.showAll.bind(this)} className="hide-factes">Show Facts</div> }
                  {/* project section */}
                  <div className="category-cont">
                     <div className="title">PROJECT

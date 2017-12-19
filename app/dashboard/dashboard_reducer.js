@@ -42,6 +42,18 @@ function dashboard(state = getSessionData() , action) {
           tempState.folderData=false;     
           tempState.search_flag=false;   
           return tempState; 
+
+    case 'LOADING_FLAG_TRUE' :
+          tempState.loading_flag=action.data;  
+          return tempState; 
+
+    case 'POPUP_PROFILE' :
+          tempState.profilepopup_flag=action.data;  
+          return tempState; 
+
+    case 'LOADING_FLAG_FALSE' :
+          tempState.loading_flag_false=action.data;  
+          return tempState;
           
     case 'CLOSE_CREATEFILES' :
           tempState.search_flag=false;            
@@ -51,7 +63,7 @@ function dashboard(state = getSessionData() , action) {
 
     case 'IMG_DATA' :
           tempState.fileUrl=action.data.data;
-          tempState.countoffile=action.data.countOffie;            
+          tempState.countoffile=action.data.countOffile;   
           return tempState;
 
     case 'DELETE_NOSHOW' :
@@ -69,11 +81,12 @@ function dashboard(state = getSessionData() , action) {
     case 'SEARCHED_TAGS' :
           tempState.search_content = action.data.data;
           tempState.search_flag = true;     
-          return tempState;FILE_LENGTH
+          return tempState;
 
     case 'FILE_LENGTH' :
           tempState.file_length = action.data;
           tempState.changebool_cancel=true;
+          tempState.changestate_smallpopup=true;
           return tempState;
 
     case  'ERROR':
