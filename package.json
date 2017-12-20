@@ -56,8 +56,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack --config config/webpack.production.config.js --progress",
-    "start": "webpack-dev-server --config config/webpack.config.js --progress"
+    "build": "webpack --config webpack-config/webpack.production.config.js --progress",
+    "start": "webpack-dev-server --config webpack-config/webpack.config.js --progress"
   },
   "babel": {
     "presets": [

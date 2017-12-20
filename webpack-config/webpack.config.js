@@ -22,7 +22,7 @@ const devSpecifics = {
     publicPath: "/",
     compress: true,
     historyApiFallback: true,
-    port: 9000,
+    port: 7770,
     allowedHosts:['0.0.0.0'],
   }
 };
