@@ -4,7 +4,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 //const workboxPlugin = require('`workbox-webpack-plugin`');
 
 const htmlConfig = {
-  title: "Asset Management",
+  title: "React with Redux",
   template: "./index.ejs",
   appMountId: "root",
   favicon: "./assets/images/favicon.png"
