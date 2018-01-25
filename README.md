@@ -1,4 +1,4 @@
-# react-setup-w3
+# react with redux
 React setup with webpack 3
 
 #### take a pull
