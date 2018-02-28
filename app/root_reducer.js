@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
-import about from './about/about_reducer';
+import check_reducer from './checkfrequency/check_reducer';
 
 const rootReducers = combineReducers({
-  about,
+  check_reducer,
 });
 
 export default rootReducers;

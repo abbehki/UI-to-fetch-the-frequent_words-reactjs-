@@ -6,8 +6,7 @@ import { routerReducer } from 'react-router-redux';
 import createSagaMiddleware from 'redux-saga';
 import rootSaga from './root_saga';
 import reducers from './root_reducer';
-import About from './about/About';
-import Test from './test/test';
+import Check from './checkfrequency/checkfrequency';
 import history from './history';
 
 //import Loadable from 'components/Loadable';
@@ -34,8 +33,7 @@ sagaMiddleware.run(rootSaga);
 const routes = (
     <Router history={history}>
       <Switch>
-        <Route exact path='/' component={About} />  
-        <Route exact path='/test' component={Test} />          
+        <Route exact path='/' component={Check} />  
         
       </Switch>
     </Router>
